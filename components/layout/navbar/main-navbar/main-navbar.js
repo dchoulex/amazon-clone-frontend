@@ -1,10 +1,6 @@
 import * as React from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import InputBase from '@mui/material/InputBase';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -46,7 +42,7 @@ function MainNavbar() {
     return (
         <React.Fragment>
             <Toolbar 
-                className="h-16 w-screen justify-evenly" 
+                className="h-16 w-screen lg:justify-evenly" 
                 disableGutters
             >
                 {mainNavbarButtons.map(button => {
@@ -63,7 +59,7 @@ function MainNavbar() {
                     };
 
                     if (button.title === "cart") {
-                        return <CartButton />
+                        return <CartButton key={button.title} />
                     }
                     
                     return (

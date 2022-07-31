@@ -1,3 +1,5 @@
+import * as React from "react";
+import Link from "next/link";
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -46,6 +48,14 @@ const subNavbarTabs = [
 ];
 
 function subNavbar() {
+    const [index, setIndex] = React.useState(0);
+
+    const handleChange = (event, index) => {
+        event.preventDefault();
+
+        setIndex(index);
+    };
+
     return (
         <Toolbar 
         variant="dense" 
@@ -53,22 +63,26 @@ function subNavbar() {
         disableGutters
         >
             <Tabs 
-                value={0}
+                value={index}
                 indicatorColor="none"  
                 variant="scrollable"          
                 className="justify-evenly"
+                onChange={handleChange}
             >
                 {subNavbarTabs.map(tab => {
                     return (
-                        <Tab 
+                        <Link 
+                            href="/thisWorks" 
                             key={tab.title}
-                            className="text-zinc-200 normal-case px-8px min-w-0 min-h-0 text-base"
-                            label={tab.title}
-                            icon={tab.icon}
-                            iconPosition="start"
-                            disabled={tab.disabled}
-                            wrapped
-                        />
+                        >
+                            <Tab 
+                                className="text-gray-200 normal-case px-8px min-w-0 min-h-0 text-base font-light opacity-100"
+                                label={tab.title}
+                                icon={tab.icon}
+                                iconPosition="start"
+                                disabled={tab.disabled}
+                            />
+                        </Link>
                     )
                 })}
             </Tabs>

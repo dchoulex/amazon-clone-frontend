@@ -18,7 +18,10 @@ module.exports = {
         }
       },
       width: {
-        "250": "250px"
+        "250": "250px",
+      },
+      minWidth: {
+        "400": "400px"
       },
       margin: {
         "4px": "4px",
@@ -32,9 +35,10 @@ module.exports = {
         "8px": "8px"
       },
       screens: {
+        "lg": "1170px",
         "tablet": "640px",
         "laptop": "1024px",
-        "desktop": "1280px"
+        "desktop": "1280px",
       }
     },
   },

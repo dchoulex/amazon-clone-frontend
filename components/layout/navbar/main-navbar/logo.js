@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 function Logo() {
     return (
         <React.Fragment>
-            <Button className="flex-none p-0">
+            <Button className="ml-1 flex-none p-0">
                 <div className="ml-16px">
                     <Link href="/">
                         <Image 

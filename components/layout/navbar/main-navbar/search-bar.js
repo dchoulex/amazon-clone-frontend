@@ -1,5 +1,4 @@
 import * as React from "react";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
@@ -14,11 +13,39 @@ import { styled } from "@mui/material/styles";
 import InputBase from '@mui/material/InputBase';
 import Typography from "@mui/material/Typography";
 
-const searchOptions = ["All Departments", "Amazon Fresh", "Software", "Software"];
+const searchOptions = ["All Departments", "Amazon Fresh", "Software", "Something"];
 
+// function getWindowDimensions() {
+//     return {
+//         width: window.innerWidth,
+//         height: window.innerHeight
+//     };
+// }
+
+// function useWindowDimensions() {
+//     const [windowDimensions, setWindowDimensions] = React.useState(getWindowDimensions());
+  
+//     React.useEffect(() => {
+//         function handleResize() {
+//             setWindowDimensions(getWindowDimensions());
+//         }
+  
+//         window.addEventListener('resize', handleResize);
+//         return () => window.removeEventListener('resize', handleResize);
+//     }, []);
+  
+//     return windowDimensions;
+// };
+  
 const SearchInputBase = styled(InputBase)(() =>({
     backgroundColor: "white",
-    minWidth: "200px"
+    minWidth: "250px",
+    paddingLeft: "5px",
+    // display: "flex",
+    // height: "36px",
+    // position: "absolute",
+    // bottom: "0px",
+    // right: "64px"
 }));
 
 const EmptyDiv = styled("div")(() =>({
@@ -32,14 +59,31 @@ const StyledCheckIcon = styled(CheckIcon)(() =>({
 function SearchBar() {
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
+    const categoryRef = React.useRef(null);
+    const [categoryIsChange, setCategoryIsChange] = React.useState(false);
+    const [searchInputWidth, setSearchInputWidth] = React.useState(200);
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
+    const categoryWidth = categoryRef.current?.offsetWidth;
+
+    // React.useEffect(() => {
+    //     if (categoryIsChange) {
+    //         const newSearchInputWidth = 400 - 64 - categoryWidth;
+
+    //         setSearchInputWidth(newSearchInputWidth);
+    //     };
+
+    //     setCategoryIsChange(false);
+
+    // }, [categoryIsChange, searchInputWidth]);
+
     const handleToggle = () => {
-        setOpen(prevOpen => !prevOpen)
+        setOpen(prevOpen => !prevOpen);
     };
 
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
+        setCategoryIsChange(true);
         setOpen(false);
     };
 
@@ -47,26 +91,27 @@ function SearchBar() {
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         };
-
         setOpen(false);
     };
 
     return (
-        <ButtonGroup 
+        <Paper 
             ref={anchorRef} 
-
             variant="contained"
-            className="flex-none"
+            className="flex-none min-w-400 relative"
         >
             <Button 
-                className="bg-zinc-200 pr-1" 
+                className="bg-zinc-200 pr-1 rounded-r-none" 
+                ref={categoryRef}
                 aria-controls={open ? "split-button-menu" : undefined}
                 aria-expanded={open ? 'true' : undefined}
                 aria-label="select merge strategy split button"
                 aria-haspopup="menu"
                 onClick={handleToggle}
             >
-                <Typography className="text-sm text-neutral-600 normal-case font-light outline-zinc-400">
+                <Typography 
+                    className="text-sm text-neutral-600 normal-case font-light outline-zinc-400"
+                >
                     {searchOptions[selectedIndex]}
                 </Typography>
                 <ArrowDropDownIcon className="text-gray-700"/>
@@ -77,7 +122,7 @@ function SearchBar() {
                 role={undefined}
                 transition
                 disablePortal
-                className="z-10 opacity-90"
+                className="z-10 opacity-95"
             >
                 {({ TransitionProps, placement }) => (
                 <Grow
@@ -107,11 +152,11 @@ function SearchBar() {
                 </Grow>
                 )}
             </Popper>
-            <SearchInputBase />
-            <Button className="bg-orange-300 px-1 outline-orange-500">
+            <SearchInputBase sx={{width: "10px"}}/>
+            <Button className="bg-orange-300 px-1 outline-orange-500 absolute right-0 rounded-l-none">
                 <SearchIcon className="text-black" />
             </Button>
-        </ButtonGroup> 
+        </Paper> 
     )
 };
 
