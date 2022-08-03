@@ -4,8 +4,6 @@ import Button from '@mui/material/Button';
 import Menu from "@mui/material/Menu";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import SvgIcon from '@mui/material/SvgIcon';
 import JapanIcon from "../../../../public/images/jp-flag-icon.svg";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';

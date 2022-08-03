@@ -7,7 +7,7 @@ import SubNavbar from "./navbar/sub-navbar/sub-navbar";
 
 const useStyles = makeStyles(theme => ({
     toolbarMargin: {
-        ...theme.mixins.toolbar
+        minHeight: "112px"
     }
 }));
 

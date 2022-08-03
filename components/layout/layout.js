@@ -10,7 +10,6 @@ function Layout(props) {
         <React.Fragment>
             <ThemeProvider theme={theme}>
                 <Navbar />
-                <p>This is layout</p>
                 <main>{props.children}</main>
                 <Footer />
             </ThemeProvider>

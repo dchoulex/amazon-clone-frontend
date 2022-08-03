@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-import AllTab from "./all-tab";
+import AllTab from "./all-tab/all-tab";
 
 const subNavbarTabs = [
     {
