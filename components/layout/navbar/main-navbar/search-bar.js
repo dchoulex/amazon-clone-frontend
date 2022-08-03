@@ -13,7 +13,7 @@ import { styled } from "@mui/material/styles";
 import InputBase from '@mui/material/InputBase';
 import Typography from "@mui/material/Typography";
 
-const searchOptions = ["All Departments", "Amazon Fresh", "Software", "Something"];
+const searchOptions = ["All Categories", "Clothing", "Bag", "Jewelry", "Computers", "Peripherals", "Office", "Electronics", "Camera", "Food", "Beverage", "Alcohol", "Sports", "Outdoors"];
 
 // function getWindowDimensions() {
 //     return {
@@ -98,7 +98,7 @@ function SearchBar() {
         <Paper 
             ref={anchorRef} 
             variant="contained"
-            className="flex-none min-w-400 relative"
+            className="flex-none relative w-auto"
         >
             <Button 
                 className="bg-zinc-200 pr-1 rounded-r-none" 
@@ -152,7 +152,7 @@ function SearchBar() {
                 </Grow>
                 )}
             </Popper>
-            <SearchInputBase sx={{width: "10px"}}/>
+            <SearchInputBase sx={{width: "30%"}}/>
             <Button className="bg-orange-300 px-1 outline-orange-500 absolute right-0 rounded-l-none">
                 <SearchIcon className="text-black" />
             </Button>

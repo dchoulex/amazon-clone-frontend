@@ -1,7 +1,6 @@
 import * as React from "react";
 import { makeStyles } from "@mui/styles";
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 
 import MainNavbar from "./navbar/main-navbar/main-navbar";
 import SubNavbar from "./navbar/sub-navbar/sub-navbar";

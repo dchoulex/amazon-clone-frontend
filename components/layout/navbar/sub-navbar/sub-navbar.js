@@ -3,12 +3,12 @@ import Link from "next/link";
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import MenuIcon from '@mui/icons-material/Menu';
+
+import AllTab from "./all-tab";
 
 const subNavbarTabs = [
     {
-        title: "All",
-        icon: <MenuIcon />
+        title: "All"
     },
     {
         title: "Amazon Points: Check your balance"
@@ -70,6 +70,10 @@ function subNavbar() {
                 onChange={handleChange}
             >
                 {subNavbarTabs.map(tab => {
+                    if (tab.title === "All") {
+                        return <AllTab />
+                    }
+
                     return (
                         <Link 
                             href="/thisWorks" 
