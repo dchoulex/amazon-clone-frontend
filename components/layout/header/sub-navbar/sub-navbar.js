@@ -8,9 +8,6 @@ import AllTab from "./all-tab/all-tab";
 
 const subNavbarTabs = [
     {
-        title: "All"
-    },
-    {
         title: "Amazon Points: Check your balance"
     },
     {
@@ -45,6 +42,42 @@ const subNavbarTabs = [
         title: "Music",
         disabled: true
     },
+    {
+        title: "Amazon Fashion",
+        disabled: true
+    },
+    {
+        title: "Kindle Books",
+        disabled: true
+    },
+    {
+        title: "Computers & Peripherals",
+        disabled: false
+    },
+    {
+        title: "Food & Beverage",
+        disabled: true
+    },
+    {
+        title: "Coupons",
+        disabled: true
+    },
+    {
+        title: "Gift Cards",
+        disabled: true
+    },
+    {
+        title: "Home & Kitchen",
+        disabled: true
+    },
+    {
+        title: "Gift Ideas",
+        disabled: true
+    },
+    {
+        title: "Sports & Outdoors",
+        disabled: true
+    },
 ];
 
 function subNavbar() {
@@ -59,7 +92,7 @@ function subNavbar() {
     return (
         <Toolbar 
         variant="dense" 
-        className="h-8 bg-amazon_blue-light"
+        className="h-8 bg-amazon_blue-light w-screen justify-evenly"
         disableGutters
         >
             <Tabs 
@@ -69,18 +102,15 @@ function subNavbar() {
                 className="justify-evenly"
                 onChange={handleChange}
             >
+                <AllTab />
                 {subNavbarTabs.map(tab => {
-                    if (tab.title === "All") {
-                        return <AllTab />
-                    }
-
                     return (
                         <Link 
                             href="/thisWorks" 
                             key={tab.title}
                         >
                             <Tab 
-                                className="text-gray-200 normal-case px-8px min-w-0 min-h-0 text-base font-light opacity-100"
+                                className="text-gray-200 normal-case px-8px min-h-0 text-base font-light opacity-100 mx-1"
                                 label={tab.title}
                                 icon={tab.icon}
                                 iconPosition="start"
