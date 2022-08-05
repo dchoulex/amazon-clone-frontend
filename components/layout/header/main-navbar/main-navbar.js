@@ -23,7 +23,6 @@ function MainNavbar() {
                 <AccountButton />
                 <CheckOrderButton />
                 <CartButton />
-          
             </Toolbar>
         </React.Fragment>
     )

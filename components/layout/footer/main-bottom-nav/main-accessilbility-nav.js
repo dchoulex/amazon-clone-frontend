@@ -1,5 +1,5 @@
 import * as React from "react";
-import { mainAccessibilityData } from "./main-accessibility-data";
+import { mainAccessibilityData } from "./data/main-accessibility-data";
 import Grid from '@mui/material/Grid';
 
 function MainAccessibilityNav() {
@@ -30,7 +30,7 @@ function MainAccessibilityNav() {
                                 <Grid 
                                     key={columnItem.title}
                                     item 
-                                    className="text-gray-300 font-light m-1 text-base"
+                                    className="text-gray-300 font-light m-1 text-base hover:cursor-not-allowed"
                                 >
                                     {columnItem.title}
                                 </Grid>
