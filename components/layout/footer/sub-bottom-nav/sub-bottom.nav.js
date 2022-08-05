@@ -4,15 +4,7 @@ import styled from 'styled-components';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Toolbar from '@mui/material/Toolbar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
-
 
 import subAccessibilityData from "./data/sub-accessibility-data";
 import subLinkMenu from "./data/sub-link-menu-data";
@@ -31,7 +23,7 @@ const StyledLink = styled.a`
 function SubBottomNav() {
     return (
         <React.Fragment>
-            <Box className="bg-amazon_blue-dark">
+            <Box className="bg-amazon_blue-dark justify-evenly">
                 <Grid 
                     container
                     spacing={1}
@@ -41,9 +33,9 @@ function SubBottomNav() {
                         <Grid
                             key={item.title}
                             item
-                            xs={6}
                             sm={6}
                             md={3}
+                            className="flex justify-center"
                         >
                             <Box className="w-100">
                                 <Typography className="text-sm text-gray-200">
@@ -53,9 +45,7 @@ function SubBottomNav() {
                                     {item.description}
                                 </Typography>
                             </Box>
-                            {/* <Box className="bg-inherit w-20"
-                            >
-                            </Box> */}
+
                         </ Grid>
                     ))}
                 </Grid>
@@ -106,23 +96,7 @@ function SubBottomNav() {
                         </Typography>
                     </Box>
                 </Box>
-             
-            
-                {/* <List>
-                    <ListItemButton>
-                        <ListItemText className="text-black normal-case" primary="Test"/>
-                    <Divider orientation="vertical" className="" flexItem/>
-                    </ListItemButton>
-                    <ListItemButton>
-                        <ListItemText className="text-black normal-case" primary="Test2"/>
-                    <Divider orientation="vertical" className="" flexItem/>
-                    </ListItemButton>
-               
-
-                </List> */}
             </Box>
-
-
         </React.Fragment>
     )
 };
