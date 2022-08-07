@@ -14,6 +14,10 @@ function MainAccessibilityNav() {
                     <Grid
                         key={rowItem.title} 
                         item 
+                        lg={3}
+                        md={6}
+                        sm={12}
+                        xs={12}
                     >
                         <Grid 
                             direction="column"

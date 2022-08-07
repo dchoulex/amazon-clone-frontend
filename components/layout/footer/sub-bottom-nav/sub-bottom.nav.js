@@ -7,63 +7,49 @@ import Divider from '@mui/material/Divider';
 
 import subAccessibilityData from "./data/sub-accessibility-data";
 import subLinkMenu from "./data/sub-link-menu-data";
+import SubAccessibilityNav from "./sub-accessibility-nav";
 
 function SubBottomNav() {
     return (
         <React.Fragment>
             <Box className="bg-amazon_blue-dark justify-evenly">
+                <SubAccessibilityNav />
                 <Grid 
                     container
-                    spacing={1}
-                    className="p-2"
+                    className="justify-center"
                 >
-                    {subAccessibilityData.map(item => (
-                        <Grid
-                            key={item.title}
-                            item
-                            sm={6}
-                            md={3}
-                            className="flex justify-center hover:cursor-not-allowed"
-                        >
-                            <Box className="w-100">
-                                <Typography className="text-sm text-gray-200 ">
+                    <Grid 
+                        sx={{                     
+                            color: "white",
+                            fontSize: "1rem",
+                            fontWeight: 300,
+                            textAlign: "center",
+                            paddingTop: "7px",
+                            display: "flex",
+                            justifyContent: "center",
+                            paddingY: "1rem"
+                        }}
+                        className="flex-col content-center sm:flex-row"
+                        item
+                        xs={12}
+
+                    >
+                        {subLinkMenu.map(item => (
+                            <React.Fragment key={item.title}>
+                                <p className="hover:cursor-not-allowed hover:underline mx-4 my-1 p-1">
                                     {item.title}
-                                </Typography>
-                                <Typography className="text-xs text-zinc-400">
-                                    {item.description}
-                                </Typography>
-                            </Box>
-                        </ Grid>
-                    ))}
-                </Grid>
-                <Box 
-                    sx={{                     
-                        color: "white",
-                        fontSize: "1rem",
-                        fontWeight: 300,
-                        textAlign: "center",
-                        paddingTop: "7px",
-                        margin: "0 1rem 0 3rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        paddingY: "1rem"
-                    }}
-                >
-                    {subLinkMenu.map(item => (
-                        <React.Fragment key={item.title}>
-                            <p className="hover:cursor-not-allowed hover:underline mx-4 my-1 p-1">
-                                {item.title}
-                            </p>                               
-                            { item.title === "Tokushoho" ? null :
-                            <Divider 
-                                orientation="vertical"
-                                flexItem
-                                variant="middle"
-                                className="border-white"
-                            />}
-                        </React.Fragment>
-                    ))}
-                    <Box      
+                                </p>                               
+                                { item.title === "Tokushoho" ? null :
+                                <Divider 
+                                    orientation="vertical"
+                                    flexItem
+                                    variant="middle"
+                                    className="border-white"
+                                />}
+                            </React.Fragment>
+                        ))}
+                    </Grid>
+                    <Grid      
                         sx={{                     
                             color: "white",
                             fontSize: "1rem",
@@ -72,6 +58,8 @@ function SubBottomNav() {
                             paddingTop: "7px",
                             margin: "0 1rem 0 3rem"
                         }}
+                        item
+                        sm={12}
                     >
                         <Typography 
                             className="text-blue-500 text-base" 
@@ -84,8 +72,8 @@ function SubBottomNav() {
                             <a className="hover:underline text-white hover:text-zinc-200 ml-2">David Choulex</a>     
                         </Link>
                         </Typography>
-                    </Box>
-                </Box>
+                    </Grid>
+                </Grid>
             </Box>
         </React.Fragment>
     )
