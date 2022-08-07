@@ -17,28 +17,24 @@ const cards = [
     },
     {
         title: "Find the Perfect Gift",
-        subheader: "Gift recommendations from Amazon.co.jp.",
-        action: "See more"
+        subheader: "Gift recommendations from Amazon.co.jp."
     },
     {
         title: "Amazon Prime",
         subheader: "Unlimited straming of thousands of shows and books. Free expedited shipping.",
-        action: "Sign up for prime"
+        action: "Sign up"
     },
     {
         title: "Kindle",
-        subheader: "30 days free trial. Get access to over 2 million books.",
-        action: "Click here for details"
+        subheader: "30 days free trial. Get access to over 2 million books."
     },
     {
         title: "Amazon Basic",
-        subheader: "Check out amazon basic products.",
-        action: "See more"
+        subheader: "Check out amazon basic products."
     },
     {
         title: "Amazon Music",
-        subheader: "30 days free trial. Get access to over 90 million songs.",
-        action: "Click here for details"
+        subheader: "30 days free trial. Get access to over 90 million songs."
     }
 ];
 
@@ -72,9 +68,10 @@ function ProductFeed() {
                                             height="230"
                                             image="/images/amazon-logo.png"
                                             className="mb-8"
+                                            alt={card.title}
                                         />
                                         <CardActions className="absolute bottom-0">
-                                            <Button className="normal-case">{card.action}</Button>
+                                            <Button>{card.action || "see more"}</Button>
                                         </CardActions>
                                     </Card>
                                 </Grid>
