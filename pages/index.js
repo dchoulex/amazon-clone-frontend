@@ -3,16 +3,19 @@ import Image from 'next/image';
 import * as React from "react";
 import styles from '../styles/Home.module.css';
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+import Banner from "../components/ui/banner";
+import ProductFeed from "../components/product-feed/product-feed";
 
 function HomePage() {
   return (
     <React.Fragment>
-      <h1 className="text-3xl font-bold underline">
-        This is home page
-      </h1>
-      <Button variant="contained" className="bg-amazon_blue-dark">
-        Hello
-      </Button>
+      <Box className="w-screen bg-gradient-to-b from-sky-100 to-gray-100">
+        <Banner />
+        <div className="relative h-[200px] z-[-10]"></div>
+        <ProductFeed />
+      </Box>
     </React.Fragment>
   )
 };

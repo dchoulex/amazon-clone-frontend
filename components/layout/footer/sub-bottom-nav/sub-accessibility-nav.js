@@ -1,12 +1,9 @@
 import * as React from "react";
-import Link from "next/link";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 
 import subAccessibilityData from "./data/sub-accessibility-data";
-import subLinkMenu from "./data/sub-link-menu-data";
 
 function SubAccessibilityNav() {
 
@@ -14,7 +11,7 @@ function SubAccessibilityNav() {
         <Grid 
             container
             spacing={1}
-            className="p-2"
+            className="p-2 w-screen"
         >
             {subAccessibilityData.map(item => (
                 <Grid

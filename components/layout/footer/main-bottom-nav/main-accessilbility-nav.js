@@ -8,7 +8,7 @@ function MainAccessibilityNav() {
                 <Grid 
                     direction="row"
                     container 
-                    className="justify-evenly"
+                    className="justify-evenly w-screen"
                 >
                     {mainAccessibilityData.map(rowItem =>(
                     <Grid
@@ -22,7 +22,7 @@ function MainAccessibilityNav() {
                         <Grid 
                             direction="column"
                             container  
-                            className="p-5 m-1"
+                            className="p-5"
                         >
                             <Grid 
                                 item 
