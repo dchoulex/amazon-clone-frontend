@@ -1,5 +1,5 @@
 import * as React from "react";
-import { collapseListItems } from "./all-tab-data";
+import { collapseListItems } from "./data/all-tab-data";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Collapse from "@mui/material/Collapse";

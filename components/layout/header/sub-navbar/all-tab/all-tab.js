@@ -1,12 +1,15 @@
 import * as React from "react";
-import { drawerListItems } from "./all-tab-data";
-import { makeStyles } from "@mui/styles";
+import Link from "next/link";
+
+import { drawerListItems } from "./data/all-tab-data";
+
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import Divider from '@mui/material/Divider';
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
@@ -22,7 +25,7 @@ function AllTab() {
 
     const handleOpenDrawer = () => setOpenDrawer(true);
 
-    const hanldeCloseDrawer = () => setOpenDrawer(false);
+    const handleCloseDrawer = () => setOpenDrawer(false);
 
     return (
         <React.Fragment>
@@ -38,7 +41,7 @@ function AllTab() {
                 disableDiscovery={iOS} 
                 open={openDrawer} 
                 anchor="left"
-                onClose={hanldeCloseDrawer} 
+                onClose={handleCloseDrawer} 
                 onOpen={handleOpenDrawer}
             >
                 <Box
@@ -46,21 +49,28 @@ function AllTab() {
                     role="presentation"
                 >      
                     <List disablePadding>
-                        <ListItem
-                            sx={{ 
-                                bgcolor: "#232f3e",
-                                padding: "1rem",
-                                width: "350px"
-                            }}
-                        >
-                            <ListItemAvatar>
-                                <Avatar />
-                            </ListItemAvatar>
-                            <ListItemText 
-                                primaryTypographyProps={{color: "white"}}
-                                primary="Hello, Sign in" 
-                            />
-                        </ListItem>
+                        <Link href="/auth/login">
+                            <ListItemButton
+                                sx={{ 
+                                    bgcolor: "#232f3e",
+                                    padding: "1rem",
+                                    width: "350px",
+                                    "&:hover": {
+                                        backgroundColor: "#232f3e" 
+                                    }
+                                }}
+                                onClick={handleCloseDrawer}
+                                className="bg-amazon_blue-light"
+                            >
+                                    <ListItemAvatar>
+                                        <Avatar />
+                                    </ListItemAvatar>
+                                    <ListItemText 
+                                        primaryTypographyProps={{color: "white"}}
+                                        primary="Hello, Sign in" 
+                                    />
+                            </ListItemButton>
+                        </Link>
 
                         {drawerListItems.map(listItem => (
                             <React.Fragment key={listItem.title}>
@@ -77,8 +87,16 @@ function AllTab() {
                                 </ListSubheader>
                                 {listItem.items.map(item => (
                                     item.isCollapseListItem ? 
-                                    <AllTabCollapseListItem key={item} item={item} /> :
-                                    <AllTabListItem key={item} item={item} />
+                                    <AllTabCollapseListItem 
+                                        key={item} 
+                                        item={item}
+                                        onClick={handleCloseDrawer} 
+                                    /> :
+                                    <AllTabListItem 
+                                        key={item} 
+                                        item={item} 
+                                        onClick={handleCloseDrawer}
+                                    />
                                 ))}
                                 <Divider />
                             </React.Fragment>
