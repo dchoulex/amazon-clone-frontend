@@ -12,7 +12,7 @@ function Layout(props) {
     return (
         <React.Fragment>
             <ThemeProvider theme={theme}>
-                {router.pathname === "/auth/login" ? 
+                {router.pathname.includes("/auth") ? 
                 <main>{props.children}</main> :
                 <React.Fragment>
                     <Header />

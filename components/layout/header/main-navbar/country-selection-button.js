@@ -68,9 +68,8 @@ function CountrySelectionButton() {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem>Change language</MenuItem>
+                {/* <MenuItem>Change language</MenuItem> */}
                 <MenuItem 
-                    divider
                     onClick={handleClose}
                 >
                     <SvgIcon 
@@ -80,14 +79,14 @@ function CountrySelectionButton() {
                         You are shopping on Amazon.co.jp
                     </Typography>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                {/* <MenuItem onClick={handleClose}>
                     <Link href="/thisWorks">
                         <Typography 
                             color="primary">
                             Change country/region
                         </Typography>
                     </Link>
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
         </React.Fragment>
     )

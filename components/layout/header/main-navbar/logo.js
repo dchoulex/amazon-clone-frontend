@@ -9,18 +9,18 @@ function Logo() {
     return (
         <React.Fragment>
             <Button className="ml-1 flex-none p-0">
-                <div className="ml-16px">
-                    <Link href="/">
+                <Link href="/">
+                    <div className="ml-16px">
                         <Image 
-                            src="/images/amazon-logo.png"
+                            src="/images/amazon-logo-transparent.png"
                             alt="amazon-logo"
                             width={110}
                             height={40}
                             objectFit="contain"
                             layout="fixed"
                         />
-                    </Link>
-                </div>
+                    </div>
+                </Link>
                 <Box className="flex-col text-left normal-case">
                     <Typography className="text-zinc-400 text-sm">
                         .co.jp
