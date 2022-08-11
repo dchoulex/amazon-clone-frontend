@@ -1,15 +1,15 @@
+import { Fragment } from "react";
 import Image from "next/image";
 import Carousel from 'react-material-ui-carousel';
 import Box from "@mui/material/Box";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import React from "react";
 
 const bannerImages = ["bannerOne.jpg", "bannerTwo.jpg", "bannerThree.jpg"];
 
 function Banner() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Box className="absolute w-screen h-[300px]">                  
                 <Carousel
                     interval={5000}
@@ -43,7 +43,7 @@ function Banner() {
                     ))}
                 </Carousel>  
             </Box>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

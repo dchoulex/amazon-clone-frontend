@@ -58,8 +58,8 @@ const StyledCheckIcon = styled(CheckIcon)(() =>({
 
 function SearchBar() {
     const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-    const categoryRef = React.useRef(null);
+    // const anchorRef = React.useRef(null);
+    // const categoryRef = React.useRef(null);
     const [categoryIsChange, setCategoryIsChange] = React.useState(false);
     const [searchInputWidth, setSearchInputWidth] = React.useState(200);
     const [selectedIndex, setSelectedIndex] = React.useState(0);

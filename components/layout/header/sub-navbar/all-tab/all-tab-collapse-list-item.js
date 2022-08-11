@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, Fragment } from "react";
 import { collapseListItems } from "./data/all-tab-data";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -13,13 +13,13 @@ import AllTabListItemText from "./all-tab-list-item-text";
 function AllTabCollapseListItem(props) {
     const { item } = props;
 
-    const [seeAllIsOpen, setOpenSeeAll] = React.useState(false);
+    const [seeAllIsOpen, setOpenSeeAll] = useState(false);
 
     const handleOpenSeeAll = () => setOpenSeeAll(true);
     const handleCloseSeeAll = () => setOpenSeeAll(false);
 
     return (
-        <React.Fragment>
+        <Fragment>
             {seeAllIsOpen || 
             <ListItemButton 
                 onClick={handleOpenSeeAll}
@@ -43,7 +43,7 @@ function AllTabCollapseListItem(props) {
                 <AllTabListItemText primary="See Less" />
                 <ExpandLess />
             </ListItemButton>}
-        </React.Fragment>
+        </Fragment>
     )
 };
 

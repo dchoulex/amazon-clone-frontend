@@ -1,10 +1,10 @@
-import * as React from "react";
+import { Fragment } from "react";
 import { mainAccessibilityData } from "./data/main-accessibility-data";
 import Grid from '@mui/material/Grid';
 
 function MainAccessibilityNav() {
     return (
-        <React.Fragment>
+        <Fragment>
                 <Grid 
                     direction="row"
                     container 
@@ -42,7 +42,7 @@ function MainAccessibilityNav() {
                         </Grid>
                     </Grid>))}
                 </Grid>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

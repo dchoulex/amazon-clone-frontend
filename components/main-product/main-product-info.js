@@ -1,15 +1,11 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 
-const cards = [
+import MainProductCard from "./main-product-card";
+
+const mainProducts = [
     {
         title: "Best sellers",
         subheader: "Show best selling products.",
@@ -38,9 +34,9 @@ const cards = [
     }
 ];
 
-function ProductFeed() {
+function MainProductInfo() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Box className="relative z-10">
                 <Grid 
                     container
@@ -48,9 +44,9 @@ function ProductFeed() {
                 >
                     <Grid item>
                         <Grid container>
-                            {cards.map(card => (
+                            {mainProducts.map(product => (
                                 <Grid 
-                                    key={card}
+                                    key={product}
                                     item
                                     xs={12}
                                     md={6}
@@ -58,35 +54,17 @@ function ProductFeed() {
                                     xl={3}
                                     className="py-3 flex justify-center"
                                 >
-                                    <Card className="w-[370px] relative">
-                                        <CardHeader 
-                                            title={card.title} 
-                                            subheader={card.subheader}
-                                        />
-                                        <CardMedia 
-                                            component="img"
-                                            height="230"
-                                            image="/images/amazon-logo.png"
-                                            className="mb-8"
-                                            alt={card.title}
-                                        />
-                                        <CardActions className="absolute bottom-0">
-                                            <Button>{card.action || "see more"}</Button>
-                                        </CardActions>
-                                    </Card>
+                                    <MainProductCard product={product}/>
                                 </Grid>
                             ))}        
                         </Grid>
                         <Grid item>
                         </Grid>
-
                     </Grid>
                 </Grid>
-                
-
             </Box>
-        </React.Fragment>
+        </Fragment>
     )
 };
 
-export default ProductFeed;
+export default MainProductInfo;

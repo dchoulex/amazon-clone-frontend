@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Toolbar from "@mui/material/Toolbar";
 
 import Logo from "./logo";
@@ -11,20 +11,20 @@ import CheckOrderButton from "./check-order-button";
 
 function MainNavbar() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Toolbar 
                 className="h-16 lg:justify-evenly" 
                 disableGutters
             >
                 <Logo />
                 <AddressSelectionButton />
-                <SearchBar />
+                {/* <SearchBar /> */}
                 <CountrySelectionButton />
                 <AccountButton />
                 <CheckOrderButton />
                 <CartButton />
             </Toolbar>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

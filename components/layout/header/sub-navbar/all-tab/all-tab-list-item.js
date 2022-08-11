@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -9,7 +9,7 @@ function AllTabListItem(props) {
     const { item, onClick } = props;
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Link href="/thisWorks">
                 <ListItemButton 
                     key={item.title}
@@ -23,7 +23,7 @@ function AllTabListItem(props) {
                     <AllTabListItemText primary={item.title} />
                 </ListItemButton>
             </Link>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

@@ -1,13 +1,13 @@
-import * as React from "react";
+import { Fragment } from "react";
 import BackToTop from "./back-to-top";
 import MainAccessibilityNav from "./main-accessilbility-nav";
 
 function MainBottomNav() {
     return (
-        <React.Fragment>
+        <Fragment>
             <BackToTop />
             <MainAccessibilityNav />
-        </React.Fragment>
+        </Fragment>
     )
 };
 

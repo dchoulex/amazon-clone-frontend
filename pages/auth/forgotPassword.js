@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, Fragment } from "react";
 import Link from 'next/link';
 import validator from "validator";
 import Box from '@mui/material/Box';
@@ -10,9 +10,9 @@ import Button from '@mui/material/Button';
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 
 function ForgotPasswordPage() {
-    const [email, setEmail] = React.useState("");
-    const [isValidEmail, setIsValidEmail] = React.useState(true);
-    const [buttonIsDisabled, setButtonIsDisabled] = React.useState(true);
+    const [email, setEmail] = useState("");
+    const [isValidEmail, setIsValidEmail] = useState(true);
+    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
     const handleSetEmail = event => {
         setEmail(event.target.value)

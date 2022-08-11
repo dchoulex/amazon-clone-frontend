@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, Fragment } from "react";
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -9,9 +9,9 @@ import Button from '@mui/material/Button';
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 
 function VerifyUserPage() {
-    const [isValidOTP, setIsValidOTP] = React.useState(true);
-    const [OTP, setOTP] = React.useState("");
-    const [isDisabled, setIsDisabled] = React.useState(true);
+    const [isValidOTP, setIsValidOTP] = useState(true);
+    const [OTP, setOTP] = useState("");
+    const [isDisabled, setIsDisabled] = useState(true);
 
     const handleCheckIsValidOTP = event => {
         const OTP = event.target.value;

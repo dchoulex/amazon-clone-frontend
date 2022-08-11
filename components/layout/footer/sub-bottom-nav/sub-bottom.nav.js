@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -11,7 +11,7 @@ import ContactInfo from "./contact-info";
 function SubBottomNav() {
     //Hidden xsUp hides component when screen size is equal or greater than xs. xsDown means the component will hide at xs breakpoint or below. 
     return (
-        <React.Fragment>
+        <Fragment>
             <Box className="bg-amazon_blue-dark justify-evenly w-screen">
                 <SubAccessibilityNav />
                 <Grid 
@@ -33,7 +33,7 @@ function SubBottomNav() {
                         xs={12}
                     >
                         {subLinkMenu.map(item => (
-                            <React.Fragment key={item.title}>
+                            <Fragment key={item.title}>
                                 <p className="hover:cursor-not-allowed hover:underline mx-4 my-1 p-1">
                                     {item.title}
                                 </p>    
@@ -47,7 +47,7 @@ function SubBottomNav() {
                                         className="border-white"
                                     />}
                                 </Hidden>
-                            </React.Fragment>
+                            </Fragment>
                         ))}
                     </Grid>
                     <Grid      
@@ -65,7 +65,7 @@ function SubBottomNav() {
                     </Grid>
                 </Grid>
             </Box>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

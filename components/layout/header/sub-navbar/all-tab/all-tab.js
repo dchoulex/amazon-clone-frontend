@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, Fragment } from "react";
 import Link from "next/link";
 
 import { drawerListItems } from "./data/all-tab-data";
@@ -20,7 +20,7 @@ import AllTabListItem from "./all-tab-list-item";
 import AllTabCollapseListItem from "./all-tab-collapse-list-item";
 
 function AllTab() {
-    const [openDrawer, setOpenDrawer] = React.useState(false);
+    const [openDrawer, setOpenDrawer] = useState(false);
     const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     const handleOpenDrawer = () => setOpenDrawer(true);
@@ -28,7 +28,7 @@ function AllTab() {
     const handleCloseDrawer = () => setOpenDrawer(false);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Tab 
                 className="text-gray-200 normal-case px-8px min-w-0 min-h-0 text-base font-light opacity-100"
                 label={"All"}
@@ -73,7 +73,7 @@ function AllTab() {
                         </Link>
 
                         {drawerListItems.map(listItem => (
-                            <React.Fragment key={listItem.title}>
+                            <Fragment key={listItem.title}>
                                 <ListSubheader 
                                     sx={{
                                         fontSize: 22,
@@ -99,13 +99,13 @@ function AllTab() {
                                     />
                                 ))}
                                 <Divider />
-                            </React.Fragment>
+                            </Fragment>
                         ))}
                   
                     </List>
                 </Box>
             </SwipeableDrawer>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

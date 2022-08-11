@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,7 +6,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function CartButton() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Button className="h-56px flex-none">
                 <Box className="h-56px">
                     <ShoppingCartOutlinedIcon fontSize="large" className="text-white relative top-4"/>
@@ -18,7 +18,7 @@ function CartButton() {
                     Cart
                 </Typography>
             </Button>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
@@ -81,7 +81,7 @@ const subNavbarTabs = [
 ];
 
 function subNavbar() {
-    const [index, setIndex] = React.useState(0);
+    const [index, setIndex] = useState(0);
 
     const handleChange = (event, index) => {
         event.preventDefault();

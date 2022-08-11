@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, Fragment } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
@@ -8,8 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 function AccountButton() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [open, setOpen] = useState(false);
 
     const handleOpen = event => {
         setAnchorEl(event.currentTarget);
@@ -22,7 +22,7 @@ function AccountButton() {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Button 
                 className="normal-case text-white mx-4px w-max h-56px flex-none"
                 aria-owns={anchorEl ? "country-selection-menu" : undefined}
@@ -82,7 +82,7 @@ function AccountButton() {
                     </Typography>
                 </MenuItem>
             </Menu>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

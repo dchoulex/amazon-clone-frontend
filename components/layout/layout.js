@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import Header from "./header/header";
 import Footer from "./footer/footer";
@@ -10,17 +10,17 @@ function Layout(props) {
     const router = useRouter();
 
     return (
-        <React.Fragment>
+        <Fragment>
             <ThemeProvider theme={theme}>
                 {router.pathname.includes("/auth") ? 
                 <main>{props.children}</main> :
-                <React.Fragment>
+                <Fragment>
                     <Header />
                     <main>{props.children}</main>
                     <Footer />
-                </React.Fragment>}
+                </Fragment>}
             </ThemeProvider>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

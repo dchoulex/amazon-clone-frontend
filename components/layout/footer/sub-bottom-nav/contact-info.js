@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -8,7 +8,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 
 function ContactInfo() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Grid 
                 container 
                 direction="column"
@@ -69,7 +69,7 @@ function ContactInfo() {
                     </Link>
                 </Grid> 
             </Grid>
-        </React.Fragment>
+        </Fragment>
     )
 }
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, Fragment } from "react";
 import Link from 'next/link';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -13,13 +13,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 
 function ResetPasswordPage() {
-    const [newPassword, setNewPassword] = React.useState("");
-    const [isValidPassword, setIsValidPassword] = React.useState(true);
-    const [confirmPassword, setConfirmPassword] = React.useState("");
-    const [areSamePassword, setAreSamePassword] = React.useState(true);
-    const [isDisabled, setIsDisabled] = React.useState(true);
-    const [showNewPassword, setShowNewPassword] = React.useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+    const [newPassword, setNewPassword] = useState("");
+    const [isValidPassword, setIsValidPassword] = useState(true);
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [areSamePassword, setAreSamePassword] = useState(true);
+    const [isDisabled, setIsDisabled] = useState(true);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleCheckIsValidPassword = event => {
         const password = event.target.value;

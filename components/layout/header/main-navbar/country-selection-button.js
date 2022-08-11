@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState, Fragment } from "react";
 import Link from "next/link";
 import Button from '@mui/material/Button';
 import Menu from "@mui/material/Menu";
@@ -9,8 +9,8 @@ import JapanIcon from "../../../../public/images/jp-flag-icon.svg";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 function CountrySelectionButton() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [open, setOpen] = React.useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [open, setOpen] = useState(false);
 
     const handleOpen = event => {
         setAnchorEl(event.currentTarget);
@@ -23,7 +23,7 @@ function CountrySelectionButton() {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Button 
                 className="p-0 flex-none ml-16px h-56px"
                 aria-owns={anchorEl ? "country-selection-menu" : undefined}
@@ -88,7 +88,7 @@ function CountrySelectionButton() {
                     </Link>
                 </MenuItem> */}
             </Menu>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

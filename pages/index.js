@@ -1,22 +1,24 @@
+import { Fragment } from "react";
 import Head from 'next/head'
 import Image from 'next/image';
-import * as React from "react";
 import styles from '../styles/Home.module.css';
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 
-import Banner from "../components/ui/banner";
-import ProductFeed from "../components/product-feed/product-feed";
+import Banner from "../components/main-product/banner";
+import MainProductInfo from "../components/main-product/main-product-info";
 
 function HomePage() {
   return (
-    <React.Fragment>
+    <Fragment>
       <Box className="w-screen bg-gradient-to-b from-sky-100 to-gray-100">
         <Banner />
+
         <div className="relative h-[200px] z-[-10]"></div>
-        <ProductFeed />
+
+        <MainProductInfo />
       </Box>
-    </React.Fragment>
+    </Fragment>
   )
 };
 

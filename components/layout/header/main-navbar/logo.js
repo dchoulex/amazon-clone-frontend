@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Box from "@mui/material/Box";
@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 
 function Logo() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Button className="ml-1 flex-none p-0">
                 <Link href="/">
                     <div className="ml-16px">
@@ -30,7 +30,7 @@ function Logo() {
                     </Typography>
                 </Box>
             </Button>
-        </React.Fragment>
+        </Fragment>
     )
 };
 

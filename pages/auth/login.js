@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, Fragment } from "react";
 import Link from 'next/link';
 import validator from "validator";
 import Box from '@mui/material/Box';
@@ -37,11 +37,11 @@ function PaperComponent(props) {
 }
 
 function LoginPage() {
-    const [conditionsIsOpen, setConditionsIsOpen] = React.useState(false);
-    const [privacyIsOpen, setPrivacyIsOpen] = React.useState(false);
-    const [email, setEmail] = React.useState("");
-    const [isValidEmail, setIsValidEmail] = React.useState(true);
-    const [buttonIsDisabled, setButtonIsDisabled] = React.useState(true);
+    const [conditionsIsOpen, setConditionsIsOpen] = useState(false);
+    const [privacyIsOpen, setPrivacyIsOpen] = useState(false);
+    const [email, setEmail] = useState("");
+    const [isValidEmail, setIsValidEmail] = useState(true);
+    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
