@@ -11,20 +11,24 @@ import CheckOrderButton from "./check-order-button";
 
 function MainNavbar() {
     return (
-        <Fragment>
-            <Toolbar 
-                className="h-16 lg:justify-evenly" 
-                disableGutters
-            >
-                <Logo />
-                <AddressSelectionButton />
-                {/* <SearchBar /> */}
-                <CountrySelectionButton />
-                <AccountButton />
-                <CheckOrderButton />
-                <CartButton />
-            </Toolbar>
-        </Fragment>
+        <Toolbar 
+            className="h-16 lg:justify-evenly" 
+            disableGutters
+        >
+            <Logo />
+
+            <AddressSelectionButton />
+
+            {/* <SearchBar /> */}
+
+            <CountrySelectionButton />
+
+            <AccountButton />
+
+            <CheckOrderButton />
+
+            <CartButton />
+        </Toolbar>
     )
 };
 

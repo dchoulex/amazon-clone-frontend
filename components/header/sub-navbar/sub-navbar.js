@@ -1,10 +1,9 @@
-import { useState } from "react";
 import Link from "next/link";
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
-import AllTab from "./all-tab/all-tab";
+import AllTab from "./all-tab";
 
 const subNavbarTabs = [
     {
@@ -81,26 +80,16 @@ const subNavbarTabs = [
 ];
 
 function subNavbar() {
-    const [index, setIndex] = useState(0);
-
-    const handleChange = (event, index) => {
-        event.preventDefault();
-
-        setIndex(index);
-    };
-
     return (
         <Toolbar 
-        variant="dense" 
-        className="h-8 bg-amazon_blue-light w-screen justify-evenly"
-        disableGutters
+            variant="dense" 
+            className="h-8 bg-amazon_blue-light w-screen justify-evenly"
+            disableGutters
         >
             <Tabs 
-                value={index}
                 indicatorColor="none"  
                 variant="scrollable"          
                 className="justify-evenly"
-                onChange={handleChange}
             >
                 <AllTab />
                 {subNavbarTabs.map(tab => {

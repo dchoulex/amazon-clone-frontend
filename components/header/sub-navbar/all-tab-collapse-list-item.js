@@ -26,8 +26,10 @@ function AllTabCollapseListItem(props) {
                 sx={{ pl: "2rem" }}
             >
                 <AllTabListItemText primary="See More" />
+                
                 <ExpandMore />
             </ListItemButton>}
+
             <Collapse in={seeAllIsOpen}>
                 <List component="div" disablePadding>
                 {collapseListItems.map(item => (
@@ -35,11 +37,12 @@ function AllTabCollapseListItem(props) {
                 ))}
                 </List>
             </Collapse>
+
             {!seeAllIsOpen ||
-                <ListItemButton 
-                    onClick={handleCloseSeeAll} 
-                    sx={{ pl: "2rem" }}
-                >
+            <ListItemButton 
+                onClick={handleCloseSeeAll} 
+                sx={{ pl: "2rem" }}
+            >
                 <AllTabListItemText primary="See Less" />
                 <ExpandLess />
             </ListItemButton>}

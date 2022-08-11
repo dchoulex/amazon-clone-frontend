@@ -1,6 +1,6 @@
 import Public from '@mui/icons-material/Public';
 import SvgIcon from '@mui/material/SvgIcon';
-import JapanIcon from "../../../../../../public/images/jp-flag-icon.svg";
+import JapanIcon from "../../../../public/images/jp-flag-icon.svg";
 
 export const collapseListItems = [
     {

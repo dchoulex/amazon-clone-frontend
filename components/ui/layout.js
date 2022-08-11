@@ -1,8 +1,8 @@
 import { Fragment } from "react";
 import { useRouter } from "next/router";
-import Header from "./header/header";
-import Footer from "./footer/footer";
-import theme from "../ui/theme";
+import Header from "../header/header";
+import Footer from "../footer/footer";
+import theme from "./theme";
 
 import { ThemeProvider } from "@mui/styles";
 
