@@ -3,7 +3,7 @@ import Image from "next/image";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import Divider from '@mui/material/Divider';
+// import Divider from '@mui/material/Divider';
 
 function ProductDetailImages(props) {
     const { productImages } = props;
@@ -25,13 +25,13 @@ function ProductDetailImages(props) {
                                 layout="fill"
                             />
                         </ListItemButton>
-                        {index === productImages.length - 1 ? 
+                        {/* {index === productImages.length - 1 ? 
                             null :
                             <Divider 
                                 className="border-blue-400 border-dashed"
                                 variant="fullWidth"
                             />
-                        }
+                        } */}
                     </Fragment>
                 ))}
             </List>
