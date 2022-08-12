@@ -18,7 +18,7 @@ const product = {
     
     Sed laoreet turpis ut bibendum bibendum. Nunc mauris turpis, consequat ac ultricies non, suscipit sit amet diam. Suspendisse potenti. Vivamus euismod suscipit felis dapibus sodales. In hac habitasse platea dictumst. Suspendisse tempus sapien nec eleifend varius. Sed elementum erat eget tortor gravida vestibulum. Nullam est lacus, commodo ut justo a, viverra luctus orci. Etiam eros quam, aliquet non orci id, tempus efficitur eros. Fusce tincidunt ultrices ipsum id auctor. Nunc nec pretium augue, ut hendrerit leo. Morbi ultrices tempor est, a pulvinar elit interdum vel.`,
     price: 59999,
-    stock: 2
+    stock: 10
 }
 //use context for active image
 function ProductDetailPage() { 
@@ -27,7 +27,7 @@ function ProductDetailPage() {
 
     return (
         <Fragment>
-            <Box container className="flex w-screen">
+            <Box className="flex w-screen">
                 <ProductDetailImages productImages={product.images}/>
 
                 <ProductDetailInfo 

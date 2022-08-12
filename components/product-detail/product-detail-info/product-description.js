@@ -18,11 +18,13 @@ function ProductDescription(props) {
     };
 
     return (
-        <Box className="pb-10">
+        <Box className="pb-10 lg:pl-5">
             <Typography variant="h4" mb={2}>
                 {title}
             </Typography>
+
             <Divider className="border-gray-300"/>
+
             <Box>
                 <Collapse in={isCollapse} collapsedSize={400}>
                     <Typography 
@@ -33,6 +35,7 @@ function ProductDescription(props) {
                     </Typography>
                 </Collapse>
             </Box>
+            
             <Stack className="flex">
                 {!isCollapse && 
                     <Button 

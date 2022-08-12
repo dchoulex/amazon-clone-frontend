@@ -9,6 +9,8 @@ import Divider from "@mui/material/Divider";
 
 import numberWithCommas from "../../../utils/numberWithCommas";
 
+import StockLabel from '../../ui/stock-label';
+
 function BuyProductBox(props) {
     const { stock, price } = props;
 
@@ -20,25 +22,9 @@ function BuyProductBox(props) {
                 ¥ {numberWithCommas(price)}
             </Typography>
 
-            <Divider className="border-gray-300"/>
+            <Divider className="border-gray-300 mb-2"/>
 
-            {stock > 10 ?
-                null :
-                <Box className="py-2">
-                    <Typography 
-                        className="text-blue-700" 
-                        variant="h6"
-                    >
-                        Order soon. 
-                    </Typography>
-                    <Typography 
-                        className="text-orange-700"
-                        variant="body1"
-                    >
-                        Only 2 left in stock. 
-                    </Typography>
-                </Box>
-            }
+            <StockLabel stock={stock} />
 
             <TextField 
                 type="number"

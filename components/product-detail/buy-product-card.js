@@ -10,6 +10,8 @@ import Stack from "@mui/material/Stack";
 
 import numberWithCommas from "../../utils/numberWithCommas";
 
+import StockLabel from '../ui/stock-label';
+
 function BuyProductCard(props) {
     const { stock, price } = props;
 
@@ -21,23 +23,7 @@ function BuyProductCard(props) {
                         ¥ {numberWithCommas(price)}
                     </Typography>
 
-                    {stock > 10 ?
-                        null :
-                        <Box className="py-2">
-                            <Typography 
-                                className="text-blue-700" 
-                                variant="h6"
-                            >
-                                Order soon. 
-                            </Typography>
-                            <Typography 
-                                className="text-orange-700"
-                                variant="body1"
-                            >
-                                Only 2 left in stock. 
-                            </Typography>
-                        </Box>
-                    }
+                    <StockLabel stock={stock}/>
 
                     <Box className="flex items-center mt-2">
                         <Typography className="text-lg mr-5">

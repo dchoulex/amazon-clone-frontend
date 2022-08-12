@@ -7,7 +7,7 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
 import ProductInfo from "../../components/product/product-info";
-import PaginationButtons from "../../components/product/pagination-buttons";
+import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 
 const products = [
@@ -88,7 +88,7 @@ function ProductPage() {
 
             <ProductInfo products={products}/>
 
-            <PaginationButtons />
+            <PaginationButtons numberOfPages={3}/>
         </Fragment>
     )
 };

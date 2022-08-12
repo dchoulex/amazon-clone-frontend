@@ -9,7 +9,7 @@ function ProductDetailInfo(props) {
     const { activeImage, description, title, isMediumScreenDown, stock, price } = props;
 
     return (
-        <Box className="pt-5 px-10">
+        <Box className="pt-5 px-5">
             <Grid container className="flex flex-col">
                 <Grid 
                     item
@@ -34,6 +34,7 @@ function ProductDetailInfo(props) {
                         />
                     </Grid>
                 </Grid>
+                
                 {!isMediumScreenDown ?
                     null:
                     <Grid item>
