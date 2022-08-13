@@ -7,7 +7,7 @@ import CartItemsButtonStack from "./cart-items-button-stack";
 import SavedItemsButtonStack from "./saved-items-button-stack";
 import BuyAgainItemsButtonStack from "./buy-again-items-button-stack"
 
-function PanelListItemDescription(props) {
+function CartPanelDescription(props) {
     const { productName, stock, price, point, currentTab } = props;
 
     let buttonStack;
@@ -21,7 +21,7 @@ function PanelListItemDescription(props) {
     }
 
     return (
-        <Box className="flex flex-col">
+        <Box className="flex flex-col mx-auto">
             <Typography 
                 variant="h5" 
                 className="font-light"
@@ -47,4 +47,4 @@ function PanelListItemDescription(props) {
     )
 };
 
-export default PanelListItemDescription;
+export default CartPanelDescription;

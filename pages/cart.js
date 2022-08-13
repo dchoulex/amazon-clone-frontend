@@ -1,11 +1,7 @@
-import { Fragment } from "react";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 
 import PleaseLoginCard from "../components/ui/please-login-card";
 import CartInfo from "../components/cart/cart-info";
-import PageTitle
- from "../components/ui/page-title";
 
 const cartItems = [
     {
@@ -25,12 +21,13 @@ const cartItems = [
 function CartPage() {
     const isLogin = true;
     const numberOfResults = 0;
+    const pageTitle = "Shopping Cart";
 
     return (
         <Box p={3} className="bg-gray-200 w-screen">
             {isLogin ? 
-                <CartInfo cartItems={cartItems} numberOfResults={numberOfResults} /> :
-                <PleaseLoginCard page={"cart"} title="Shopping Cart" />
+                <CartInfo cartItems={cartItems} numberOfResults={numberOfResults} title={pageTitle} /> :
+                <PleaseLoginCard page={"cart"} title={pageTitle} />
             }
         </Box>
     )

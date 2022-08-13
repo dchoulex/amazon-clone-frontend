@@ -16,7 +16,7 @@ function PageTitle(props) {
                 variant="overline" 
                 className="text-base font-light"
             >
-                {numberOfResults} items available
+                {numberOfResults} items
             </Typography>
 
             {title === "Shopping Cart" &&
@@ -28,13 +28,6 @@ function PageTitle(props) {
                     >
                         Deselect all items
                     </Button> 
-
-                    <Button 
-                        variant="outlined"
-                        className="normal-case my-3 ml-auto lg:hidden"
-                    >
-                        Proceed to checkout
-                    </Button>
                 </Stack>
             }
         </Box>

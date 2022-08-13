@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-import TabPanelList from "./tab-panel-list/tab-panel-list";
+import CartPanelList from "./cart-panel-list/cart-panel-list";
 import PageTitle from "../ui/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 
@@ -46,7 +46,7 @@ const buyAgainItems = [
 ]
 
 function CartInfo(props) {
-    const { cartItems, numberOfResults } = props;
+    const { cartItems, numberOfResults, title } = props;
     const [currentTab, setCurrentTab] = useState("cart");
     const numberOfPages = 4;
     const totalSelectedItems = 5;
@@ -60,7 +60,7 @@ function CartInfo(props) {
     return (
         <Box className={currentTab === "cart" ? "lg:flex" : ""}>
             <Paper className="bg-white">
-                <PageTitle title="Shopping Cart" numberOfResults={numberOfResults} />
+                <PageTitle title={title} numberOfResults={numberOfResults} />
 
                 <TabContext value={currentTab}>
                     <Box 
@@ -86,21 +86,21 @@ function CartInfo(props) {
                         value="cart" 
                         className="py-2"
                     >
-                        <TabPanelList items={cartItems} currentTab={currentTab} />
+                        <CartPanelList items={cartItems} currentTab={currentTab} />
                     </TabPanel>
 
                     <TabPanel 
                         value="save"
                         className="py-2"
                     >
-                        <TabPanelList items={savedItems} currentTab={currentTab} />
+                        <CartPanelList items={savedItems} currentTab={currentTab} />
                     </TabPanel>
 
                     <TabPanel 
                         value="buy"  
                         className="py-2"
                     >
-                        <TabPanelList items={buyAgainItems} currentTab={currentTab} />
+                        <CartPanelList items={buyAgainItems} currentTab={currentTab} />
                     </TabPanel>
                 </TabContext>
 
@@ -129,14 +129,16 @@ function CartInfo(props) {
                     </Box>
                 }
 
-                <div className="flex justify-center lg:hidden">
-                    <Button 
-                        variant="outlined"
-                        className="normal-case my-3"
-                    >
-                        Proceed to checkout
-                    </Button>
-                </div>
+                {currentTab === "cart" && 
+                    <div className="flex justify-center lg:hidden">
+                        <Button 
+                            variant="outlined"
+                            className="normal-case my-3"
+                        >
+                            Proceed to checkout
+                        </Button>
+                    </div>
+                }
     
                 <PaginationButtons numberOfPages={numberOfPages} />
             </Paper>

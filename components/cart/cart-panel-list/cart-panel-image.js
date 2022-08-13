@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Box from "@mui/material/Box";
 
-function PanelListItemImage(props) {
+function CartPanelImage(props) {
     const { imagePath } = props;
 
     return (
@@ -18,4 +18,4 @@ function PanelListItemImage(props) {
     )
 };
 
-export default PanelListItemImage;
+export default CartPanelImage;
