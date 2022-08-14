@@ -16,7 +16,9 @@ function Layout(props) {
                 <main>{props.children}</main> :
                 <Fragment>
                     <Header />
+
                     <main>{props.children}</main>
+
                     <Footer />
                 </Fragment>}
             </ThemeProvider>

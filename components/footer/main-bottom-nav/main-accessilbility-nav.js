@@ -1,14 +1,15 @@
 import { Fragment } from "react";
-import { mainAccessibilityData } from "./data/main-accessibility-data";
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
+import { mainAccessibilityData } from "./data/main-accessibility-data";
 function MainAccessibilityNav() {
     return (
         <Fragment>
+            <Box className="p-5">
                 <Grid 
                     direction="row"
                     container 
-                    className="justify-evenly w-screen"
                 >
                     {mainAccessibilityData.map(rowItem =>(
                     <Grid
@@ -18,23 +19,24 @@ function MainAccessibilityNav() {
                         md={6}
                         sm={12}
                         xs={12}
+                        className="p-5"
                     >
                         <Grid 
+                            container
                             direction="column"
-                            container  
-                            className="p-5"
                         >
                             <Grid 
                                 item 
-                                className="text-white font-medium text-lg m-1"
+                                className="text-white font-medium text-lg py-2"
                             >
                                 {rowItem.title}
                             </Grid>
+
                             {rowItem.items.map(columnItem => (
                                 <Grid 
                                     key={columnItem.title}
                                     item 
-                                    className="text-gray-300 font-light m-1 text-base hover:cursor-not-allowed"
+                                    className="text-gray-300 font-light text-base hover:cursor-not-allowed py-1"
                                 >
                                     {columnItem.title}
                                 </Grid>
@@ -42,6 +44,7 @@ function MainAccessibilityNav() {
                         </Grid>
                     </Grid>))}
                 </Grid>
+            </Box>
         </Fragment>
     )
 };

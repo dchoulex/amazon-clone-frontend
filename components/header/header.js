@@ -8,10 +8,11 @@ function Header() {
     return(
         <React.Fragment>
             <AppBar 
-                className="bg-amazon_blue-dark w-screen"
+                className="bg-amazon_blue-dark w-fill"
                 position="static"
             >
                 <MainNavbar />
+                
                 <SubNavbar />
             </AppBar>
         </React.Fragment>

@@ -83,7 +83,7 @@ function subNavbar() {
     return (
         <Toolbar 
             variant="dense" 
-            className="h-8 bg-amazon_blue-light w-screen justify-evenly"
+            className="h-8 bg-amazon_blue-light justify-evenly"
             disableGutters
         >
             <Tabs 
@@ -99,7 +99,8 @@ function subNavbar() {
                             key={tab.title}
                         >
                             <Tab 
-                                className="text-gray-200 normal-case px-8px min-h-0 text-base font-light opacity-100 mx-1"
+                                sx={{opacity: 100}}
+                                className="text-gray-300 normal-case min-h-0 text-base font-light"
                                 label={tab.title}
                                 icon={tab.icon}
                                 iconPosition="start"

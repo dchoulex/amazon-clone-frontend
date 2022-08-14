@@ -12,7 +12,7 @@ function SubBottomNav() {
     //Hidden xsUp hides component when screen size is equal or greater than xs. xsDown means the component will hide at xs breakpoint or below. 
     return (
         <Fragment>
-            <Box className="bg-amazon_blue-dark justify-evenly w-screen">
+            <Box className="bg-amazon_blue-dark justify-evenly">
                 <SubAccessibilityNav />
                 <Grid 
                     container
@@ -50,6 +50,7 @@ function SubBottomNav() {
                             </Fragment>
                         ))}
                     </Grid>
+
                     <Grid      
                         sx={{                     
                             color: "white",

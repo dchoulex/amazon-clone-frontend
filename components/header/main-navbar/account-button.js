@@ -24,7 +24,7 @@ function AccountButton() {
     return (
         <Fragment>
             <Button 
-                className="normal-case text-white mx-4px w-max h-56px flex-none"
+                className="normal-case text-white mx-1 h-56px flex-none"
                 aria-owns={anchorEl ? "country-selection-menu" : undefined}
                 aria-haspopup={anchorEl ? true : undefined}
                 onMouseOver={handleOpen}
@@ -33,12 +33,15 @@ function AccountButton() {
                     <Typography className="text-zinc-400 text-sm">
                         Hello, Sign in
                     </Typography>
+
                     <Typography className="text-base">
                     Account & Lists
                     </Typography>
                 </Box>
+
                 <ArrowDropDownIcon className="text-gray-400" />
             </Button>
+
             <Menu   
                 id="country-selection-menu"
                 anchorEl={anchorEl}

@@ -6,7 +6,6 @@ import { drawerListItems } from "./data/all-tab-data";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -30,12 +29,13 @@ function AllTab() {
     return (
         <Fragment>
             <Tab 
-                className="text-gray-200 normal-case px-8px min-w-0 min-h-0 text-base font-light opacity-100"
+                className="text-gray-200 normal-case min-w-0 min-h-0 text-base font-light opacity-100"
                 label={"All"}
                 icon={<MenuIcon />}
                 iconPosition="start"
                 onClick={handleOpenDrawer}
             />
+
             <SwipeableDrawer 
                 disableBackdropTransition={!iOS} 
                 disableDiscovery={iOS} 
@@ -65,6 +65,7 @@ function AllTab() {
                                     <ListItemAvatar>
                                         <Avatar />
                                     </ListItemAvatar>
+
                                     <ListItemText 
                                         primaryTypographyProps={{color: "white"}}
                                         primary="Hello, Sign in" 
@@ -85,6 +86,7 @@ function AllTab() {
                                 >
                                     {listItem.title}
                                 </ListSubheader>
+
                                 {listItem.items.map(item => (
                                     item.isCollapseListItem ? 
                                     <AllTabCollapseListItem 
@@ -98,10 +100,10 @@ function AllTab() {
                                         onClick={handleCloseDrawer}
                                     />
                                 ))}
+
                                 <Divider />
                             </Fragment>
                         ))}
-                  
                     </List>
                 </Box>
             </SwipeableDrawer>

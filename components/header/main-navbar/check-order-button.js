@@ -5,12 +5,14 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 function CheckOrderButton() {
     return (
-        <Button className="normal-case text-white mx-4px w-max h-56px flex-none ">
+        <Button className="normal-case text-white mx-1 h-56px flex-none ">
             <LocationOnOutlinedIcon />
-            <Box className="text-left w-max flex-col">
+
+            <Box className="text-left pl-2 flex-col">
                 <Typography className="text-zinc-400 text-sm">
                     Returns &
                 </Typography>
+
                 <Typography className="text-base">
                     Orders
                 </Typography>

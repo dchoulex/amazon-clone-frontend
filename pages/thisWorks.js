@@ -1,5 +1,5 @@
 export default function TestPage() {
     return (
-        <p>Test</p>
+        <p>This works</p>
     )
 }

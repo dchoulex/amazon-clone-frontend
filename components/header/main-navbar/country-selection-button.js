@@ -25,7 +25,7 @@ function CountrySelectionButton() {
     return (
         <Fragment>
             <Button 
-                className="p-0 flex-none ml-16px h-56px"
+                className="p-0 flex-none mx-1 h-56px"
                 aria-owns={anchorEl ? "country-selection-menu" : undefined}
                 aria-haspopup={anchorEl ? true : undefined}
                 onMouseOver={handleOpen}

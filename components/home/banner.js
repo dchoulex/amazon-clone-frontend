@@ -10,7 +10,7 @@ const bannerImages = ["bannerOne.jpg", "bannerTwo.jpg", "bannerThree.jpg"];
 function Banner() {
     return (
         <Fragment>
-            <Box className="absolute w-screen h-[300px]">                  
+            <Box className="w-full absolute h-[300px]">                  
                 <Carousel
                     interval={5000}
                     animation="slide"
@@ -26,20 +26,22 @@ function Banner() {
                     NextIcon={<ArrowForwardIosIcon />}
                 >
                     {bannerImages.map(image => (
-                        <Box 
-                            key={`img-${image}`}
-                            sx={{ height: "600px"}}
-                        >
-                            <img
-                                src="/images/banners/bannerOne.jpg"
-                                alt="Banner1"
-                                className="h-[300px] w-screen"        
-                            />
+                        <div key={`img-${image}`} >
                             <Box 
-                                sx={{ height: "200px" }} className="relative top-[-200px] bg-gradient-to-b from-transparent to-sky-100"
+                                sx={{ height: "300px"}}
+                                className="overflow-hidden"
+                            >
+                                <Image
+                                    src="/images/banners/bannerOne.jpg"
+                                    alt="Banner1"
+                                    layout="fill"      
+                                />
+                            </Box>
+                            <Box 
+                                sx={{ height: "100px" }} className="relative bg-gradient-to-b from-transparent to-sky-100"
                             >
                             </Box>
-                        </Box>
+                        </div>
                     ))}
                 </Carousel>  
             </Box>

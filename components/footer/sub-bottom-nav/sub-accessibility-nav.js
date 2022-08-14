@@ -10,7 +10,7 @@ function SubAccessibilityNav() {
         <Grid 
             container
             spacing={1}
-            className="p-2 w-screen"
+            className="p-2"
         >
             {subAccessibilityData.map(item => (
                 <Grid
@@ -25,6 +25,7 @@ function SubAccessibilityNav() {
                         <Typography className="text-sm text-gray-200 ">
                             {item.title}
                         </Typography>
+
                         <Typography className="text-xs text-zinc-400">
                             {item.description}
                         </Typography>
