@@ -5,12 +5,14 @@ import OrderHistoryInfo from "../../components/order-history/order-history-info"
 
 const orderItems = [
     {
+        status: "delivered",
         orderAt: "12 August 2022",
         total: 1578,
         shipTo: "Address very long address",
         orderId: "250-0899463-0763017"
     },
     {
+        status: "notDelivered",
         orderAt: "12 August 2022",
         total: 1578,
         shipTo: "Address very long address",

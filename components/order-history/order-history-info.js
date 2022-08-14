@@ -4,19 +4,15 @@ import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import Divider from '@mui/material/Divider';
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
 import OrderPanelList from "./order-panel-list/order-panel-list";
 import PageTitle from "../ui/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 
-
-
 const orderedItems = [
     {
+        status: "delivered",
         orderAt: "12 August 2022",
         id: 1,
         total: 1578,
@@ -24,6 +20,7 @@ const orderedItems = [
         orderId: "250-0899463-0763017",
     },
     {
+        status: "notDelivered",
         orderAt: "12 August 2022",
         id: 2,
         total: 1578,
