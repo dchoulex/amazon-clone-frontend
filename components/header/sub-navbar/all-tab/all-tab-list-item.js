@@ -3,7 +3,7 @@ import Link from "next/link";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from '@mui/material/ListItemIcon';
 
-import AllTabListItemText from "./all-tab-list-item-text";
+import StyledListItemText from "../../styled-list-item-text";
 
 function AllTabListItem(props) {
     const { item, onClick } = props;
@@ -20,7 +20,8 @@ function AllTabListItem(props) {
                     {item.icon && 
                         <ListItemIcon sx={{minWidth: "40px"}}>{item.icon}</ListItemIcon>
                     }
-                    <AllTabListItemText primary={item.title} />
+                    
+                    <StyledListItemText primary={item.title} />
                 </ListItemButton>
             </Link>
         </Fragment>

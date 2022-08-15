@@ -37,7 +37,10 @@ module.exports = {
         "8px": "8px"
       },
       screens: {
-        "lg": "1170px",
+        "sm": "600x",
+        "md": "900px",
+        "lg": "1200px",
+        "xl": "1536px",
         "tablet": "640px",
         "laptop": "1024px",
         "desktop": "1280px",

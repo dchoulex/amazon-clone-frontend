@@ -31,6 +31,7 @@ function CountrySelectionButton() {
                 onMouseOver={handleOpen}
             >
                 <SvgIcon component={JapanIcon} inheritViewBox />
+
                 <ArrowDropDownIcon className="text-gray-400" />
             </Button>
             <Menu   
@@ -76,7 +77,7 @@ function CountrySelectionButton() {
                         component={JapanIcon} inheritViewBox 
                     />
                     <Typography>
-                        You are shopping on Amazon.co.jp
+                        You are shopping on Amazon Japan
                     </Typography>
                 </MenuItem>
                 {/* <MenuItem onClick={handleClose}>

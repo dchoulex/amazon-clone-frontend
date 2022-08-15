@@ -14,40 +14,37 @@ function SubBottomNav() {
         <Fragment>
             <Box className="bg-amazon_blue-dark justify-evenly">
                 <SubAccessibilityNav />
-                <Grid 
-                    container
-                    className="justify-center"
-                >
+
+                <Grid container direction="column">
                     <Grid 
                         sx={{                     
                             color: "white",
                             fontSize: "1rem",
                             fontWeight: 300,
                             textAlign: "center",
-                            display: "flex",
                             justifyContent: "center",
                             paddingY: "1rem"
                         }}
-                        className="flex-col sm:flex-row"
                         item
-                        xs={12}
+                        className="flex flex-col md:flex-row"
                     >
-                        {subLinkMenu.map(item => (
-                            <Fragment key={item.title}>
+                        {subLinkMenu.map((item, index) => (
+                            <Box key={item.title}>
                                 <p className="hover:cursor-not-allowed hover:underline mx-4 my-1 p-1">
                                     {item.title}
                                 </p>    
 
                                 <Hidden xsDown>
-                                    { item.title === "Tokushoho" ? null :
-                                    <Divider 
-                                        orientation="vertical"
-                                        flexItem
-                                        variant="middle"
-                                        className="border-white"
-                                    />}
+                                    {index === subLinkMenu.length - 1 || 
+                                        <Divider 
+                                            orientation="vertical"
+                                            flexItem
+                                            variant="middle"
+                                            className="border-white"
+                                        />
+                                    }
                                 </Hidden>
-                            </Fragment>
+                            </Box>
                         ))}
                     </Grid>
 

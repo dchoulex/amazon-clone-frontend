@@ -11,7 +11,7 @@ function SearchBar() {
                 <div className="flex flex-1">
                     <CategoryButton />
 
-                    <InputBase className="bg-white min-w-[250px] flex flex-1 px-3"/>
+                    <InputBase className="bg-white flex flex-1 px-3"/>
                 </div>
 
                 <Button className="bg-orange-300 rounded-l-none border-orange-300 border-2 border-solid" startIcon ={<SearchIcon sx={{color: "black"}} />} />

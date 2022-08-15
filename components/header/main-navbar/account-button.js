@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PersonIcon from '@mui/icons-material/Person';
 
 function AccountButton() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -24,12 +25,14 @@ function AccountButton() {
     return (
         <Fragment>
             <Button 
-                className="normal-case text-white mx-1 h-56px flex-none"
+                className="normal-case text-white h-56px flex-none"
                 aria-owns={anchorEl ? "country-selection-menu" : undefined}
                 aria-haspopup={anchorEl ? true : undefined}
                 onMouseOver={handleOpen}
             >
-                <Box className="text-left w-max flex-col">
+                <PersonIcon />
+
+                <Box className="text-left flex-col ml-2">
                     <Typography className="text-zinc-400 text-sm">
                         Hello, Sign in
                     </Typography>

@@ -3,12 +3,10 @@ import { collapseListItems } from "./data/all-tab-data";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import Collapse from "@mui/material/Collapse";
-
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import CollapseListitem from "./collapse-list-item";
-import AllTabListItemText from "./all-tab-list-item-text";
+import StyledListItemText from "../../styled-list-item-text";
 
 function AllTabCollapseListItem(props) {
     const { item } = props;
@@ -25,7 +23,7 @@ function AllTabCollapseListItem(props) {
                 onClick={handleOpenSeeAll}
                 sx={{ pl: "2rem" }}
             >
-                <AllTabListItemText primary="See More" />
+                <StyledListItemText primary="See More" />
                 
                 <ExpandMore />
             </ListItemButton>}
@@ -33,7 +31,9 @@ function AllTabCollapseListItem(props) {
             <Collapse in={seeAllIsOpen}>
                 <List component="div" disablePadding>
                 {collapseListItems.map(item => (
-                    <CollapseListitem key={item} item={item} />
+                    <ListItemButton key={item} sx={{ pl: "2rem" }} disabled>
+                        <StyledListItemText primary={item.title} />
+                    </ListItemButton>
                 ))}
                 </List>
             </Collapse>
@@ -43,7 +43,7 @@ function AllTabCollapseListItem(props) {
                 onClick={handleCloseSeeAll} 
                 sx={{ pl: "2rem" }}
             >
-                <AllTabListItemText primary="See Less" />
+                <StyledListItemText primary="See Less" />
                 <ExpandLess />
             </ListItemButton>}
         </Fragment>

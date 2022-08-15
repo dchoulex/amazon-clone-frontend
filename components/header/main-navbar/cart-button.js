@@ -7,7 +7,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 function CartButton() {
     return (
         <Fragment>
-            <Button className="h-56px flex-none pr-2">
+            <Button className="h-56px flex-none pr-2 ml-1">
                 <Box className="h-56px">
                     <ShoppingCartOutlinedIcon fontSize="large" className="text-white relative top-4"/>
 
