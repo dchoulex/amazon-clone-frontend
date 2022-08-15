@@ -84,7 +84,7 @@ function ResetPasswordPage() {
                 >
                     <Typography variant="h5">Create new password</Typography>
                     <Typography variant="subtitle2">
-                        We'll ask for this password whenever you Sign-In.
+                        We&apos;ll ask for this password whenever you Sign-In.
                     </Typography>
                     <TextField 
                         label="New password" 

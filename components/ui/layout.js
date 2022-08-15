@@ -12,15 +12,17 @@ function Layout(props) {
     return (
         <Fragment>
             <ThemeProvider theme={theme}>
-                {router.pathname.includes("/auth") ? 
-                <main>{props.children}</main> :
-                <Fragment>
-                    <Header />
+                {router.pathname.includes("/auth") || router.pathname.includes("/checkout") ? 
+                    <main>{props.children}</main> :
 
-                    <main>{props.children}</main>
+                    <Fragment>
+                        <Header />
 
-                    <Footer />
-                </Fragment>}
+                        <main>{props.children}</main>
+
+                        <Footer />
+                    </Fragment>
+                }
             </ThemeProvider>
         </Fragment>
     );

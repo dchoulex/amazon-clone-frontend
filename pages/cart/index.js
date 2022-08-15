@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 
-import PleaseLoginCard from "../components/ui/please-login-card";
-import CartInfo from "../components/cart/cart-info";
+import PleaseLoginCard from "../../components/ui/please-login-card";
+import CartInfo from "../../components/cart/cart-info";
 
 const cartItems = [
     {

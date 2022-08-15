@@ -45,7 +45,7 @@ function VerifyUserPage() {
                 >
                     <Typography variant="h5">Verification Required</Typography>
                     <Typography variant="subtitle2">
-                        To continue, complete this verification step. We've sent a One Time Password (OTP) to your email. Please enter it below.
+                        To continue, complete this verification step. We&apos;ve sent a One Time Password (OTP) to your email. Please enter it below.
                     </Typography>
                     <Typography 
                         variant="body1" 

@@ -111,7 +111,7 @@ function LoginPage() {
                         Continue
                     </Button>
                     <Typography variant="caption">
-                        By continuing, you agree to Amazon's <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
+                        By continuing, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
                     </Typography>
                     <Button 
                         variant="text" className="normal-case block mt-8"
