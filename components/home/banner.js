@@ -29,7 +29,6 @@ function Banner() {
                         <div key={`img-${image}`} >
                             <Box 
                                 sx={{ height: "300px"}}
-                                className="overflow-hidden"
                             >
                                 <Image
                                     src="/images/banners/bannerOne.jpg"
