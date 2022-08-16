@@ -13,8 +13,8 @@ import ContactInfo from "./contact-info";
 
 function SubBottomNav() {
     const theme = useTheme();
-    const isXsUp = useMediaQuery(theme.breakpoints.up("xs"));
-    //Hidden xsUp hides component when screen size is equal or greater than xs. xsDown means the component will hide at xs breakpoint or below. 
+    const isMediumUp = useMediaQuery(theme.breakpoints.up("md"));
+
     return (
         <Fragment>
             <Box className="bg-amazon_blue-dark">
@@ -62,7 +62,7 @@ function SubBottomNav() {
                             className="flex flex-col md:flex-row"
                         >
                             {subLinkMenu.map((item, index) => (
-                                <Box key={item.title} className="flex">
+                                <Box key={item.title} className="justify-center flex">
                                     <Tooltip title="Not available yet">
                                         <Box 
                                             className="hover:cursor-not-allowed hover:underline mx-4 my-1 p-1"
@@ -70,12 +70,15 @@ function SubBottomNav() {
                                             {item.title}
                                         </Box>    
                                     </Tooltip>
-                                    <Divider 
-                                        orientation="vertical" 
-                                        variant="middle"
-                                        flexItem
-                                        sx={{borderColor: "white" }}
-                                    />
+
+                                    {(isMediumUp && index !== subLinkMenu.length - 1) &&
+                                        <Divider 
+                                            orientation="vertical" 
+                                            variant="middle"
+                                            flexItem
+                                            sx={{borderColor: "white" }}
+                                        />
+                                    }
                                 </Box>
                             ))}
                         </Grid>
