@@ -19,11 +19,11 @@ const accountCards = [
         description: "View benefits and payment by using prime."
     },
     {
-        title: "Manage Addresses",
+        title: "Your Addresses",
         description: "Edit addresses for orders."
     },
     {
-        title: "Manage Payments",
+        title: "Your Payments",
         description: "Manage payment methods."
     },
     {
@@ -62,6 +62,7 @@ function AccountPage() {
                         item
                         xs={12}
                         sm={6}
+                        md={6}
                         lg={4}
                     >
                         <Card className="flex border-2 border-gray-200 border-solid p-4">

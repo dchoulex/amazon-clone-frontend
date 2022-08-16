@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 
-import PleaseLoginCard from "../../components/ui/please-login-card";
-import OrderHistoryInfo from "../../components/order-history/order-history-info";
+import PleaseLoginCard from "../../../components/ui/please-login-card";
+import OrderHistoryInfo from "../../../components/order-history/order-history-info";
 
 const orderItems = [
     {
