@@ -35,7 +35,7 @@ function OrderDetailsPage() {
     const pageTitle = "Order Details";
 
     return (
-        <Box p={3} className="bg-gray-200 w-screen">
+        <Box p={3} className="bg-gray-200">
             {isLogin ? 
                 <OrderDetailsInfo order={order} title={pageTitle} /> :
                 <PleaseLoginCard page={"order"} title={pageTitle} />

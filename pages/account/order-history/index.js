@@ -26,7 +26,7 @@ function OrderHistoryPage() {
     const pageTitle = "Your Orders"
 
     return (
-        <Box p={3} className="bg-gray-200 w-screen">
+        <Box p={3} className="bg-gray-200">
             {isLogin ? 
                 <OrderHistoryInfo orderItems={orderItems} numberOfResults={numberOfResults} title={pageTitle} /> :
                 <PleaseLoginCard page={"order"} title={pageTitle} />

@@ -102,7 +102,6 @@ function OrderDetailsSummary(props) {
                         </TableContainer>
                     </div>
                 </div>
-
             </Box>
         </Box>
     )
