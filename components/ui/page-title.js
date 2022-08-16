@@ -57,7 +57,7 @@ function PageTitle(props) {
                 {title}
             </Typography>
 
-            {numberOfResults &&
+            {numberOfResults !== undefined &&
                 <Typography 
                     variant="overline" 
                     className="text-base font-light"

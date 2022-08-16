@@ -15,7 +15,7 @@ const cartItems = [
         stock: 1,
         price: 5000000,
         point: 1000
-    },
+    }
 ]
 
 function CartPage() {

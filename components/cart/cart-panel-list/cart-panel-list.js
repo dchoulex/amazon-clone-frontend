@@ -1,14 +1,14 @@
 import { Fragment } from "react";
+import Image from "next/image";
 import Box from "@mui/material/Box";
 import Checkbox from '@mui/material/Checkbox';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 
-import CartPanelImage from "./cart-panel-image";
 import CartPanelDescription from "./cart-panel-description/cart-panel-description";
 
 function CartPanelList(props) {
-    const { items, currentTab } = props;
+    const { items, currentTab, imagePath } = props;
 
     return (
         <Box>
@@ -19,11 +19,20 @@ function CartPanelList(props) {
                             className="w-[50px] flex flex-col justify-center items-center"
                         >
                             <Checkbox defaultChecked /> 
-                        </Box>
+                        </Box> 
              
                         <Grid container className="px-5 md:flex md:flex-1">
                             <Grid item xs={12} md={4}>
-                                <CartPanelImage imagePath="/images/amazon-logo.png" />
+                                <Box className="flex justify-center md:mr-5 pb-5">
+                                    <div>
+                                        <Image 
+                                            src={imagePath}
+                                            alt="picture"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    </div>
+                                </Box>
                             </Grid>
 
                             <Grid item xs={12} md={8}>

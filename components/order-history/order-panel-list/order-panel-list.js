@@ -5,8 +5,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import OrderSummary from "./order-summary";
-import OrderDetails from "./order-details";
+import OrderHistorySummary from "./order-history-summary";
+import OrderItemList from "../../ui/order-item-list";
 
 const products = [
     {
@@ -23,8 +23,9 @@ const products = [
     },
     {
         name: "Something5"
-    },
-]
+    }
+];
+
 function OrderPanelList(props) {
     const { items, currentTab } = props;
 
@@ -47,7 +48,7 @@ function OrderPanelList(props) {
                         id={item.id}
                         className="bg-[#b0cae5]"
                     >
-                        <OrderSummary
+                        <OrderHistorySummary
                             orderAt={item.orderAt}
                             total={item.total}
                             address={item.address}
@@ -56,7 +57,7 @@ function OrderPanelList(props) {
                     </AccordionSummary>
 
                     <AccordionDetails>
-                        <OrderDetails 
+                        <OrderItemList 
                             products={products}
                             status={item.status}
                         />

@@ -10,7 +10,7 @@ function CheckOrderButton() {
 
             <Box className="text-left pl-2 flex-col ml-1">
                 <Typography className="text-zinc-400 text-sm">
-                    Returns &
+                    Returns &amp;
                 </Typography>
 
                 <Typography className="text-base">

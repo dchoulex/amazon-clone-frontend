@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 
 import numberWithCommas from "../../../utils/numberWithCommas";
 
-function OrderSummary(props) {
+function OrderHistorySummary(props) {
     const { orderAt, total, address, id, status } = props;
 
     return (
@@ -70,4 +70,4 @@ function OrderSummary(props) {
     )
 };
 
-export default OrderSummary;
+export default OrderHistorySummary;

@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import LoopIcon from '@mui/icons-material/Loop';
 
 function BuyAgainItemsButtonStack() {
     return (
@@ -11,11 +11,12 @@ function BuyAgainItemsButtonStack() {
             divider={<Divider orientation="vertical" flexItem />}
             className="items-center mt-auto"
         >
-            <Button                 
+            <Button 
                 variant="contained"
-                startIcon={<AddShoppingCartIcon />}
+                className="bg-orange-400"
+                startIcon={<LoopIcon />}
             >
-                Move to cart
+                Buy again
             </Button>
         </Stack>
     )

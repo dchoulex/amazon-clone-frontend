@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import LoopIcon from '@mui/icons-material/Loop';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 
-function OrderDetails(props) {
+function OrderItemList(props) {
     const { products, status } = props;
 
     return (
@@ -40,7 +40,7 @@ function OrderDetails(props) {
 
                                 <Button 
                                     variant="contained"
-                                    color="warning"
+                                    className="bg-orange-400"
                                     startIcon={<LoopIcon />}
                                 >
                                     Buy again
@@ -49,8 +49,8 @@ function OrderDetails(props) {
                                 {status === "delivered" && 
                                 <Button 
                                     variant="contained"
-                                    color="info"
                                     startIcon={<RateReviewIcon />}
+                                    className="bg-violet-500"
                                 >
                                         Review
                                     </Button>
@@ -68,4 +68,4 @@ function OrderDetails(props) {
     )
 };
 
-export default OrderDetails;
+export default OrderItemList;

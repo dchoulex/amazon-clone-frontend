@@ -17,7 +17,7 @@ const orderItems = [
         total: 1578,
         shipTo: "Address very long address",
         orderId: "250-0899463-0763017"
-    },
+    }
 ]
 
 function OrderHistoryPage() {
