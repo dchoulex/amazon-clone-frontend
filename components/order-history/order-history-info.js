@@ -49,7 +49,7 @@ const cancelledItems = [
 
 function OrderHistoryInfo(props) {
     const { orderItems, numberOfResults, title } = props;
-    const [currentTab, setCurrentTab] = useState("history");
+    const [currentTab, setCurrentTab] = useState(0);
     const numberOfPages = 4;
 
     const handleChange = (_, newValue) => {
@@ -73,21 +73,21 @@ function OrderHistoryInfo(props) {
                             onChange={handleChange} 
                             aria-label="cart-tabs"
                         >
-                            <Tab label="order history" value="history" />
+                            <Tab label="order history" value={0} />
 
-                            <Tab label="cancelled orders" value="cancel" />
+                            <Tab label="cancelled orders" value={1} />
                         </TabList>
                     </Box>
 
                     <TabPanel 
-                        value="history" 
+                        value={0} 
                         className="py-2"
                     >
                         <OrderPanelList items={orderedItems} currentTab={currentTab} />
                     </TabPanel>
 
                     <TabPanel 
-                        value="cancel"
+                        value={1}
                         className="py-2"
                     >
                         <OrderPanelList items={cancelledItems} currentTab={currentTab} />
