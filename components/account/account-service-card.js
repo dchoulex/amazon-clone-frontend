@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-import PageTitle from "../ui/page-title";
+import PageTitle from "../ui/page-title/page-title";
 
 const accountCards = [
     {
@@ -48,16 +48,9 @@ const accountCards = [
 
 function AccountServiceCard(props) {
     const { title } = props;
-    
+
     return (
         <Box className="px-8 py-10">
-            {/* <Typography 
-                variant="h4" 
-                pb={3} 
-                className="font-light"
-            >
-                Your Account
-            </Typography> */}
             <PageTitle title={title} />
 
             <Grid container spacing={3}>

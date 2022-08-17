@@ -7,7 +7,7 @@ import TabList from '@mui/lab/TabList';
 import Paper from "@mui/material/Paper";
 
 import OrderPanelList from "./order-panel-list/order-panel-list";
-import PageTitle from "../ui/page-title";
+import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 
 const orderedItems = [
@@ -48,7 +48,7 @@ const cancelledItems = [
 
 
 function OrderHistoryInfo(props) {
-    const { orderItems, numberOfResults, title } = props;
+    const { orderItems, numberOfResults, title, isOrderHistoryPage } = props;
     const [currentTab, setCurrentTab] = useState("history");
     const numberOfPages = 4;
 
@@ -59,7 +59,11 @@ function OrderHistoryInfo(props) {
     return (
         <Box>
             <Paper className="bg-white">
-                <PageTitle title={title} numberOfResults={numberOfResults} />
+                <PageTitle 
+                    title={title} 
+                    numberOfResults={numberOfResults}
+                    isOrderHistoryPage={isOrderHistoryPage} 
+                />
 
                 <TabContext value={currentTab}>
                     <Box 

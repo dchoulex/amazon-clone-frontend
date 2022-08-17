@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
 import CartPanelList from "./cart-panel-list/cart-panel-list";
-import PageTitle from "../ui/page-title";
+import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 
 import numberWithCommas from "../../utils/numberWithCommas";

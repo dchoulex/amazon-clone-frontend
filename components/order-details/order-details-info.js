@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
-import PageTitle from "../ui/page-title";
+import PageTitle from "../ui/page-title/page-title";
 import OrderDetailsSummary from "./order-details-summary";
 import OrderDetailsItems from "./order-details-items";
 

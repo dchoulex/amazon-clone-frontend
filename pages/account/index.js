@@ -4,17 +4,13 @@ import AccountServiceCard from "../../components/account/account-service-card";
 import PleaseLoginCard from "../../components/ui/please-login-card";
 
 function AccountPage() {
-    const isLogin = false;
+    const isLogin = true;
     const pageTitle = "Your Account"
 
     return (
-        <Box p={3} className="bg-gray-200">
+        <Box>
             {isLogin ? 
-                <AccountServiceCard 
-                    orderItems={orderItems} 
-                    numberOfResults={numberOfResults} 
-                    title={pageTitle} 
-                /> :
+                <AccountServiceCard title={pageTitle} /> :
                 <PleaseLoginCard 
                     page={"account"} 
                     title={pageTitle} 
