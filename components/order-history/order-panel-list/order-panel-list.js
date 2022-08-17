@@ -29,7 +29,7 @@ const products = [
 function OrderPanelList(props) {
     const { items, currentTab } = props;
 
-    const [ expanded, setExpanded ] = useState(false);
+    const [ expanded, setExpanded ] = useState(1);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false)
@@ -37,7 +37,7 @@ function OrderPanelList(props) {
 
     return (
         <Box py={2}>
-            {items.map(item => (
+            {items.map((item, index) => (
                 <Accordion 
                     key={item.id}
                     expanded={expanded === item.id}

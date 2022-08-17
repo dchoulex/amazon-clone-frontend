@@ -40,22 +40,29 @@ function VerifyUserPage() {
         >
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
+
                 <Paper
                     className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
                 >
-                    <Typography variant="h5">Verification Required</Typography>
+                    <Typography variant="h5">
+                        Verification Required
+                    </Typography>
+
                     <Typography variant="subtitle2">
                         To continue, complete this verification step. We&apos;ve sent a One Time Password (OTP) to your email. Please enter it below.
                     </Typography>
+
                     <Typography 
                         variant="body1" 
                         mt={2}
                     >
                         Your OTP will expires in 2 minutes.
                     </Typography>
+
                     <Typography variant="body1" className="mt-5 font-bold">
                         Enter OTP
                     </Typography>
+
                     <TextField 
                         label="OTP" 
                         id="OTP"
@@ -70,6 +77,7 @@ function VerifyUserPage() {
                         onBlur={handleCheckIsValidOTP}
                         onChange={handleSetOTP}
                     />
+
                     <Button 
                         fullWidth
                         variant="contained"
@@ -78,6 +86,7 @@ function VerifyUserPage() {
                     >
                         Continue
                     </Button>
+
                     <Button 
                         fullWidth
                         variant="text"
@@ -86,6 +95,7 @@ function VerifyUserPage() {
                     >
                         Resend OTP
                     </Button>
+                    
                     <Button 
                         variant="text" className="normal-case block mt-2"
                     >

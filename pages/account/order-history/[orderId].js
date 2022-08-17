@@ -37,8 +37,14 @@ function OrderDetailsPage() {
     return (
         <Box p={3} className="bg-gray-200">
             {isLogin ? 
-                <OrderDetailsInfo order={order} title={pageTitle} /> :
-                <PleaseLoginCard page={"order"} title={pageTitle} />
+                <OrderDetailsInfo 
+                    order={order} 
+                    title={pageTitle} 
+                /> :
+                <PleaseLoginCard 
+                    page={"order"} 
+                    title={pageTitle} 
+                />
             }
         </Box>
     )

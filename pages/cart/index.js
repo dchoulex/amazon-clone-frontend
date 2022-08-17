@@ -24,10 +24,17 @@ function CartPage() {
     const pageTitle = "Shopping Cart";
 
     return (
-        <Box p={3} className="bg-gray-200 w-screen">
+        <Box p={3} className="bg-gray-200">
             {isLogin ? 
-                <CartInfo cartItems={cartItems} numberOfResults={numberOfResults} title={pageTitle} /> :
-                <PleaseLoginCard page={"cart"} title={pageTitle} />
+                <CartInfo 
+                    cartItems={cartItems} 
+                    numberOfResults={numberOfResults} 
+                    title={pageTitle} 
+                /> :
+                <PleaseLoginCard 
+                    page={"cart"} 
+                    title={pageTitle} 
+                />
             }
         </Box>
     )

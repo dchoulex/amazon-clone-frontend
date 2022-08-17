@@ -39,13 +39,16 @@ function ForgotPasswordPage() {
         >
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
+
                 <Paper
                     className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
                 >
                     <Typography variant="h5">Password Assistance</Typography>
+
                     <Typography variant="caption">
                         Enter the email address associated with your Amazon account.
                     </Typography>
+
                     <TextField 
                         label="Email" 
                         error={!isValidEmail}
@@ -59,6 +62,7 @@ function ForgotPasswordPage() {
                         onChange={handleSetEmail}
                         onBlur={handleIsValidEmail}
                     />
+
                     <Button 
                         fullWidth
                         variant="contained"
@@ -67,6 +71,7 @@ function ForgotPasswordPage() {
                     >
                         Continue
                     </Button>
+                    
                     <Button 
                         variant="text" className="normal-case block mt-2"
                     >

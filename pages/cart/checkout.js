@@ -1,34 +1,21 @@
-import { useState } from 'react';
 import Box from '@mui/material/Box';
 
-import LogoButtonWhite from '../../components/ui/logo-button-white';
-import CheckoutStep from '../../components/checkout/checkout-step';
+import CheckoutInfo from '../../components/checkout/checkout-info';
+import PleaseLoginCard from '../../components/ui/please-login-card';
 
 function CheckoutPage() {
-    const [activeStep, setActiveStep] = useState(0);
-
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    const isLogin = true;
+    const pageTitle = "Checkout"
 
     return (
-        <Box 
-            sx={{height:"100vh"}} 
-            className="flex flex-col"
-        >
-            <div className="flex justify-center py-5">
-                <LogoButtonWhite /> 
-            </div>
-
-            <CheckoutStep 
-                activeStep={activeStep}
-                handleBack={handleBack}
-                handleNext={handleNext}
-            />
+        <Box className={`${!isLogin ? "bg-gray-200 h-screen p-5" : "" }`}>
+            {isLogin ? 
+                <CheckoutInfo /> :
+                <PleaseLoginCard 
+                    page={"checkout"} 
+                    title={pageTitle} 
+                />
+            }
         </Box>
     );
 };

@@ -79,13 +79,18 @@ function ResetPasswordPage() {
         >
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
+
                 <Paper
                     className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
                 >
-                    <Typography variant="h5">Create new password</Typography>
+                    <Typography variant="h5">
+                        Create new password
+                    </Typography>
+
                     <Typography variant="subtitle2">
                         We&apos;ll ask for this password whenever you Sign-In.
                     </Typography>
+
                     <TextField 
                         label="New password" 
                         id="new-password"
@@ -104,7 +109,10 @@ function ResetPasswordPage() {
                                 <IconButton
                                     onClick={handleClickShowNewPassword}
                                 >
-                                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showNewPassword ? 
+                                        <VisibilityOff /> : 
+                                        <Visibility />
+                                    }
                                 </IconButton>
                             </InputAdornment>
                         }}
@@ -129,7 +137,10 @@ function ResetPasswordPage() {
                                 <IconButton
                                     onClick={handleClickShowConfirmPassword}
                                 >
-                                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    {showConfirmPassword ? 
+                                        <VisibilityOff /> : 
+                                        <Visibility />
+                                    }
                                 </IconButton>
                             </InputAdornment>
                         }}
@@ -146,6 +157,7 @@ function ResetPasswordPage() {
                         Save Changes and Sign-In
                     </Button>
                 </Paper>
+
                 <Box className="w-[300px] justify-center">
                     <Typography 
                         variant="h6"
@@ -153,6 +165,7 @@ function ResetPasswordPage() {
                     >
                         Secure password tips:
                     </Typography>
+
                     <ul className="my-0 leading-6 pb-5">
                         <li>Use at least 8 characters, a combination of numbers and letters is best.
                         </li>

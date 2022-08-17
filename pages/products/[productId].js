@@ -27,7 +27,7 @@ function ProductDetailPage() {
 
     return (
         <Fragment>
-            <Box className="flex w-screen">
+            <Box className="flex">
                 <ProductDetailImages productImages={product.images}/>
 
                 <ProductDetailInfo 
@@ -39,8 +39,7 @@ function ProductDetailPage() {
                     price={product.price}
                 />
 
-                {isMediumScreenDown ?
-                    null :
+                {!isMediumScreenDown &&
                     <BuyProductCard 
                         stock={product.stock}
                         price={product.price}

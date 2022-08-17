@@ -84,10 +84,12 @@ function LoginPage() {
         >
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
+
                 <Paper
                     className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
                 >
                     <Typography variant="h5">Sign In</Typography>
+
                     <TextField 
                         label="Email" 
                         id="email"
@@ -102,6 +104,7 @@ function LoginPage() {
                         onChange={handleSetEmail}
                         onBlur={handleIsValidEmail}
                     />
+
                     <Button 
                         fullWidth
                         variant="contained"
@@ -110,9 +113,11 @@ function LoginPage() {
                     >
                         Continue
                     </Button>
+
                     <Typography variant="caption">
                         By continuing, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
                     </Typography>
+
                     <Button 
                         variant="text" className="normal-case block mt-8"
                     >
@@ -121,12 +126,14 @@ function LoginPage() {
                         </Link>
                     </Button>
                 </Paper>
+
                 <Divider 
                     className="mt-5 text-blue-500 text-sm border-sky-500"
                     flexItem
                 >
                     New to Amazon ?
                 </Divider> 
+
                 <Button 
                     variant="outlined" className="normal-case my-5"
                     fullWidth
@@ -134,6 +141,7 @@ function LoginPage() {
                     Create your Amazon account
                 </Button>
             </Box>
+
             <Dialog
                 id="conditions-dialog"
                 open={conditionsIsOpen}
@@ -147,12 +155,14 @@ function LoginPage() {
                 >
                     Conditions of Use
                 </DialogTitle>
+
                 <DialogContent>
                     <DialogContentText>
                         {dialogContent}
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
+
             <Dialog
                 id="privacy-dialog"
                 open={privacyIsOpen}
@@ -166,6 +176,7 @@ function LoginPage() {
                 >
                     Privacy Notice
                 </DialogTitle>
+                
                 <DialogContent>
                     <DialogContentText>
                         {dialogContent}
