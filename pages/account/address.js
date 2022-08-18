@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import AddressInfo from "../../components/address/adress-info";
+import AddressInfo from "../../components/address/address-info";
 import PleaseLoginCard from "../../components/ui/please-login-card";
 
 const addresses = [
