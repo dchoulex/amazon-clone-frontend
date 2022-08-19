@@ -16,6 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
+import { REQUIRED_ERROR_MESSAGE, INVALID_NUMBER_MESSAGE, NUMBER_REGEX, PREFECTURES } from "../../appConfig";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
 
@@ -29,18 +30,12 @@ const ADD_ADDRESS_INITIAL_FORM_STATE = {
     phoneNumber: "",
 };
 
-const REQUIRED_ERROR_MESSAGE = "This field is required.";
-const INVALID_NUMBER_MESSAGE = "Please input number only.";
-const NUMBER_REGEX = /^[0-9]*$/;
-const PREFECTURES = ["Hokkaido", "Tohoku", "Kanto", "Chubu", "Kinki", "Chugoku", "Shikoku", "Kyushu"];
-
-
 const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
     fullName: Yup
         .string()
+        .required(REQUIRED_ERROR_MESSAGE)
         .max(50, "Please input at most 50 characters.")
-        .trim()
-        .required(REQUIRED_ERROR_MESSAGE),
+        .trim(),
 
     country: Yup
         .string()
@@ -48,9 +43,9 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 
     postCode: Yup
         .string()
+        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE)
         .length(7, "Please input ${length} digits only.")
-        .required(REQUIRED_ERROR_MESSAGE)
-        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE),
+        .required(REQUIRED_ERROR_MESSAGE),
 
     prefecture: Yup
         .string()
@@ -67,8 +62,8 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 
     phoneNumber: Yup
         .string()
-        .max(11, "Phone number must be at most ${max} digits.")
         .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE)
+        .max(11, "Phone number must be at most ${max} digits.")
         .required(REQUIRED_ERROR_MESSAGE),
 });
 

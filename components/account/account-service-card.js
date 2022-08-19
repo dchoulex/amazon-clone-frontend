@@ -22,7 +22,7 @@ const accountCards = [
         href: "/account/review"
     },
     {
-        title: "Delivery Address",
+        title: "Shipping Address",
         description: "Edit addresses for orders.",
         href: "/account/address"
     },

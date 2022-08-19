@@ -6,10 +6,18 @@ import Chip from '@mui/material/Chip';
 import PersonIcon from '@mui/icons-material/Person';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ContactsIcon from '@mui/icons-material/Contacts';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import InfoIcon from '@mui/icons-material/Info';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import PaymentIcon from '@mui/icons-material/Payment';
 
 function getChipLabel(path) {
     const names = path.split("-");
     const chipLabels = [];
+
+    if (path === "[orderId]") {
+        return "Order Details"
+    }
 
     for (const name of names) {
         const capitalizeName = name.slice(0, 1).toUpperCase() + name.slice(1);
@@ -24,17 +32,29 @@ function getChipIcon(path) {
     let icon;
 
     switch (path) {
-        case "address": 
-            icon = <ContactsIcon />
-            break;
         case "account":
-            icon = <PersonIcon />
+            icon = <ManageAccountsIcon />
             break;
         case "order-history":
             icon = <ListAltIcon />
             break;
+        case "[orderId]":
+            icon = <InfoIcon />;
+            break;
+        case "my-profile":
+            icon = <PersonIcon />
+            break;
+        case "review":
+            icon = <RateReviewIcon />
+            break;
+        case "address": 
+            icon = <ContactsIcon />
+            break;
+        case "payment-method": 
+            icon = <PaymentIcon />
+            break;
         default:
-            icon = "";
+            icon = null;
             break;
     }  
 
