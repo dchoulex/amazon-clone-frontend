@@ -1,9 +1,10 @@
 import { useField, useFormikContext } from "formik";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import MenuItem from "@mui/material/MenuItem";
 
 function FormikSelect(props) {
-    const { name, ...otherProps } = props;
+    const { name, options, ...otherProps } = props;
     const { setFieldValue } = useFormikContext();
     const [field, meta] = useField(name);
 
@@ -14,7 +15,7 @@ function FormikSelect(props) {
     const configSelect = {
         ...field,
         ...otherProps,
-        select: "true",
+        select: true,
         onChange: handleChange
     };
 
@@ -25,7 +26,16 @@ function FormikSelect(props) {
 
     return (
         <Box my={1}>
-            <TextField {...configSelect} />
+            <TextField {...configSelect} >
+                {options.map((option, index) => (
+                    <MenuItem
+                        key={`option-${index}`}
+                        value={option}
+                    >
+                        {option}
+                    </MenuItem>
+                ))}
+            </ TextField>
         </Box>
     )
 };

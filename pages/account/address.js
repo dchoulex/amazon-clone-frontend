@@ -53,7 +53,7 @@ const addresses = [
 
 function AddressPage() {
     const isLogin = true;
-    const pageTitle = "Your Addresses"
+    const pageTitle = "Address"
 
     return (
         <Box p={3} className="bg-gray-200">

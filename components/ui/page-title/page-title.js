@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
-import PageTitleBreadcrumbs from "./page-title-breadcrumbs/page-title-breadcrumbs";
+import PageTitleBreadcrumbs from "./page-title-breadcrumbs";
 
 function PageTitle(props) {
     const { title, numberOfResults } = props;

@@ -17,18 +17,8 @@ function AddressInfo(props) {
 
     const [ openAddressDialog, setOpenAddressDialog ] = useState(false);
 
-    const [ country, setCountry ] = useState("Japan");
-
     const handleOpenAddressDialog = () => {
         setOpenAddressDialog(true);
-    };
-
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: 300
-            }
-        },
     };
 
     return (
@@ -49,8 +39,6 @@ function AddressInfo(props) {
                 </Button>
 
                 <AddAddressForm 
-                    country={country}
-                    setCountry={setCountry}
                     openAddressDialog={openAddressDialog}
                     setOpenAddressDialog={setOpenAddressDialog}
                 />
@@ -72,7 +60,6 @@ function AddressInfo(props) {
                         ))}   
                     </Grid>
                 </Box>
-
     
                 <PaginationButtons numberOfPages={numberOfPages} />
             </Paper>

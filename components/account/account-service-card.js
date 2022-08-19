@@ -15,9 +15,9 @@ const accountCards = [
         href: "/account/order-history"
     },
     {
-        title: "Change password",
+        title: "Your Profile",
         description: "Edit your profile and password.",
-        href: "/auth/reset-password"
+        href: "/account/my-profile"
     },
     {
         title: "Your review",

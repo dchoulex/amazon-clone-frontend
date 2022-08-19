@@ -2,21 +2,11 @@ import { useState, Fragment } from "react";
 import { getCountries } from "node-countries";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import validator from "validator";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import Divider from "@mui/material/Divider";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,7 +15,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import RemoveIcon from '@mui/icons-material/Remove';
 
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
@@ -33,8 +22,7 @@ import FormikSelect from "../ui/forms/formik-select";
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
     fullName: "",
     country: "Japan",
-    postCode1: "",
-    postCode2: "",
+    postCode: "",
     prefecture: "",
     city: "",
     rest: "",
@@ -42,26 +30,54 @@ const ADD_ADDRESS_INITIAL_FORM_STATE = {
 };
 
 const REQUIRED_ERROR_MESSAGE = "This field is required.";
-const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
-    fullName: Yup.string().required(REQUIRED_ERROR_MESSAGE),
-    phone: Yup.number().integer().typeError("Please enter a valid phon e number.").required(REQUIRED_ERROR_MESSAGE)
+const INVALID_NUMBER_MESSAGE = "Please input number only.";
+const NUMBER_REGEX = /^[0-9]*$/;
+const PREFECTURES = ["Hokkaido", "Tohoku", "Kanto", "Chubu", "Kinki", "Chugoku", "Shikoku", "Kyushu"];
 
+
+const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
+    fullName: Yup
+        .string()
+        .max(50, "Please input at most 50 characters.")
+        .trim()
+        .required(REQUIRED_ERROR_MESSAGE),
+
+    country: Yup
+        .string()
+        .required(REQUIRED_ERROR_MESSAGE),
+
+    postCode: Yup
+        .string()
+        .length(7, "Please input ${length} digits only.")
+        .required(REQUIRED_ERROR_MESSAGE)
+        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE),
+
+    prefecture: Yup
+        .string()
+        .required(REQUIRED_ERROR_MESSAGE)
+        .oneOf(PREFECTURES, "Please input valid prefecture."),
+
+    city: Yup
+        .string()
+        .required(REQUIRED_ERROR_MESSAGE),
+
+    rest: Yup
+        .string()
+        .required(REQUIRED_ERROR_MESSAGE),
+
+    phoneNumber: Yup
+        .string()
+        .max(11, "Phone number must be at most ${max} digits.")
+        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE)
+        .required(REQUIRED_ERROR_MESSAGE),
 });
 
 function AddAddressForm(props) {
-    const { country, setCountry, openAddressDialog, setOpenAddressDialog } = props;
+    const { openAddressDialog, setOpenAddressDialog } = props;
+
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
-    const [ postCode, setPostCode ] = useState("");
 
     const countries = getCountries().map(country => country.name).sort();
-
-    const MenuProps = {
-        PaperProps: {
-            style: {
-                maxHeight: 300
-            }
-        },
-    };
 
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
@@ -71,17 +87,9 @@ function AddAddressForm(props) {
         setOpenConfirmCloseDialog(false);
     };
 
-    const handleChangeCountry = event => {
-        setCountry(event.target.value);
-    };
-
     const handleCloseAllDialog = () => {
         setOpenConfirmCloseDialog(false);
         setOpenAddressDialog(false);
-    };
-
-    const handleSetPostCode = event => {
-        setPostCode(event.target.value);
     };
 
     return (
@@ -100,19 +108,19 @@ function AddAddressForm(props) {
                     </Box>
                 </DialogTitle>
 
+                <Formik
+                        initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
+                        validationSchema={ADD_ADDRESS_FORM_VALIDATION}
+                        onSubmit={values => console.log(values)}
+                    >
+                          <Form>
                 <DialogContent>
                     <DialogContentText>
                         Please input your address information.
                     </DialogContentText>
 
-                    <Formik
-                        initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
-                        validationSchema={ADD_ADDRESS_FORM_VALIDATION}
-                        onSubmit={values => {
-                            console.log(values)
-                        }}
-                    >
-                        <Form>
+       
+                      
                             <Grid container direction="vertical">
                                 <Grid item xs={12}>
                                     <FormikTextField 
@@ -129,17 +137,8 @@ function AddAddressForm(props) {
                                         name="country"
                                         label="Country"
                                         variant="standard"
-                                        MenuProps={MenuProps}
-                                    >
-                                        {countries.map((country, index) => (
-                                            <MenuItem 
-                                                key={`country-${index}`}
-                                                value={country}
-                                            >
-                                                {country}
-                                            </MenuItem>
-                                        ))}
-                                    </FormikSelect>
+                                        options={countries}
+                                    />
                                 </Grid>
 
                                 <Grid item xs={12}>
@@ -149,33 +148,21 @@ function AddAddressForm(props) {
 
                                     <Box sx={{ display: "flex" }}>
                                         <FormikTextField 
-                                            name="postCode1"
-                                            variant="outlined"
+                                            name="postCode"
+                                            variant="standard"
                                             size="small"
                                             required
-                                            sx={{ width: "55px", mr: "0.75rem" }}
-                                        />
-
-                                        <Box pt={2.5}>
-                                            <RemoveIcon sx={{fontSize: "small"}} />
-                                        </Box>
-
-                                        <FormikTextField 
-                                            name="postCode2"
-                                            variant="outlined"
-                                            size="small"
-                                            required
-                                            sx={{ width: "65px", ml: "0.75rem" }}
                                         />
                                     </Box>
                                 </Grid>
 
                                 <Grid item xs={3}>
-                                    <FormikTextField 
+                                    <FormikSelect 
                                         name="prefecture"
                                         label="Prefecture"
                                         variant="standard"
                                         required
+                                        options={PREFECTURES}
                                         sx={{ mr: "2rem" }}
                                     />                            
                                 </Grid>
@@ -190,7 +177,7 @@ function AddAddressForm(props) {
                                     />
                                 </Grid>
 
-                                <Grid xs={12}>
+                                <Grid item xs={12}>
                                     <FormikTextField
                                         name="rest" 
                                         label="Rest of Address"
@@ -200,7 +187,7 @@ function AddAddressForm(props) {
                                     />
                                 </Grid>
 
-                                <Grid xs={12}>
+                                <Grid item xs={12}>
                                     <FormikTextField 
                                         name="phoneNumber"
                                         label="Phone number" 
@@ -209,15 +196,21 @@ function AddAddressForm(props) {
                                     />
                                 </Grid>
                             </Grid>
-                        </Form>
-                    </Formik>
+                      
                 </DialogContent>
 
                 <DialogActions>
-                    <Button onClick={handleOpenConfirmCloseDialog}>Cancel</Button>
+                    <Button 
+                        onClick={handleOpenConfirmCloseDialog} 
+                        sx={{ mr: "auto"}}
+                        >
+                        Cancel
+                    </Button>
 
-                    <Button>Add address</Button>
+                    <Button type="submit">Add address</Button>
                 </DialogActions>
+                    </Form>
+                </Formik>
             </Dialog>
 
             <Dialog open={openConfirmCloseDialog}>
@@ -236,6 +229,7 @@ function AddAddressForm(props) {
 
                     <Button onClick={handleCloseAllDialog}>Yes</Button>
                 </DialogActions>
+            
             </Dialog>
         </Fragment>
     )

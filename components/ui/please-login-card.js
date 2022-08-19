@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
@@ -26,16 +28,21 @@ function PleaseLoginCard(props) {
             />
 
             <CardActions>
-                <Button 
-                    variant="outlined"
-                >
-                    Login
-                </Button>
-                <Button 
-                    variant="contained"
-                >
-                    Sign up
-                </Button>
+                <Link href="/auth/login">
+                    <Button 
+                        variant="outlined"
+                    >
+                        Login
+                    </Button>
+                </Link>
+
+                <Link href="/auth/sign">
+                    <Button 
+                        variant="contained"
+                    >
+                        Sign up
+                    </Button>
+                </Link>
             </CardActions>
         </Card>
     )

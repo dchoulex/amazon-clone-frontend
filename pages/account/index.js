@@ -5,7 +5,7 @@ import PleaseLoginCard from "../../components/ui/please-login-card";
 
 function AccountPage() {
     const isLogin = true;
-    const pageTitle = "Your Account"
+    const pageTitle = "Account Services"
 
     return (
         <Box>

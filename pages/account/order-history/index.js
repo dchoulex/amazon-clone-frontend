@@ -23,7 +23,7 @@ const orderItems = [
 function OrderHistoryPage() {
     const isLogin = true;
     const numberOfResults = 0;
-    const pageTitle = "Your Orders";
+    const pageTitle = "Order History";
 
     return (
         <Box p={3} className="bg-gray-200">
