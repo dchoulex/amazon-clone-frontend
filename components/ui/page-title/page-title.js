@@ -12,7 +12,7 @@ function PageTitle(props) {
 
     return (
         <Box className="bg-white p-5 pb-2">
-            <PageTitleBreadcrumbs title={title} />
+            <PageTitleBreadcrumbs />
 
             <Typography variant="h4" className="font-light mb-2">
                 {title}

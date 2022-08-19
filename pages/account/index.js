@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 
-import AccountServiceCard from "../../components/account/account-service-card";
+import AccountServiceInfo from '../../components/account/account-service-info';
 import PleaseLoginCard from "../../components/ui/please-login-card";
 
 function AccountPage() {
@@ -8,9 +8,9 @@ function AccountPage() {
     const pageTitle = "Account Services"
 
     return (
-        <Box>
+        <Box p={3} className="bg-gray-200">
             {isLogin ? 
-                <AccountServiceCard title={pageTitle} /> :
+                <AccountServiceInfo title={pageTitle} /> :
                 <PleaseLoginCard 
                     page={"account"} 
                     title={pageTitle} 
