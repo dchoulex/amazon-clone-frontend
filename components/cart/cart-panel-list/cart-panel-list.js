@@ -35,7 +35,7 @@ function CartPanelList(props) {
                                 </Box>
                             </Grid>
 
-                            <Grid item xs={12} md={8}>
+                            <Grid item xs={12} md={8} className="md:flex md:flex-1">
                                 <CartPanelDescription 
                                     productName={item.productName}
                                     stock={item.stock}

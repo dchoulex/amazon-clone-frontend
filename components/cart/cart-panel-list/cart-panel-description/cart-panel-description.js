@@ -21,7 +21,7 @@ function CartPanelDescription(props) {
     } 
 
     return (
-        <Box className="flex flex-col mx-auto">
+        <Box className="flex flex-col flex-1">
             <Typography 
                 variant="h5" 
                 className="font-light"
@@ -39,7 +39,7 @@ function CartPanelDescription(props) {
             </Typography>
 
             <Typography variant="body2" className="mb-4">
-                Get {numberWithCommas(point)} amazon points.
+                Get <span className="text-orange-400">{numberWithCommas(point)}</span> amazon points.
             </Typography>
 
             {buttonStack}
