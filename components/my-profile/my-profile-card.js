@@ -32,7 +32,11 @@ function MyProfileCard() {
 
                     <Box sx={{ width: 300 }}>
                         <Grid container>
-                            <Grid item container className="mb-1 mt-4">
+                            <Grid 
+                                item 
+                                container 
+                                className="mb-1 mt-4"
+                            >
                                 <Grid item xs={6}> 
                                     <Typography className="font-bold">Email :</Typography>
                                 </Grid>
@@ -42,7 +46,11 @@ function MyProfileCard() {
                                 </Grid>
                             </Grid>
 
-                            <Grid item container className="my-1">
+                            <Grid 
+                                item 
+                                container 
+                                className="my-1"
+                            >
                                 <Grid item xs={6}>
                                     <Typography className="font-bold">Phone number :</Typography>
                                 </Grid>
@@ -56,6 +64,7 @@ function MyProfileCard() {
 
                     <Stack direction="row" spacing={3} mt={2}>
                         <Button size="small" variant="contained">Change password</Button>
+
                         <Button size="small" variant="outlined">Change account</Button>
                     </Stack>
                 </Box>
@@ -64,6 +73,7 @@ function MyProfileCard() {
                     <IconButton color="primary">
                         <EditIcon />
                     </IconButton>
+                    
                     <Typography variant="caption" className="pl-2">Edit</Typography>
                 </Box>
             </Paper>

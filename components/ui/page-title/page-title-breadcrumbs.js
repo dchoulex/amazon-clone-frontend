@@ -50,7 +50,7 @@ function getChipIcon(path) {
         case "address": 
             icon = <ContactsIcon />
             break;
-        case "payment-method": 
+        case "wallet": 
             icon = <PaymentIcon />
             break;
         default:

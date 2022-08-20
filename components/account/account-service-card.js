@@ -27,9 +27,9 @@ const accountCards = [
         href: "/account/address"
     },
     {
-        title: "Payment Methods",
+        title: "Wallet",
         description: "Manage payment methods.",
-        href: "/account/payment-method"
+        href: "/account/wallet"
     },
     {
         title: "Gift cards",
@@ -61,10 +61,12 @@ function AccountServiceCard() {
                                 width={80}
                                 height={80}
                             />
+
                             <CardContent className="p-0 ml-4 flex flex-col flex-1">
-                                <Typography className="text-xl">
+                                <Typography variant="h6">
                                     {card.title}
                                 </Typography>
+                                
                                 <Typography variant="body2">
                                     {card.description}
                                 </Typography>
