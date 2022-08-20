@@ -28,7 +28,7 @@ const savedItems = [
         price: 50,
         point: 1000
     },
-]
+];
 
 const buyAgainItems = [
     {
@@ -43,7 +43,7 @@ const buyAgainItems = [
         price: 5000000,
         point: 1000
     },
-]
+];
 
 function CartInfo(props) {
     const { cartItems, numberOfResults, title } = props;

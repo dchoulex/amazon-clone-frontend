@@ -3,6 +3,7 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 
 import { mainAccessibilityData } from "./data/main-accessibility-data";
+
 function MainAccessibilityNav() {
     return (
         <Fragment>

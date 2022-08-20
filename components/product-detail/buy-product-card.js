@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 import numberWithCommas from "../../utils/numberWithCommas";
-
 import StockLabel from '../ui/stock-label';
 
 function BuyProductCard(props) {

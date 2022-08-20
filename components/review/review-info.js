@@ -6,18 +6,13 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
-import WalletCard from "./wallet-card";
+import ReviewCard from "./review-card";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 
-function WalletInfo(props) {
-    const { title, creditCards } = props;
-    const numberOfPages = 4;
-    const [ openCreditCardForm , setOpenCreditCardForm ] = useState(false);
-
-    const handleOpenCreditCardForm = () => {
-        setOpenCreditCardForm(true);
-    }
+function ReviewInfo(props) {
+    const { title, reviews } = props;
+    const numberOfPages = 5;
 
     return (
         <Box>
@@ -31,33 +26,29 @@ function WalletInfo(props) {
                     className="ml-5 mb-4"
                     size="small"
                     startIcon={<ControlPointIcon />}
-                    onClick={handleOpenCreditCardForm}
                 >
-                    Add new credit card
+                    Review a product
                 </Button>
 
                 <Box px={5} my={2}>
                     <Grid container spacing={3}>
-                        {creditCards.map((card, index) => (
+                        {reviews.map((review, index) => (
                             <Grid 
-                                key={`credit-card-${index}`} 
+                                key={`review-card-${index}`} 
                                 item 
                                 xs={12} 
-                                md={6} 
-                                lg={4} 
-                                xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <WalletCard card={card} />
+                                <ReviewCard review={review} />
                             </Grid>
                         ))}   
                     </Grid>
                 </Box>
-
+    
                 <PaginationButtons numberOfPages={numberOfPages} />
             </Paper>
         </Box>
     )
 };
 
-export default WalletInfo;
+export default ReviewInfo;

@@ -51,8 +51,8 @@ function AddressCard(props) {
                     {address.country}
                 </Typography>
 
-                <Typography variant="body1">
-                    Phone number : {address.phoneNumber}
+                <Typography variant="body1" className="my-2">
+                    <span className="font-semibold">Phone number : </span>{address.phoneNumber}
                 </Typography>
             </CardContent>
 
