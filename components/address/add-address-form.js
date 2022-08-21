@@ -16,7 +16,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { REQUIRED_ERROR_MESSAGE, INVALID_NUMBER_MESSAGE, NUMBER_REGEX, PREFECTURES } from "../../appConfig";
+import { REQUIRED_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE, NUMBER_REGEX, PREFECTURES } from "../../appConfig";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
 
@@ -43,7 +43,7 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 
     postCode: Yup
         .string()
-        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE)
+        .matches(NUMBER_REGEX, INVALID_NUMBER_TYPE_ERROR_MESSAGE)
         .length(7, "Please input ${length} digits only.")
         .required(REQUIRED_ERROR_MESSAGE),
 
@@ -62,7 +62,7 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 
     phoneNumber: Yup
         .string()
-        .matches(NUMBER_REGEX, INVALID_NUMBER_MESSAGE)
+        .matches(NUMBER_REGEX, INVALID_NUMBER_TYPE_ERROR_MESSAGE)
         .max(11, "Phone number must be at most ${max} digits.")
         .required(REQUIRED_ERROR_MESSAGE),
 });
@@ -104,18 +104,16 @@ function AddAddressForm(props) {
                 </DialogTitle>
 
                 <Formik
-                        initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
-                        validationSchema={ADD_ADDRESS_FORM_VALIDATION}
-                        onSubmit={values => console.log(values)}
-                    >
-                          <Form>
-                <DialogContent>
-                    <DialogContentText>
-                        Please input your address information.
-                    </DialogContentText>
+                    initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
+                    validationSchema={ADD_ADDRESS_FORM_VALIDATION}
+                    onSubmit={values => console.log(values)}
+                >
+                    <Form>
+                        <DialogContent>
+                            <DialogContentText>
+                                Please input your address information.
+                            </DialogContentText>
 
-       
-                      
                             <Grid container direction="vertical">
                                 <Grid item xs={12}>
                                     <FormikTextField 
@@ -126,7 +124,6 @@ function AddAddressForm(props) {
                                     />
                                 </Grid>
                         
-
                                 <Grid item xs={6}>
                                     <FormikSelect
                                         name="country"
@@ -190,20 +187,19 @@ function AddAddressForm(props) {
                                         sx={{ display: "block" }}
                                     />
                                 </Grid>
-                            </Grid>
-                      
-                </DialogContent>
+                            </Grid>                    
+                        </DialogContent>
 
-                <DialogActions>
-                    <Button 
-                        onClick={handleOpenConfirmCloseDialog} 
-                        sx={{ mr: "auto"}}
-                        >
-                        Cancel
-                    </Button>
+                        <DialogActions>
+                            <Button 
+                                onClick={handleOpenConfirmCloseDialog} 
+                                sx={{ mr: "auto"}}
+                                >
+                                Cancel
+                            </Button>
 
-                    <Button type="submit">Add address</Button>
-                </DialogActions>
+                            <Button type="submit">Add address</Button>
+                        </DialogActions>
                     </Form>
                 </Formik>
             </Dialog>
@@ -224,7 +220,6 @@ function AddAddressForm(props) {
 
                     <Button onClick={handleCloseAllDialog}>Yes</Button>
                 </DialogActions>
-            
             </Dialog>
         </Fragment>
     )

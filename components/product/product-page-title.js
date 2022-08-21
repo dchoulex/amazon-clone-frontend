@@ -40,12 +40,15 @@ function ProductPageTitle(props) {
                     value={sortBy}
                     onChange={onChange}
                 >
-                    <MenuItem value="none">
-                        <em>None</em>
+                    <MenuItem value="none"><em>None</em>
                     </MenuItem>
+
                     <MenuItem value="priceAsc">Price: Low to High</MenuItem>
+
                     <MenuItem value="priceDesc">Price: High to Low</MenuItem>
+
                     <MenuItem value="bestSellers">Best Sellers</MenuItem>
+
                     <MenuItem value="bestReview">Best Review</MenuItem>
                 </TextField>
             </div>

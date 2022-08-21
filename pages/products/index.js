@@ -1,4 +1,6 @@
 import { useState, Fragment } from "react";
+import useSWR from "swr";
+import axios from "axios";
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -6,38 +8,24 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
+import getPaginatedProducts from "../../utils/getPaginatedProducts";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 
-const products = [
-    {
-        title:"Digimon Story Cyber Sleuth Complete Edition(輸入版:北米)- Switch", 
-        ratingsAverage: 5,
-        price: 500
-    }, {
-        title:"2", 
-        description: "Teststs",
-        ratingsAverage: 4,
-        price: 4500
-    }, {
-        title:"3",
-        ratingsAverage: 0.5,
-        price: 5000
-    }, {
-        title:"4",
-        ratingsAverage: 2,
-        price: 500000000
-    }
-]
 
-function ProductPage() {
+function ProductPage(props) {
+    const { status, numOfResults, products } = props;
     const title = "Search Product";
-    const numberOfResults = 20;
 
-    const [sortBy, setSortBy] = useState("none");
-    const [chipSortBy, setChipSortBy] = useState("None");
-    const [chipIcon, setChipIcon] = useState(null);
+    const [ page, setPage ] = useState(1);
+    const [ sortBy, setSortBy ] = useState("none");
+    const [ chipSortBy, setChipSortBy ] = useState("None");
+    const [ chipIcon, setChipIcon ] = useState(null);
+
+    const handleChangePage = (_, value) => {
+        setPage(value)
+    };
 
     const handleChangeSortBy = event => {
         const sortBy = event.target.value;
@@ -72,7 +60,7 @@ function ProductPage() {
         <Fragment>
             <ProductPageTitle 
                 title={title}
-                numberOfResults={numberOfResults}
+                numberOfResults={numOfResults}
                 onChange={handleChangeSortBy}
                 sortBy={sortBy}
             />
@@ -86,11 +74,28 @@ function ProductPage() {
                 />
             </Divider>
 
-            <ProductInfo products={products}/>
+            <ProductInfo products={getPaginatedProducts(products, page)}/>
 
-            <PaginationButtons numberOfPages={3}/>
+            <PaginationButtons 
+                numOfResults={numOfResults}
+                page={page}
+                onChange={handleChangePage}
+            />
         </Fragment>
     )
 };
 
 export default ProductPage;
+
+export async function getStaticProps() {
+    const results = await axios.get("http://localhost:3000/api/v1/products");
+    
+    return {
+        props: {
+            status: results.data.status,
+            numOfResults: results.data.numOfResults,
+            products: results.data.data
+        },
+        revalidate: 60
+    }
+};

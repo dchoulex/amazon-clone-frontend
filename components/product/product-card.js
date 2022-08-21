@@ -1,3 +1,5 @@
+import { Formik, Form} from 'formik';
+import * as Yup from "yup";
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -10,6 +12,23 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 import ProductRatingStar from './product-rating-star';
 import numberWithCommas from '../../utils/numberWithCommas';
+import FormikNumber from '../ui/forms/formik-number';
+import FormikButton from '../ui/forms/formik-submit-button';
+import { REQUIRED_ERROR_MESSAGE, POSITIVE_NUMBER_ERROR_MESSAGE, INTEGER_NUMBER_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE } from '../../appConfig';
+
+const ADD_CART_ITEM_INITIAL_FORM_STATES = {
+    productId: "",
+    amount: 1
+};
+
+const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
+    amount: Yup
+        .number()
+        .typeError(INVALID_NUMBER_TYPE_ERROR_MESSAGE)
+        .required(REQUIRED_ERROR_MESSAGE)
+        .integer(INTEGER_NUMBER_ERROR_MESSAGE)
+        .positive(POSITIVE_NUMBER_ERROR_MESSAGE )
+});
 
 function ProductCard(props) {
     const { product } = props;
@@ -21,12 +40,12 @@ function ProductCard(props) {
                 height="230"
                 image="/images/amazon-logo.png"
                 className="mb-10"
-                alt={product.title}
+                alt={product.name}
             />
 
             <CardContent className="mb-auto">
-                <Typography variant="subtitle1">
-                    {product.title} 
+                <Typography variant="h6" className="mb-2">
+                    {product.name} 
                 </Typography>
 
                 <ProductRatingStar rating={product.ratingsAverage}/>
@@ -47,21 +66,28 @@ function ProductCard(props) {
                     mb="0.5rem"
                     pr="0.5rem"
                 >
-                    <TextField 
-                        type="number"
-                        size="small"
-                        defaultValue={1}
-                        margin="none"
-                        className="min-w-[60px] max-w-[80px]"
-                    />
-                    <Button 
-                        variant="contained"
-                        className="ml-4"
-                        size="small"
-                        startIcon={<AddShoppingCartIcon />}
+                    <Formik
+                        initialValues={ADD_CART_ITEM_INITIAL_FORM_STATES}
+                        validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
                     >
-                        Add to cart
-                    </Button>
+                        {({errors, touched}) => (
+                            <Form>
+                                <FormikNumber 
+                                    name="amount"
+                                    className="min-w-[60px] max-w-[80px]"
+                                />
+
+                                <FormikButton 
+                                    variant="contained"
+                                    className="ml-4"
+                                    disabled={touched.amount && errors.amount}
+                                    startIcon={<AddShoppingCartIcon />}
+                                >
+                                    Add to cart
+                                </FormikButton>
+                            </Form>
+                        )}
+                    </Formik>
                 </Stack>
             </CardActions>
         </Card>

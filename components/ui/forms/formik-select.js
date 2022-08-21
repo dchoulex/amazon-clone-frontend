@@ -19,7 +19,7 @@ function FormikSelect(props) {
         onChange: handleChange
     };
 
-    if (meta && meta.error && meta.touched) {
+    if (meta && meta.touched && meta.error) {
         configSelect.error = true;
         configSelect.helperText = meta.error;
     };

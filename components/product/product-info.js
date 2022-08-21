@@ -9,9 +9,9 @@ function ProductInfo(props) {
     return (
         <Box className="pt-5 mb-2">
             <Grid container>
-                {products.map(product => (
+                {products.map((product, index) => (
                     <Grid 
-                        key={product}
+                        key={`product-card-${index}`}
                         item
                         xs={12}
                         md={6}
