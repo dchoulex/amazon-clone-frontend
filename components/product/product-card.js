@@ -102,7 +102,6 @@ function ProductCard(props) {
                                 >
                                     Add to cart
                                 </FormikButton>
-
                             </Stack>
                         </CardActions>
                     </Form>
