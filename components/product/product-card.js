@@ -22,6 +22,7 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
         .required(REQUIRED_ERROR_MESSAGE)
         .integer(INTEGER_NUMBER_ERROR_MESSAGE)
         .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
+        .max(50, "You cannot buy more than 50 items at once per product.")
 });
 
 function ProductCard(props) {
@@ -37,7 +38,7 @@ function ProductCard(props) {
                 alt={product.name}
             />
 
-            <CardContent className="mb-auto">
+            <CardContent>
                 <Typography variant="h6" className="mb-2">
                     {product.name} 
                 </Typography>
@@ -52,28 +53,37 @@ function ProductCard(props) {
                 </Typography>
             </CardContent>
             
-            <CardActions>
-                <Stack 
-                    direction="row" 
-                    ml="auto"
-                    mt="1rem"
-                    mb="0.5rem"
-                    pr="0.5rem"
-                >
-                    <Formik
-                        initialValues={{  
-                            productId: product._id,
-                            amount: 1
-                        }}
-                        validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
-                        onSubmit={(values, actions) => {
-                            actions.setSubmitting(false);
-                            console.log(values)
-                        }}
-                        enableReinitialize
-                    >
-                        {({ errors, touched, isSubmitting }) => (
-                            <Form>
+            <Formik
+                initialValues={{  
+                    productId: product._id,
+                    amount: 1
+                }}
+                validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
+                onSubmit={(values, actions) => {
+                    actions.setSubmitting(false);
+                    console.log(values)
+                }}
+                className="mt-auto"
+            >
+                {({ errors, touched, isSubmitting }) => (
+                    <Form>
+                        {errors.amount &&
+                            <Typography 
+                                variant="caption" 
+                                color="error" 
+                                className="block w-[200px] ml-20"
+                            >
+                                {errors.amount}
+                            </Typography>
+                        }
+
+                        <CardActions>
+                            <Stack 
+                                direction="row" 
+                                ml="auto"
+                                mb="0.5rem"
+                                pr="0.5rem"
+                            >
                                 <FormikHidden 
                                     name="productId"
                                     value={product._id}
@@ -93,14 +103,11 @@ function ProductCard(props) {
                                     Add to cart
                                 </FormikButton>
 
-                                {errors.amount &&
-                                    <Typography variant="caption" color="error" className="block mt-2">{errors.amount}</Typography>
-                                }
-                            </Form>
-                        )}
-                    </Formik>
-                </Stack>
-            </CardActions>
+                            </Stack>
+                        </CardActions>
+                    </Form>
+                )}
+            </Formik>
         </Card>
     )
 };
