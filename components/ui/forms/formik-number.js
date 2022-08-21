@@ -21,7 +21,6 @@ function FormikNumber(props) {
 
     if (meta && meta.touched && meta.error) {
         configNumber.error = true;
-        configNumber.helperText = meta.error;
     };
 
     return (

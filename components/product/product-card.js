@@ -1,12 +1,10 @@
 import { Formik, Form} from 'formik';
 import * as Yup from "yup";
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
@@ -14,12 +12,8 @@ import ProductRatingStar from './product-rating-star';
 import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikButton from '../ui/forms/formik-submit-button';
+import FormikHidden from '../ui/forms/formik-hidden';
 import { REQUIRED_ERROR_MESSAGE, POSITIVE_NUMBER_ERROR_MESSAGE, INTEGER_NUMBER_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE } from '../../appConfig';
-
-const ADD_CART_ITEM_INITIAL_FORM_STATES = {
-    productId: "",
-    amount: 1
-};
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
     amount: Yup
@@ -27,7 +21,7 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
         .typeError(INVALID_NUMBER_TYPE_ERROR_MESSAGE)
         .required(REQUIRED_ERROR_MESSAGE)
         .integer(INTEGER_NUMBER_ERROR_MESSAGE)
-        .positive(POSITIVE_NUMBER_ERROR_MESSAGE )
+        .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
 });
 
 function ProductCard(props) {
@@ -67,11 +61,24 @@ function ProductCard(props) {
                     pr="0.5rem"
                 >
                     <Formik
-                        initialValues={ADD_CART_ITEM_INITIAL_FORM_STATES}
+                        initialValues={{  
+                            productId: product._id,
+                            amount: 1
+                        }}
                         validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
+                        onSubmit={(values, actions) => {
+                            actions.setSubmitting(false);
+                            console.log(values)
+                        }}
+                        enableReinitialize
                     >
-                        {({errors, touched}) => (
+                        {({ errors, touched, isSubmitting }) => (
                             <Form>
+                                <FormikHidden 
+                                    name="productId"
+                                    value={product._id}
+                                />
+                                
                                 <FormikNumber 
                                     name="amount"
                                     className="min-w-[60px] max-w-[80px]"
@@ -80,11 +87,15 @@ function ProductCard(props) {
                                 <FormikButton 
                                     variant="contained"
                                     className="ml-4"
-                                    disabled={touched.amount && errors.amount}
+                                    disabled={(touched.amount && errors.amount) ? true : false}
                                     startIcon={<AddShoppingCartIcon />}
                                 >
                                     Add to cart
                                 </FormikButton>
+
+                                {errors.amount &&
+                                    <Typography variant="caption" color="error" className="block mt-2">{errors.amount}</Typography>
+                                }
                             </Form>
                         )}
                     </Formik>
