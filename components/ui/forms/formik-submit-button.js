@@ -1,7 +1,7 @@
 import { useFormikContext } from "formik";
 import Button from "@mui/material/Button";
 
-function FormikButton(props) {
+function FormikSubmitButton(props) {
     const { children, ...otherProps } = props;
     const { submitForm } = useFormikContext();
 
@@ -9,17 +9,17 @@ function FormikButton(props) {
         submitForm();
     }
 
-    const configButton = {
+    const configSubmitButton = {
         ...otherProps,
         type: "submit",
         onClick: handleSubmit
     }
 
     return (
-        <Button {...configButton}>
+        <Button {...configSubmitButton}>
             {children}
         </Button>
     )
 };
 
-export default FormikButton;
+export default FormikSubmitButton;

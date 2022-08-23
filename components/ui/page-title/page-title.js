@@ -6,7 +6,7 @@ import Stack from "@mui/material/Stack";
 import PageTitleBreadcrumbs from "./page-title-breadcrumbs";
 
 function PageTitle(props) {
-    const { title, numberOfResults } = props;
+    const { title, numOfResults } = props;
 
     return (
         <Box className="bg-white p-5 pb-2">
@@ -16,12 +16,12 @@ function PageTitle(props) {
                 {title}
             </Typography>
 
-            {numberOfResults !== undefined &&
+            {numOfResults !== undefined &&
                 <Typography 
                     variant="overline" 
                     className="text-base font-light"
                 >
-                    {numberOfResults} items
+                    {numOfResults} items
                 </Typography>
             }
 

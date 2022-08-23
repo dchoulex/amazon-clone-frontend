@@ -1,8 +1,11 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
 import Link from 'next/link';
-import validator from "validator";
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -13,7 +16,13 @@ import DialogContent from '@mui/material/DialogContent';
 import Draggable from 'react-draggable';
 import DialogContentText from '@mui/material/DialogContentText';
 
+import { INVALID_EMAIL_ERROR_MESSAGE, REQUIRED_ERROR_MESSAGE } from "../../appConfig";
+import { authActions } from "../../store/auth-slice";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
+import FormikEmail from "../../components/ui/forms/formik-email";
+import FormikPassword from "../../components/ui/forms/formik-password";
+import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
+import getDevAPI from "../../utils/getDevAPI";
 
 const dialogContent = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla porttitor erat, sed lobortis dui varius a. Nunc feugiat, neque vitae semper congue, libero urna scelerisque velit, at tempus enim augue sit amet dolor. Sed eu congue velit. Nulla porttitor porttitor felis, sit amet aliquet nibh aliquam nec. Suspendisse pretium est lorem, et maximus dolor dictum vel. Praesent consequat eu lorem sit amet ullamcorper. Morbi sem velit, venenatis eu mi pulvinar, cursus luctus magna. Ut nec urna lacus. Sed cursus dolor dui, in faucibus velit elementum vitae. Maecenas ornare sagittis arcu, ac dapibus erat maximus vel. Donec eget est luctus, commodo ipsum vel, convallis orci. Vivamus purus ipsum, sodales elementum neque a, malesuada cursus magna. Ut sit amet eros non tellus luctus pharetra id id odio. Aenean euismod vitae nibh ut tincidunt.
@@ -25,6 +34,23 @@ const dialogContent = `
     Morbi tempor nisi sit amet congue suscipit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In efficitur augue eu magna pretium dictum. Nulla id accumsan quam. Maecenas porttitor pretium turpis. Ut felis ipsum, pellentesque id tellus eu, feugiat fermentum dolor. Nullam a ex massa. Aenean sed imperdiet dolor. Nam a diam vestibulum tellus pharetra semper.
 `;
 
+const LOGIN_FORM_INITIAL_STATE = {
+    email: "",
+    password: ""
+};
+
+const LOGIN_FORM_VALIDATION = Yup.object().shape({
+    email: Yup
+        .string()
+        .typeError(INVALID_EMAIL_ERROR_MESSAGE)
+        .required(REQUIRED_ERROR_MESSAGE)
+        .email(INVALID_EMAIL_ERROR_MESSAGE),
+    password: Yup
+        .string()
+        .required(REQUIRED_ERROR_MESSAGE)
+        .max(30, "Please input less than 30 characters.")
+});
+
 function PaperComponent(props) {
     return (
       <Draggable
@@ -34,14 +60,14 @@ function PaperComponent(props) {
         <Paper {...props} />
       </Draggable>
     );
-}
+};
 
 function LoginPage() {
-    const [conditionsIsOpen, setConditionsIsOpen] = useState(false);
-    const [privacyIsOpen, setPrivacyIsOpen] = useState(false);
-    const [email, setEmail] = useState("");
-    const [isValidEmail, setIsValidEmail] = useState(true);
-    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
+    const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
@@ -59,21 +85,18 @@ function LoginPage() {
         setPrivacyIsOpen(false);
     };
 
-    const handleSetEmail = event => {
-        setEmail(event.target.value)
+    const handleSubmitLoginForm = async (values) => {
+        const LOGIN_API = getDevAPI(process.env.NEXT_PUBLIC_LOGIN_API);
+
+        const data = await axios.post(LOGIN_API, values);
+
+        dispatch(authActions.login());
+
+        router.push('/cart')
+
+        return data;
     };
-
-    const handleIsValidEmail = () => {
-        if (!validator.isEmail(email)) {
-            setIsValidEmail(false);
-            setButtonIsDisabled(true);
-            return;
-        }
-
-        setButtonIsDisabled(false);
-        setIsValidEmail(true);
-    };
-
+ 
     return (
         <Box
             sx={{
@@ -85,47 +108,52 @@ function LoginPage() {
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
 
-                <Paper
-                    className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                <Formik
+                    initialValues={{...LOGIN_FORM_INITIAL_STATE}}
+                    validationSchema={LOGIN_FORM_VALIDATION}
+                    onSubmit={handleSubmitLoginForm}
                 >
-                    <Typography variant="h5">Sign In</Typography>
+                    {({errors, touched}) => (
+                        <Form>
+                            <Paper
+                                className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                            >
+                                <Typography variant="h5">Sign In</Typography>
 
-                    <TextField 
-                        label="Email" 
-                        id="email"
-                        value={email}
-                        error={!isValidEmail}
-                        helperText={isValidEmail ? null : "Please input valid email address"}
-                        variant="standard"
-                        size="small"
-                        fullWidth
-                        margin="normal"
-                        required
-                        onChange={handleSetEmail}
-                        onBlur={handleIsValidEmail}
-                    />
+                                <FormikEmail 
+                                    name="email"
+                                    label="Email" 
+                                />
 
-                    <Button 
-                        fullWidth
-                        variant="contained"
-                        className="mt-3 mb-5"
-                        disabled={buttonIsDisabled}
-                    >
-                        Continue
-                    </Button>
+                                <FormikPassword
+                                    name="password"
+                                    label="Password"
+                                />
 
-                    <Typography variant="caption">
-                        By continuing, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
-                    </Typography>
+                                <FormikSubmitButton 
+                                    fullWidth
+                                    variant="contained"
+                                    className="mt-3 mb-5"
+                                    disabled={(touched.email && errors.email) || (touched.password && errors.password) ? true : false}
+                                >
+                                    Login
+                                </FormikSubmitButton>
 
-                    <Button 
-                        variant="text" className="normal-case block mt-8"
-                    >
-                        <Link href="/auth/forgotPassword">
-                                Forgot Password
-                        </Link>
-                    </Button>
-                </Paper>
+                                <Typography variant="caption">
+                                    By continuing, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
+                                </Typography>
+
+                                <Link href="/auth/forgot-password">
+                                    <Button 
+                                        variant="text" className="normal-case block mt-8"
+                                    >
+                                        Forgot Password
+                                    </Button>
+                                </Link>
+                            </Paper>
+                        </Form>
+                    )}
+                </Formik>
 
                 <Divider 
                     className="mt-5 text-blue-500 text-sm border-sky-500"

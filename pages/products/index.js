@@ -8,8 +8,8 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
-import getAPI from "../../utils/getAPI";
-import getPaginatedProducts from "../../utils/getPaginatedProducts";
+import getDevAPI from "../../utils/getDevAPI";
+import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
@@ -74,7 +74,7 @@ function ProductPage(props) {
                 />
             </Divider>
 
-            <ProductInfo products={getPaginatedProducts(products, page)} />
+            <ProductInfo products={getPaginatedItems(products, page)} />
 
             <PaginationButtons 
                 numOfResults={numOfResults}
@@ -88,7 +88,7 @@ function ProductPage(props) {
 export default ProductPage;
 
 export async function getStaticProps() {
-    const GET_ALL_PRODUCTS_API = getAPI(process.env.GET_ALL_PRODUCTS_API);
+    const GET_ALL_PRODUCTS_API = getDevAPI(process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
     const results = await axios.get(GET_ALL_PRODUCTS_API);
     
     return {
@@ -97,6 +97,6 @@ export async function getStaticProps() {
             numOfResults: results.data.numOfResults,
             products: results.data.data
         },
-        revalidate: 60
+        revalidate: 10
     }
 };

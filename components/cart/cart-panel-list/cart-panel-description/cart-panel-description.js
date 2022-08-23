@@ -18,7 +18,7 @@ function CartPanelDescription(props) {
         buttonStack = <SavedItemsButtonStack />
     } else if (currentTab === "buy") {
         buttonStack = <BuyAgainItemsButtonStack />
-    } 
+    };
 
     return (
         <Box className="flex flex-col flex-1">

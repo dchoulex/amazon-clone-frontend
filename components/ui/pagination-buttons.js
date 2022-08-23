@@ -10,13 +10,13 @@ function PaginationButtons(props) {
     let paginationConfig = {
         ...otherProps,
         count: numOfPages,
-        color: "primary",
+        color: "primary"
     };
 
     if (numOfPages > 2) {
         paginationConfig.showFirstButton = true;
         paginationConfig.showLastButton = true;
-    }
+    };
 
     return (
         <Stack className="flex-row justify-center pt-5 pb-7">

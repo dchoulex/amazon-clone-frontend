@@ -13,7 +13,7 @@ function CartPanelList(props) {
     return (
         <Box>
             {items.map((item, index) => (
-                <Fragment key={item.productName}>
+                <Fragment key={`item-${index}`}>
                     <Box className="flex py-7">
                         <Box 
                             className="w-[50px] flex flex-col justify-center items-center"

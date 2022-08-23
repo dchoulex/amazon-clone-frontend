@@ -47,11 +47,11 @@ function OrderItemList(props) {
                                 </Button>
 
                                 {status === "delivered" && 
-                                <Button 
-                                    variant="contained"
-                                    startIcon={<RateReviewIcon />}
-                                    className="bg-violet-500"
-                                >
+                                    <Button 
+                                        variant="contained"
+                                        startIcon={<RateReviewIcon />}
+                                        color="secondary"
+                                    >
                                         Review
                                     </Button>
                                 }
