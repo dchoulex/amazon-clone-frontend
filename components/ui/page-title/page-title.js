@@ -21,7 +21,7 @@ function PageTitle(props) {
                     variant="overline" 
                     className="text-base font-light"
                 >
-                    {numOfResults} items
+                    {numOfResults === 0 ? "No items avaialable" : `${numOfResults} item(s)`}
                 </Typography>
             }
 

@@ -13,42 +13,105 @@ const addresses = [
         phoneNumber: "12304566",
         isDefault: true
     },
-    {
-        name: "Fever pitch",
-        postCode: "123-456",
-        city: "Sunlight",
-        detail: "Tst matsugahana something something",
-        country: "Japan",
-        phoneNumber: "12304566",
-        isDefault: false
-    },
-    {
-        name: "Fever pitch",
-        postCode: "123-456",
-        city: "Sunlight",
-        detail: "Tst matsugahana something something",
-        country: "Japan",
-        phoneNumber: "12304566",
-        isDefault: false
-    },
-    {
-        name: "Fever pitch",
-        postCode: "123-456",
-        city: "Sunlight",
-        detail: "Tst matsugahana something something",
-        country: "Japan",
-        phoneNumber: "12304566",
-        isDefault: false
-    },
-    {
-        name: "Fever pitch",
-        postCode: "123-456",
-        city: "Sunlight",
-        detail: "Tst matsugahana something something",
-        country: "Japan",
-        phoneNumber: "12304566",
-        isDefault: false
-    },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: true
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: false
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: false
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: false
+    // },
+    // {
+    //     name: "Fever pitch",
+    //     postCode: "123-456",
+    //     city: "Sunlight",
+    //     detail: "Tst matsugahana something something",
+    //     country: "Japan",
+    //     phoneNumber: "12304566",
+    //     isDefault: false
+    // },
 ];
 
 function AddressPage() {

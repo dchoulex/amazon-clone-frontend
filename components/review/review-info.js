@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -6,13 +7,24 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
+import { reviewActions } from "../../store/review-slice";
 import ReviewCard from "./review-card";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
+import getPaginatedItems from "../../utils/getPaginatedItems";
+import NoItemInfo from "../ui/no-item-info";
 
 function ReviewInfo(props) {
     const { title, reviews } = props;
-    const numberOfPages = 5;
+    const dispatch = useDispatch();
+
+    const numOfResults = reviews.length;
+    const currentPage = useSelector(state => state.review.reviewPage);
+    const paginatedReviews = getPaginatedItems(reviews, currentPage);
+
+    const handleChangePage = (_, value) => {
+        dispatch(reviewActions.changeReviewPage({ page: value }));
+    };
 
     return (
         <Box>
@@ -32,7 +44,7 @@ function ReviewInfo(props) {
 
                 <Box px={5} my={2}>
                     <Grid container spacing={3}>
-                        {reviews.map((review, index) => (
+                        {paginatedReviews.map((review, index) => (
                             <Grid 
                                 key={`review-card-${index}`} 
                                 item 
@@ -45,7 +57,14 @@ function ReviewInfo(props) {
                     </Grid>
                 </Box>
     
-                <PaginationButtons numberOfPages={numberOfPages} />
+                {numOfResults === 0 ?
+                    <NoItemInfo /> :
+                    <PaginationButtons 
+                        numOfResults={numOfResults} 
+                        page={currentPage}
+                        onChange={handleChangePage}
+                    />
+                }
             </Paper>
         </Box>
     )

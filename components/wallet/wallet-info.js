@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -6,14 +7,25 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
+import { walletActions } from "../../store/wallet-slice";
 import WalletCard from "./wallet-card";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
+import getPaginatedItems from "../../utils/getPaginatedItems";
+import NoItemInfo from "../ui/no-item-info";
 
 function WalletInfo(props) {
     const { title, creditCards } = props;
-    const numberOfPages = 4;
     const [ openCreditCardForm , setOpenCreditCardForm ] = useState(false);
+    const dispatch = useDispatch();
+
+    const numOfResults = creditCards.length;
+    const currentPage = useSelector(state => state.wallet.walletPage);
+    const paginatedCreditCards = getPaginatedItems(creditCards, currentPage);
+
+    const handleChangePage = (_, value) => {
+        dispatch(walletActions.changeWalletPage({ page: value }));
+    };
 
     const handleOpenCreditCardForm = () => {
         setOpenCreditCardForm(true);
@@ -22,7 +34,10 @@ function WalletInfo(props) {
     return (
         <Box>
             <Paper className="bg-white">
-                <PageTitle title={title} />
+                <PageTitle 
+                    title={title} 
+                    numOfResults={numOfResults}
+                />
 
                 <Divider className="border-gray-400 mb-5"/>
 
@@ -38,7 +53,7 @@ function WalletInfo(props) {
 
                 <Box px={5} my={2}>
                     <Grid container spacing={3}>
-                        {creditCards.map((card, index) => (
+                        {paginatedCreditCards.map((card, index) => (
                             <Grid 
                                 key={`credit-card-${index}`} 
                                 item 
@@ -54,7 +69,14 @@ function WalletInfo(props) {
                     </Grid>
                 </Box>
 
-                <PaginationButtons numberOfPages={numberOfPages} />
+                {numOfResults === 0 ?
+                    <NoItemInfo /> :
+                    <PaginationButtons 
+                        numOfResults={numOfResults} 
+                        page={currentPage}
+                        onChange={handleChangePage}
+                    />
+                }
             </Paper>
         </Box>
     )

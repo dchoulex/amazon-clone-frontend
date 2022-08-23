@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -6,16 +7,26 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
+import { addressActions } from "../../store/address-slice";
+import getPaginatedItems from "../../utils/getPaginatedItems";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import AddressCard from "./address-card";
 import AddAddressForm from "./add-address-form";
+import NoItemInfo from "../ui/no-item-info";
 
 function AddressInfo(props) {
     const { title, addresses } = props;
-    const numberOfPages = 4;
-
+    const dispatch = useDispatch();
     const [ openAddressDialog, setOpenAddressDialog ] = useState(false);
+
+    const numOfResults = addresses.length;
+    const currentPage = useSelector(state => state.address.addressPage);
+    const paginatedAddresses = getPaginatedItems(addresses, currentPage);
+
+    const handleChangePage = (_, value) => {
+        dispatch(addressActions.changeAddressPage({ page: value }));
+    };
 
     const handleOpenAddressDialog = () => {
         setOpenAddressDialog(true);
@@ -24,7 +35,10 @@ function AddressInfo(props) {
     return (
         <Box>
             <Paper className="bg-white">
-                <PageTitle title={title} />
+                <PageTitle 
+                    title={title} 
+                    numOfResults={numOfResults}
+                />
 
                 <Divider className="border-gray-400 mb-5"/>
 
@@ -45,7 +59,7 @@ function AddressInfo(props) {
 
                 <Box px={5} my={2}>
                     <Grid container spacing={3}>
-                        {addresses.map((address, index) => (
+                        {paginatedAddresses.map((address, index) => (
                             <Grid 
                                 key={`address-card-${index}`} 
                                 item 
@@ -61,7 +75,14 @@ function AddressInfo(props) {
                     </Grid>
                 </Box>
     
-                <PaginationButtons numberOfPages={numberOfPages} />
+                {numOfResults === 0 ?
+                    <NoItemInfo /> :
+                    <PaginationButtons 
+                        numOfResults={numOfResults} 
+                        page={currentPage}
+                        onChange={handleChangePage}
+                    />
+                }
             </Paper>
         </Box>
     )
