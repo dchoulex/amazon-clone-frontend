@@ -1,4 +1,4 @@
-export default function getDevAPI(api, id = null, id2 = null, query = null) {
+export default function getAPI(api, id = null, id2 = null, query = null) {
     let API_URI = api.replace("<URL>", process.env.NEXT_PUBLIC_DEV_URL);
 
     if (id) {

@@ -1,32 +1,39 @@
-import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import Link from 'next/link';
-import validator from "validator";
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+import { authActions } from "../../store/auth-slice";
+import { EMAIL_SCHEMA } from "../../components/ui/forms/form-schema";
+import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
+import FormikEmail from "../../components/ui/forms/formik-email";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 
+const FORGOT_PASSWORD_FORM_INITIAL_STATE = {
+    email: ""
+};
+
+const FORGOT_PASSWORD_FORM_VALIDATION = Yup.object().shape({
+    email: EMAIL_SCHEMA
+});
+
 function ForgotPasswordPage() {
-    const [email, setEmail] = useState("");
-    const [isValidEmail, setIsValidEmail] = useState(true);
-    const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
+    const dispatch = useDispatch();
 
-    const handleSetEmail = event => {
-        setEmail(event.target.value)
-    };
+    const handleSubmitForgotPasswordForm = async (values) => {
+        const FORGOT_PASSWORD_API = getAPI(process.env.NEXT_PUBLIC_FORGOT_PASSWORD_API);
 
-    const handleIsValidEmail = () => {
-        if (!validator.isEmail(email)) {
-            setIsValidEmail(false);
-            setButtonIsDisabled(true);
-            return;
-        }
+        const data = await axios.post(FORGOT_PASSWORD_API, values);
 
-        setButtonIsDisabled(false);
-        setIsValidEmail(true);
+        dispatch(authActions.login());
+
+        router.push('/auth/verify-user')
+
+        return data;
     };
 
     return (
@@ -40,46 +47,47 @@ function ForgotPasswordPage() {
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
 
-                <Paper
-                    className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                <Formik
+                    initialValues={{ ...FORGOT_PASSWORD_FORM_INITIAL_STATE }}
+                    validationSchema={FORGOT_PASSWORD_FORM_VALIDATION}
+                    onSubmit={handleSubmitForgotPasswordForm}
                 >
-                    <Typography variant="h5">Password Assistance</Typography>
+                    {({errors, touched}) => (
+                        <Form>
+                            <Paper
+                                className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                            >
+                                <Typography variant="h5">Password Assistance</Typography>
 
-                    <Typography variant="caption">
-                        Enter the email address associated with your Amazon account.
-                    </Typography>
+                                <Typography variant="caption">
+                                    Enter the email address associated with your Amazon account.
+                                </Typography>
 
-                    <TextField 
-                        label="Email" 
-                        error={!isValidEmail}
-                        helperText={isValidEmail ? null : "Please input valid email address"}
-                        id="email"
-                        variant="standard"
-                        size="small"
-                        fullWidth
-                        margin="normal"
-                        required
-                        onChange={handleSetEmail}
-                        onBlur={handleIsValidEmail}
-                    />
+                                <FormikEmail 
+                                    name="email"
+                                    label="Email" 
+                                />
 
-                    <Button 
-                        fullWidth
-                        variant="contained"
-                        className="mt-3 mb-5"
-                        disabled={buttonIsDisabled}
-                    >
-                        Continue
-                    </Button>
-                    
-                    <Button 
-                        variant="text" className="normal-case block mt-2"
-                    >
-                        <Link href="/auth/login">
-                            Back to login page
-                        </Link>
-                    </Button>
-                </Paper>
+                                <FormikSubmitButton 
+                                    fullWidth
+                                    variant="contained"
+                                    className="mt-3 mb-5"
+                                    disabled={(touched.email && errors.email) ? true : false}
+                                >
+                                    Continue
+                                </FormikSubmitButton>
+                                
+                                <Link href="/auth/login">
+                                    <Button 
+                                        variant="text" className="normal-case block mt-2"
+                                    >
+                                            Back to login page
+                                    </Button>
+                                </Link>
+                            </Paper>
+                        </Form>
+                    )}
+                </Formik>
             </Box>
         </Box>
     )

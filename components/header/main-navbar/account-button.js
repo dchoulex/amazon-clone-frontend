@@ -2,33 +2,34 @@ import { useState, Fragment } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from '@mui/icons-material/Person';
 
 function AccountButton() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [open, setOpen] = useState(false);
-
-    const handleOpen = event => {
+    const isLogin = false;
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-        setOpen(true);
     };
-
-    const handleClose = event => {
+    
+    const handleClose = () => {
         setAnchorEl(null);
-        setOpen(false);
     };
-
+  
     return (
         <Fragment>
             <Button 
                 className="normal-case text-white h-56px flex-none"
-                aria-owns={anchorEl ? "country-selection-menu" : undefined}
-                aria-haspopup={anchorEl ? true : undefined}
-                onMouseOver={handleOpen}
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
             >
                 <PersonIcon />
 
@@ -38,56 +39,93 @@ function AccountButton() {
                     </Typography>
 
                     <Typography className="text-base">
-                    Account & Lists
+                        My Account
                     </Typography>
                 </Box>
 
                 <ArrowDropDownIcon className="text-gray-400" />
             </Button>
 
-            <Menu   
-                id="country-selection-menu"
+            <Menu
+                id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                MenuListProps={{ onMouseLeave: handleClose }}
-                PaperProps={{
-                    elevation: 0,
-                    sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                        '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                        },
-                        '&:before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                        },
-                    },
-                    }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
             >
-                <MenuItem 
-                    onClick={handleClose}
-                >
-                    <Typography>
-                        This is account button menu
-                    </Typography>
-                </MenuItem>
+                {isLogin &&
+                    <Link href="/account">
+                        <MenuItem 
+                            onClick={handleClose} 
+                            sx={{ justifyContent: "center" }}
+                        >
+                            <Button variant="contained" >
+                                Account
+                            </Button>
+                        </MenuItem>
+                    </Link>
+                }
+
+                <Link href={isLogin ? "/" : "/auth/login"}>
+                    <MenuItem 
+                        onClick={handleClose}   
+                        sx={{ 
+                            justifyContent: "center",
+                            "&:hover": {
+                                backgroundColor: "white"
+                            },
+                            pb: 2
+                        }}
+                        divider
+                    >
+                        <Button variant="outlined" >
+                            {isLogin ? "Logout" : "Login"}
+                        </Button>
+                    </MenuItem>
+                </Link>
+
+                {!isLogin &&
+                    <Fragment>
+                        <MenuItem
+                            onClick={handleClose}   
+                            sx={{ 
+                                justifyContent: "center",
+                                "&:hover": {
+                                    backgroundColor: "white"
+                                }
+                            }}
+                        >
+                            <Typography 
+                                px={2} 
+                                pt={1}
+                                variant="outlined"
+                            >
+                                New to Amazon?
+                            </Typography>
+                        </MenuItem>
+
+                        <Link href="/auth/sign-up">
+                            <MenuItem 
+                                onClick={handleClose}   
+                                sx={{ 
+                                    justifyContent: "center",
+                                    "&:hover": {
+                                        backgroundColor: "white"
+                                    } 
+                                }}
+                            >
+                                <Button variant="contained" >
+                                    Sign Up
+                                </Button>
+                            </MenuItem>
+                        </Link>                
+                    </Fragment>
+                }
             </Menu>
+
+            
         </Fragment>
     )
 };

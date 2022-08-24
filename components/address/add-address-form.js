@@ -16,12 +16,12 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { REQUIRED_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE, NUMBER_REGEX, PREFECTURES } from "../../appConfig";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
+import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA } from "../ui/forms/form-schema";
 
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
-    fullName: "",
+    name: "",
     country: "Japan",
     postCode: "",
     prefecture: "",
@@ -31,40 +31,13 @@ const ADD_ADDRESS_INITIAL_FORM_STATE = {
 };
 
 const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
-    fullName: Yup
-        .string()
-        .required(REQUIRED_ERROR_MESSAGE)
-        .max(50, "Please input at most 50 characters.")
-        .trim(),
-
-    country: Yup
-        .string()
-        .required(REQUIRED_ERROR_MESSAGE),
-
-    postCode: Yup
-        .string()
-        .matches(NUMBER_REGEX, INVALID_NUMBER_TYPE_ERROR_MESSAGE)
-        .length(7, "Please input ${length} digits only.")
-        .required(REQUIRED_ERROR_MESSAGE),
-
-    prefecture: Yup
-        .string()
-        .required(REQUIRED_ERROR_MESSAGE)
-        .oneOf(PREFECTURES, "Please input valid prefecture."),
-
-    city: Yup
-        .string()
-        .required(REQUIRED_ERROR_MESSAGE),
-
-    rest: Yup
-        .string()
-        .required(REQUIRED_ERROR_MESSAGE),
-
-    phoneNumber: Yup
-        .string()
-        .matches(NUMBER_REGEX, INVALID_NUMBER_TYPE_ERROR_MESSAGE)
-        .max(11, "Phone number must be at most ${max} digits.")
-        .required(REQUIRED_ERROR_MESSAGE),
+    name: NAME_SCHEMA,
+    country: STRING_REQUIRED_SCHEMA,
+    postCode: POST_CODE_SCHEMA,
+    prefecture: PREFECTURE_SCHEMA,
+    city: STRING_REQUIRED_SCHEMA,
+    rest: STRING_REQUIRED_SCHEMA,
+    phoneNumber: PHONE_NUMBER_SCHEMA,
 });
 
 function AddAddressForm(props) {
@@ -117,8 +90,8 @@ function AddAddressForm(props) {
                             <Grid container direction="vertical">
                                 <Grid item xs={12}>
                                     <FormikTextField 
-                                        name="fullName"
-                                        label="Full name" 
+                                        name="name"
+                                        label="Name" 
                                         variant="standard"
                                         required
                                     />

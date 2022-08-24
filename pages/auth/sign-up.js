@@ -1,30 +1,29 @@
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import Link from 'next/link';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import HomeIcon from '@mui/icons-material/Home';
 import Draggable from 'react-draggable';
+import DialogContentText from '@mui/material/DialogContentText';
 
 import { authActions } from "../../store/auth-slice";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
+import FormikTextField from "../../components/ui/forms/formik-text-field";
 import FormikEmail from "../../components/ui/forms/formik-email";
 import FormikPassword from "../../components/ui/forms/formik-password";
 import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
 import getAPI from "../../utils/getAPI";
-import { EMAIL_SCHEMA, PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
+import { CONFIRM_PASSWORD_SCHEMA, EMAIL_SCHEMA, NAME_SCHEMA, PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
 
 const dialogContent = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla porttitor erat, sed lobortis dui varius a. Nunc feugiat, neque vitae semper congue, libero urna scelerisque velit, at tempus enim augue sit amet dolor. Sed eu congue velit. Nulla porttitor porttitor felis, sit amet aliquet nibh aliquam nec. Suspendisse pretium est lorem, et maximus dolor dictum vel. Praesent consequat eu lorem sit amet ullamcorper. Morbi sem velit, venenatis eu mi pulvinar, cursus luctus magna. Ut nec urna lacus. Sed cursus dolor dui, in faucibus velit elementum vitae. Maecenas ornare sagittis arcu, ac dapibus erat maximus vel. Donec eget est luctus, commodo ipsum vel, convallis orci. Vivamus purus ipsum, sodales elementum neque a, malesuada cursus magna. Ut sit amet eros non tellus luctus pharetra id id odio. Aenean euismod vitae nibh ut tincidunt.
@@ -36,14 +35,18 @@ const dialogContent = `
     Morbi tempor nisi sit amet congue suscipit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In efficitur augue eu magna pretium dictum. Nulla id accumsan quam. Maecenas porttitor pretium turpis. Ut felis ipsum, pellentesque id tellus eu, feugiat fermentum dolor. Nullam a ex massa. Aenean sed imperdiet dolor. Nam a diam vestibulum tellus pharetra semper.
 `;
 
-const LOGIN_FORM_INITIAL_STATE = {
+const SIGN_UP_FORM_INITIAL_STATE = {
+    name: "",
     email: "",
-    password: ""
+    password: "",
+    confirmPassword: ""
 };
 
-const LOGIN_FORM_VALIDATION = Yup.object().shape({
+const SIGN_UP_FORM_VALIDATION = Yup.object().shape({
+    name: NAME_SCHEMA,
     email: EMAIL_SCHEMA,
-    password: PASSWORD_SCHEMA
+    password: PASSWORD_SCHEMA,
+    confirmPassword: CONFIRM_PASSWORD_SCHEMA
 });
 
 function PaperComponent(props) {
@@ -57,7 +60,7 @@ function PaperComponent(props) {
     );
 };
 
-function LoginPage() {
+function SignUpPage() {
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -80,19 +83,19 @@ function LoginPage() {
         setPrivacyIsOpen(false);
     };
 
-    const handleSubmitLoginForm = async (values) => {
-        const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
+    const handleSubmitSignUpForm = async (values) => {
+        const SIGN_UP_API = getAPI(process.env.NEXT_PUBLIC_SIGN_UP_API);
 
-        const data = await axios.post(LOGIN_API, values);
+        const data = await axios.post(SIGN_UP_API, values);
 
         dispatch(authActions.login());
 
-        router.push('/cart')
+        router.push('/');
 
         return data;
     };
- 
-    return (
+
+    return(
         <Box
             sx={{
                 width: "100vw",
@@ -104,47 +107,55 @@ function LoginPage() {
                 <LogoButtonWhite />
 
                 <Formik
-                    initialValues={{...LOGIN_FORM_INITIAL_STATE}}
-                    validationSchema={LOGIN_FORM_VALIDATION}
-                    onSubmit={handleSubmitLoginForm}
+                    initialValues={{...SIGN_UP_FORM_INITIAL_STATE}}
+                    validationSchema={SIGN_UP_FORM_VALIDATION}
+                    onSubmit={handleSubmitSignUpForm}
                 >
                     {({errors, touched}) => (
                         <Form>
                             <Paper
                                 className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
                             >
-                                <Typography variant="h5">Sign In</Typography>
+                                <Typography variant="h5">Create account</Typography>
+
+                                <FormikTextField 
+                                    name="name"
+                                    label="Name"
+                                    variant="standard"
+                                    fullWidth
+                                    className="my-2"
+                                />
 
                                 <FormikEmail 
                                     name="email"
                                     label="Email" 
+                                    className="my-2"
                                 />
 
                                 <FormikPassword
                                     name="password"
                                     label="Password"
+                                    className="my-2"
+                                />
+
+                                <FormikPassword
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    className="my-2"
                                 />
 
                                 <FormikSubmitButton 
                                     fullWidth
                                     variant="contained"
                                     className="mt-3 mb-5"
-                                    disabled={(touched.email && errors.email) || (touched.password && errors.password) ? true : false}
+                                    disabled={(touched.email && errors.email) || (touched.password && errors.password) || (touched.name && errors.name) || (touched.reEnterPassword && errors.reEnterPassword) ? true : false}
                                 >
-                                    Login
+                                    Sign up
                                 </FormikSubmitButton>
 
                                 <Typography variant="caption">
-                                    By continuing, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
+                                    By creating an account, you agree to Amazon&apos;s <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenConditions}>Conditions of Use</a> and <a className="text-blue-500 hover:underline hover:cursor-pointer" onClick={handleOpenPrivacy}>Privacy Notice.</a>
                                 </Typography>
-
-                                <Link href="/auth/forgot-password">
-                                    <Button 
-                                        variant="text" className="mt-8 normal-case block"
-                                    >
-                                        Forgot Password
-                                    </Button>
-                                </Link>
                             </Paper>
                         </Form>
                     )}
@@ -154,15 +165,15 @@ function LoginPage() {
                     className="mt-5 text-blue-500 text-sm border-sky-500"
                     flexItem
                 >
-                    New to Amazon ?
+                    Already have an account?
                 </Divider> 
 
-                <Link href="/auth/sign-up">
+                <Link href="/auth/login">
                     <Button 
-                        variant="outlined" className="normal-case my-5"
+                        variant="outlined" className="my-5"
                         fullWidth
                     >
-                        Create your Amazon account
+                        Login
                     </Button>
                 </Link>
             </Box>
@@ -212,4 +223,4 @@ function LoginPage() {
     )
 };
 
-export default LoginPage;
+export default SignUpPage;

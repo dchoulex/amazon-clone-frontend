@@ -1,72 +1,39 @@
-import { useState, Fragment } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { useDispatch } from "react-redux";
 import Link from 'next/link';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import FormikPassword from "../../components/ui/forms/formik-password";
+import { PASSWORD_SCHEMA, CONFIRM_PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 
+const RESET_PASSWORD_FORM_INITIAL_STATE = {
+    password: "",
+    confirmPassword: ""
+};
+
+const RESET_PASSWORD_FORM_VALIDATION = Yup.object().shape({
+    password: PASSWORD_SCHEMA,
+    confirmPassword: CONFIRM_PASSWORD_SCHEMA
+});
+
 function ResetPasswordPage() {
-    const [newPassword, setNewPassword] = useState("");
-    const [isValidPassword, setIsValidPassword] = useState(true);
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [areSamePassword, setAreSamePassword] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(true);
-    const [showNewPassword, setShowNewPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const dispatch = useDispatch();
 
-    const handleCheckIsValidPassword = event => {
-        const password = event.target.value;
+    const handleSubmitResetPasswordForm = async (values) => {
+        const SIGN_UP_API = getAPI(process.env.NEXT_PUBLIC_SIGN_UP_API);
 
-        if (password === "") {
-            setIsValidPassword(false);
-            return;
-        };
+        const data = await axios.post(SIGN_UP_API, values);
 
-        if (confirmPassword !== "" || password === confirmPassword) {
-            setAreSamePassword(true);
-            setIsDisabled(false);
-        };
+        dispatch(authActions.login());
 
-        if (confirmPassword !== "" && password !== confirmPassword) {
-            setAreSamePassword(false);
-            setIsDisabled(true);
-        };
+        router.push('/');
 
-        setIsValidPassword(true);
-    };
-
-    const handleSetNewPassword = event => {
-        setNewPassword(event.target.value);
-    };
-
-    const handleCheckAreSamePassword = event => {
-        if (event.target.value === newPassword) {
-            setAreSamePassword(true);
-            setIsDisabled(false);
-            return;
-        };
-
-        setIsDisabled(true);
-        setAreSamePassword(false);
-    };
-
-    const handleSetConfirmPassword = event => {
-        setConfirmPassword(event.target.value);
-    };
-
-    const handleClickShowNewPassword = () => {
-        setShowNewPassword(!showNewPassword)
-    };
-
-    const handleClickShowConfirmPassword = () => {
-        setShowConfirmPassword(!showConfirmPassword)
+        return data;
     };
 
     return (
@@ -80,83 +47,49 @@ function ResetPasswordPage() {
             <Box className="flex flex-col pt-8 mb-2">
                 <LogoButtonWhite />
 
-                <Paper
-                    className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                <Formik
+                    initialValues={{...RESET_PASSWORD_FORM_INITIAL_STATE}}
+                    validationSchema={RESET_PASSWORD_FORM_VALIDATION}
+                    onSubmit={handleSubmitResetPasswordForm}
                 >
-                    <Typography variant="h5">
-                        Create new password
-                    </Typography>
+                    {({errors, touched}) => (
+                        <Form>
+                            <Paper
+                                className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
+                            >
+                                <Typography variant="h5">
+                                    Create new password
+                                </Typography>
 
-                    <Typography variant="subtitle2">
-                        We&apos;ll ask for this password whenever you Sign-In.
-                    </Typography>
+                                <Typography variant="subtitle2">
+                                    We&apos;ll ask for this password whenever you Sign-In.
+                                </Typography>
 
-                    <TextField 
-                        label="New password" 
-                        id="new-password"
-                        type={showNewPassword ? "text" : "password"}
-                        value={newPassword}
-                        variant="standard"
-                        size="small"
-                        fullWidth
-                        margin="normal"
-                        required
-                        error={!isValidPassword}
-                        helperText={!isValidPassword ? "This field is required" : null}
-                        InputProps={{
-                            endAdornment: 
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={handleClickShowNewPassword}
+                                <FormikPassword
+                                    name="password"
+                                    label="Password"
+                                    className="my-2"
+                                />
+
+                                <FormikPassword
+                                    name="confirmPassword"
+                                    label="Confirm Password"
+                                    className="my-2"
+                                />
+
+                                <Button 
+                                    fullWidth
+                                    disableRipple
+                                    disabled={(touched.confirmPassword && errors.confirmPassword) || (touched.password && errors.password) ? true : false }
+                                    variant="contained"
+                                    className="my-5"
                                 >
-                                    {showNewPassword ? 
-                                        <VisibilityOff /> : 
-                                        <Visibility />
-                                    }
-                                </IconButton>
-                            </InputAdornment>
-                        }}
-                        onBlur={handleCheckIsValidPassword}
-                        onChange={handleSetNewPassword}
-                    />
-                    <TextField 
-                        label="Confirm password" 
-                        id="confirm-password"
-                        type={showConfirmPassword ? "text" : "password"}
-                        value={confirmPassword}
-                        variant="standard"
-                        size="small"
-                        fullWidth
-                        margin="normal"
-                        required
-                        error={!areSamePassword}
-                        helperText={!areSamePassword ? "The password are different. Please input the same password." : null}
-                        InputProps={{
-                            endAdornment: 
-                            <InputAdornment position="end">
-                                <IconButton
-                                    onClick={handleClickShowConfirmPassword}
-                                >
-                                    {showConfirmPassword ? 
-                                        <VisibilityOff /> : 
-                                        <Visibility />
-                                    }
-                                </IconButton>
-                            </InputAdornment>
-                        }}
-                        onBlur={handleCheckAreSamePassword}
-                        onChange={handleSetConfirmPassword}
-                    />
-                    <Button 
-                        fullWidth
-                        disableRipple
-                        disabled={isDisabled}
-                        variant="contained"
-                        className="my-5 normal-case"
-                    >
-                        Save Changes and Sign-In
-                    </Button>
-                </Paper>
+                                    Save changes
+                                </Button>
+                            </Paper>
+                        </Form>
+                    )}
+                </Formik>
 
                 <Box className="w-[300px] justify-center">
                     <Typography 
