@@ -13,6 +13,7 @@ import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import NoItemInfo from "../ui/no-item-info";
+import AddCreditCardForm from "./add-credit-card-form";
 
 function WalletInfo(props) {
     const { title, creditCards } = props;
@@ -78,6 +79,11 @@ function WalletInfo(props) {
                     />
                 }
             </Paper>
+
+            <AddCreditCardForm 
+                openCreditCardForm={openCreditCardForm}
+                setOpenCreditCardForm={setOpenCreditCardForm}
+            />
         </Box>
     )
 };

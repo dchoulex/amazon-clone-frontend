@@ -6,21 +6,21 @@ import WalletInfo from "../../components/wallet/wallet-info";
 const creditCards = [
     // {
     //     type: "Mastercard",
-    //     userName: "Fever Pitch",
+    //     name: "Fever Pitch",
     //     expirationDate: "12334343",
     //     number: "202204",
     //     isDefault: true
     // },
     // {
     //     type: "Mastercard",
-    //     userName: "Fever Pitch",
+    //     name: "Fever Pitch",
     //     expirationDate: "202205",
     //     number: "12304566",
     //     isDefault: false
     // },
     // {
     //     type: "Mastercard",
-    //     userName: "Fever Pitch",
+    //     name: "Fever Pitch",
     //     expirationDate: "202205",
     //     number: "12304566",
     //     isDefault: false

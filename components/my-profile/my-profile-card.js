@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Link from "next/link";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
@@ -9,7 +11,15 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
 
+import ChangeProfileForm from "./change-profile-form";
+
 function MyProfileCard() {
+    const [ openChangeProfileForm, setOpenChangeProfileForm ] = useState(false);
+
+    const handleOpenChangeProfileForm = () => {
+        setOpenChangeProfileForm(true);
+    };
+
     return (
         <Box px={3} pb={4} pt={2}>
             <Paper className="p-5 border-2 border-solid border-gray-300 flex">
@@ -63,20 +73,34 @@ function MyProfileCard() {
                     </Box>
 
                     <Stack direction="row" spacing={3} mt={2}>
-                        <Button size="small" variant="contained">Change password</Button>
+                        <Link href="/auth/reset-password">
+                            <Button 
+                                size="small" 
+                                variant="contained"
+                            >
+                                Change password
+                            </Button>
+                        </Link>
 
-                        <Button size="small" variant="outlined">Change account</Button>
+                        <Link href="/auth/login">
+                            <Button size="small" variant="outlined">Change account</Button>
+                        </Link>
                     </Stack>
                 </Box>
 
                 <Box className="ml-auto flex flex-col">
-                    <IconButton color="primary">
+                    <IconButton color="primary" onClick={handleOpenChangeProfileForm} >
                         <EditIcon />
                     </IconButton>
                     
                     <Typography variant="caption" className="pl-2">Edit</Typography>
                 </Box>
             </Paper>
+
+            <ChangeProfileForm 
+                openChangeProfileForm={openChangeProfileForm}
+                setOpenChangeProfileForm={setOpenChangeProfileForm}
+            />
         </Box>
     )
 };

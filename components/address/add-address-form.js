@@ -6,8 +6,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -16,9 +14,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
+import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
 import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA } from "../ui/forms/form-schema";
+import { PREFECTURES } from "../../appConfig";
 
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
     name: "",
@@ -41,7 +41,7 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 });
 
 function AddAddressForm(props) {
-    const { openAddressDialog, setOpenAddressDialog } = props;
+    const { openAddAddressForm, setOpenAddAddressForm } = props;
 
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
@@ -51,19 +51,21 @@ function AddAddressForm(props) {
         setOpenConfirmCloseDialog(true);
     };
 
-    const handleCloseConfirmCloseDialog = () => {
-        setOpenConfirmCloseDialog(false);
-    };
-
     const handleCloseAllDialog = () => {
         setOpenConfirmCloseDialog(false);
-        setOpenAddressDialog(false);
+        setOpenAddAddressForm(false);
     };
 
     return (
         <Fragment>
-            <Dialog open={openAddressDialog}>
-                <DialogTitle sx={{ display: "flex" }}>
+            <Dialog open={openAddAddressForm}>
+                <DialogTitle              
+                    sx={{ 
+                        display: "flex", 
+                        borderBottom: 1,
+                        borderColor: "divider" 
+                    }}
+                >
                     <Box sx={{ display: "flex", flex: "1 1 0%" }}>
                         <Typography sx={{ paddingTop: "4px"}} variant="h5">Add a new address </Typography> 
 
@@ -107,13 +109,10 @@ function AddAddressForm(props) {
                                 </Grid>
 
                                 <Grid item xs={12}>
-                                    <FormControl>
-                                        <FormLabel component="legend" sx={{ fontSize: "12px" }} required >Post Code</FormLabel>
-                                    </FormControl>
-
                                     <Box sx={{ display: "flex" }}>
                                         <FormikTextField 
                                             name="postCode"
+                                            label="Post Code"
                                             variant="standard"
                                             size="small"
                                             required
@@ -128,7 +127,7 @@ function AddAddressForm(props) {
                                         variant="standard"
                                         required
                                         options={PREFECTURES}
-                                        sx={{ mr: "2rem" }}
+                                        sx={{ minWidth: "110px" }}
                                     />                            
                                 </Grid>
 
@@ -177,23 +176,11 @@ function AddAddressForm(props) {
                 </Formik>
             </Dialog>
 
-            <Dialog open={openConfirmCloseDialog}>
-                <DialogTitle id="confirm-close-dialog">
-                    Are you sure you want to close?
-                </DialogTitle>
-
-                <DialogContent id="confirm-close-dialog-title">
-                    <DialogContentText id="confirm-close-dialog-description">
-                        You will lose all of the information you have input so far if you close.
-                    </DialogContentText>
-                </DialogContent>
-
-                <DialogActions>
-                    <Button onClick={handleCloseConfirmCloseDialog}>No</Button>
-
-                    <Button onClick={handleCloseAllDialog}>Yes</Button>
-                </DialogActions>
-            </Dialog>
+            <ConfirmCloseDialog 
+                openConfirmCloseDialog={openConfirmCloseDialog}
+                handleCloseAllDialog={handleCloseAllDialog}
+                setOpenConfirmCloseDialog={setOpenConfirmCloseDialog}
+            />
         </Fragment>
     )
 };

@@ -18,7 +18,7 @@ import NoItemInfo from "../ui/no-item-info";
 function AddressInfo(props) {
     const { title, addresses } = props;
     const dispatch = useDispatch();
-    const [ openAddressDialog, setOpenAddressDialog ] = useState(false);
+    const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
 
     const numOfResults = addresses.length;
     const currentPage = useSelector(state => state.address.addressPage);
@@ -29,7 +29,7 @@ function AddressInfo(props) {
     };
 
     const handleOpenAddressDialog = () => {
-        setOpenAddressDialog(true);
+        setOpenAddAddressForm(true);
     };
 
     return (
@@ -53,8 +53,8 @@ function AddressInfo(props) {
                 </Button>
 
                 <AddAddressForm 
-                    openAddressDialog={openAddressDialog}
-                    setOpenAddressDialog={setOpenAddressDialog}
+                    openAddAddressForm={openAddAddressForm}
+                    setOpenAddAddressForm={setOpenAddAddressForm}
                 />
 
                 <Box px={5} my={2}>
