@@ -9,7 +9,7 @@ function FormikSelect(props) {
     const [field, meta] = useField(name);
 
     const handleChange = event => {
-        setFieldValue(name, event.target.value)
+        setFieldValue(name, event.target.value);
     };
 
     const configSelect = {
@@ -30,9 +30,9 @@ function FormikSelect(props) {
                 {options.map((option, index) => (
                     <MenuItem
                         key={`option-${index}`}
-                        value={option}
+                        value={option.value}
                     >
-                        {option}
+                        {option.name}
                     </MenuItem>
                 ))}
             </ TextField>

@@ -3,3 +3,4 @@ export const INVALID_NUMBER_TYPE_ERROR_MESSAGE = "Please input number only.";
 export const POSITIVE_NUMBER_ERROR_MESSAGE = "Please input number more than 1.";
 export const INTEGER_NUMBER_ERROR_MESSAGE = "Please input integer only.";
 export const INVALID_EMAIL_ERROR_MESSAGE = "Please input valid email.";
+export const INVALID_BOOLEAN_TYPE_ERROR_MESSAGE = "Please input boolean only."

@@ -12,22 +12,41 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
+import { NAME_SCHEMA, EXPIRATION_DATE_SCHEMA, CREDIT_CARD_NUMBER_SCHEMA, CREDIT_CARD_TYPE_SCHEMA, BOOLEAN_SCHEMA } from "../ui/forms/form-schema";
+import { CURRENT_TIME } from "../../appConfig";
 import FormikTextField from "../ui/forms/formik-text-field";
-import { NAME_SCHEMA, PHONE_NUMBER_SCHEMA, EMAIL_SCHEMA } from "../ui/forms/form-schema";
+import FormikSelect from "../ui/forms/formik-select";
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
+import FormikSubmitButton from "../ui/forms/formik-submit-button";
+import FormikDate from "../ui/forms/formik-date";
+import FormikRadio from "../ui/forms/formik-radio";
 
 const ADD_CREDIT_CARD_INITIAL_FORM_STATE = {
     name: "",
     type: "",
     expirationDate: "",
-    number: ""
+    number: "",
+    isDefault: true
 };
 
 const ADD_CREDIT_CARD_FORM_VALIDATION = Yup.object().shape({
     name: NAME_SCHEMA,
-    email: EMAIL_SCHEMA,
-    phoneNumber: PHONE_NUMBER_SCHEMA,
+    type: CREDIT_CARD_TYPE_SCHEMA,
+    expirationDate: EXPIRATION_DATE_SCHEMA,
+    number: CREDIT_CARD_NUMBER_SCHEMA,
+    isDefault: BOOLEAN_SCHEMA
 });
+
+const defaultOptions = [
+    {
+        name: "Yes",
+        value: true
+    },
+    {
+        name: "No",
+        value: false
+    }
+];
 
 function AddCreditCardForm(props) {
     const { openCreditCardForm, setOpenCreditCardForm } = props;
@@ -70,53 +89,94 @@ function AddCreditCardForm(props) {
                     validationSchema={ADD_CREDIT_CARD_FORM_VALIDATION}
                     onSubmit={values => console.log(values)}
                 >
-                    <Form>
-                        <DialogContent>
-                            <Grid container direction="vertical">
-                                <Grid item xs={12}>
-                                    <FormikTextField 
-                                        name="name"
-                                        label="Name" 
-                                        variant="standard"
-                                        required
-                                    />
-                                </Grid>
-
-                                <Grid item xs={12}>
-                                    <Box sx={{ display: "flex" }}>
+                    {({ errors, touched }) => (
+                        <Form>
+                            <DialogContent>
+                                <Grid container>
+                                    <Grid item xs={12}>
                                         <FormikTextField 
-                                            name="email"
-                                            label="Email"
+                                            name="name"
+                                            label="Name" 
                                             variant="standard"
                                             required
                                         />
-                                    </Box>
-                                </Grid>
+                                    </Grid>
 
-                                <Grid item xs={12}>
-                                    <Box sx={{ display: "flex" }}>
-                                        <FormikTextField 
-                                            name="phoneNumber"
-                                            label="Phone Number"
+                                    <Grid item xs={6}>   
+                                        <FormikSelect
+                                            name="type"
+                                            label="Type"
                                             variant="standard"
-                                            required
+                                            options={[
+                                                {
+                                                    name: "Mastercard", value: "mastercard"
+                                                },
+                                                {
+                                                    name: "Visa",
+                                                    value: "visa"
+                                                }
+                                            ]}
+                                            sx={{ width: "170px" }}
                                         />
-                                    </Box>
-                                </Grid>
-                            </Grid>                    
-                        </DialogContent>
+                                    </Grid>
 
-                        <DialogActions>
-                            <Button 
-                                onClick={handleOpenConfirmCloseDialog} 
-                                sx={{ mr: "auto"}}
+                                    <Grid item xs={4}>
+                                        <FormikDate 
+                                            name="expirationDate"
+                                            label="Expiration Date"
+                                            inputFormat="MM/YYYY"
+                                            views={['year', 'month']}
+                                            minDate={CURRENT_TIME}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Box>
+                                            <FormikTextField 
+                                                name="number"
+                                                label="Card Number"
+                                                variant="standard"
+                                                required
+                                            />
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <FormikRadio 
+                                            name="isDefault"
+                                            label="Set as default?"
+                                            options={defaultOptions}
+                                        />
+                                    </Grid>
+                                </Grid>                    
+                            </DialogContent>
+
+                            <DialogActions>
+                                <Button 
+                                    onClick={handleOpenConfirmCloseDialog} 
+                                    sx={{ mr: "auto"}}
                                 >
-                                Cancel
-                            </Button>
+                                    Cancel
+                                </Button>
 
-                            <Button type="submit">Add credit card</Button>
-                        </DialogActions>
-                    </Form>
+                                <FormikSubmitButton 
+                                    variant="text"
+                                    className="mt-3 mb-5"
+                                    disabled={(
+                                        touched.name && errors.name) || 
+                                        (touched.type && errors.type) ||
+                                        (touched.expirationDate && errors.expirationDate) ||
+                                        (touched.number && errors.number) ||
+                                        (touched.isDefault && errors.isDefault) ? 
+                                            true : 
+                                            false
+                                    }
+                                >
+                                    Add credit card
+                                </FormikSubmitButton>
+                            </DialogActions>
+                        </Form>
+                    )}
                 </Formik>
             </Dialog>
 
