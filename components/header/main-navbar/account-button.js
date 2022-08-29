@@ -8,9 +8,10 @@ import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from '@mui/icons-material/Person';
 
-function AccountButton() {
+function AccountButton(props) {
+    const { name, isAuthenticated } = props;
+
     const [anchorEl, setAnchorEl] = useState(null);
-    const isLogin = false;
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -34,7 +35,7 @@ function AccountButton() {
 
                 <Box className="text-left flex-col ml-2">
                     <Typography className="text-zinc-400 text-sm">
-                        Hello, Sign in
+                        Hello, {name}
                     </Typography>
 
                     <Typography className="text-base">
@@ -54,21 +55,60 @@ function AccountButton() {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                {isLogin &&
-                    <Link href="/account">
-                        <MenuItem 
-                            onClick={handleClose} 
-                            sx={{ justifyContent: "center" }}
+                {isAuthenticated &&
+                    <Fragment>
+                        <MenuItem
+                            onClick={handleClose}   
+                            sx={{ 
+                                justifyContent: "center",
+                                "&:hover": {
+                                    backgroundColor: "white"
+                                }
+                            }}
                             disableRipple
+                            disableGutters
                         >
-                            <Button variant="contained" >
-                                Account
-                            </Button>
+                            <Typography 
+                                px={2} 
+                                variant="outlined"
+                            >
+                                Your Account
+                            </Typography>
                         </MenuItem>
-                    </Link>
+
+                        <Link href="/account">
+                            <MenuItem 
+                                onClick={handleClose} 
+                                sx={{ 
+                                    justifyContent: "center",
+                                }}
+                                disableRipple
+                            >
+                                <Button variant="contained" >
+                                    Account
+                                </Button>
+                            </MenuItem>
+                        </Link>
+
+                        <Link href="/login">
+                            <MenuItem 
+                                onClick={handleClose} 
+                                sx={{ 
+                                    justifyContent: "center",
+                                    pb: 2
+                                }}
+                                disableRipple
+                                divider
+                            >
+                                <Button variant="outlined" >
+                                    Switch Account
+                                </Button>
+                            </MenuItem>
+                        </Link>
+                    </Fragment>
                 }
 
-                <Link href={isLogin ? "/" : "/auth/login"}>
+                <Link href={isAuthenticated ? "/" : "/auth/login"}>
                     <MenuItem 
                         onClick={handleClose}   
                         sx={{ 
@@ -76,18 +116,18 @@ function AccountButton() {
                             "&:hover": {
                                 backgroundColor: "white"
                             },
-                            pb: 2
+                            py: 1
                         }}
-                        divider
+                        divider={isAuthenticated ? false : true}
                         disableRipple
                     >
                         <Button variant="outlined" >
-                            {isLogin ? "Logout" : "Login"}
+                            {isAuthenticated ? "Sign out" : "Login"}
                         </Button>
                     </MenuItem>
                 </Link>
 
-                {!isLogin &&
+                {!isAuthenticated &&
                     <Fragment>
                         <MenuItem
                             onClick={handleClose}   
@@ -127,8 +167,6 @@ function AccountButton() {
                     </Fragment>
                 }
             </Menu>
-
-            
         </Fragment>
     )
 };

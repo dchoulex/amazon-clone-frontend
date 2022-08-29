@@ -21,13 +21,13 @@ function LogoButton() {
             </Link>
 
             <Box className="flex-col text-left normal-case">
-                <Typography className="text-zinc-400 text-sm">
+                <Typography className="text-zinc-400 text-sm pb-5">
                     .co.jp
                 </Typography>
                 
-                <Typography className="text-base">
+                {/* <Typography className="text-base">
                     Prime
-                </Typography>
+                </Typography> */}
             </Box>
         </Button>
     )

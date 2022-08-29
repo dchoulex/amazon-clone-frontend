@@ -16,7 +16,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AllTabListItem from "./all-tab-list-item";
 import AllTabCollapseListItem from "./all-tab-collapse-list-item";
 
-function AllTab() {
+function AllTab(props) {
+    const { name } = props;
+    
     const [openDrawer, setOpenDrawer] = useState(false);
     const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -66,13 +68,13 @@ function AllTab() {
 
                                     <ListItemText 
                                         primaryTypographyProps={{color: "white"}}
-                                        primary="Hello, Sign in" 
+                                        primary={`Hello, ${name}`} 
                                     />
                             </ListItemButton>
                         </Link>
 
-                        {drawerListItems.map(listItem => (
-                            <Fragment key={listItem.title}>
+                        {drawerListItems.map((listItem, index) => (
+                            <Fragment key={`list-item-${index}`}>
                                 <ListSubheader 
                                     sx={{
                                         fontSize: 22,

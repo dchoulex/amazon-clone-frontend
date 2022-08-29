@@ -5,7 +5,8 @@ const INITIAL_USER_SLICE_STATE = {
     email: "",
     phoneNumber: "",
     amazonPoints: 0,
-    defaultAddress: "",
+    defaultAddressPostCode: "",
+    defaultAddressLine: "",
     cartNumber: 0
 };
 

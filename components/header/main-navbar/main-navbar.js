@@ -11,17 +11,13 @@ import AccountButton from "./account-button";
 import AddressSelectionButton from "./address-selection-button";
 import CheckOrderButton from "./check-order-button";
 import HamburgerMenu from "./hamburger-menu";
-import { useSelector } from 'react-redux';
 
-function MainNavbar() {
+function MainNavbar(props) {
+    const { name, defaultAddressPostCode, defaultAddressLine, cartNumber, isAuthenticated } = props;
+
     const theme = useTheme();
     const isLargeUp = useMediaQuery(theme.breakpoints.up("lg"));
     const isSmallUp = useMediaQuery(theme.breakpoints.up("sm"));
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-
-    userInfo = {
-        name
-    }
 
     return (
         <Toolbar 
@@ -32,7 +28,10 @@ function MainNavbar() {
                 <LogoButton />
 
                 {isLargeUp && 
-                    <AddressSelectionButton />
+                    <AddressSelectionButton 
+                        defaultAddressPostCode={defaultAddressPostCode}
+                        defaultAddressLine={defaultAddressLine}
+                    />
                 }
 
                 {isSmallUp &&
@@ -44,11 +43,14 @@ function MainNavbar() {
                 <div>
                     <CountrySelectionButton />
 
-                    <AccountButton />
+                    <AccountButton 
+                        name={name} 
+                        isAuthenticated={isAuthenticated}
+                    />
 
                     <CheckOrderButton />
 
-                    <CartButton />
+                    <CartButton cartNumber={cartNumber} />
                 </div>
             }
 

@@ -7,31 +7,36 @@ import AllTab from "./all-tab/all-tab";
 
 const subNavbarTabs = [
     {
-        title: "Amazon Points: Check your balance"
+        title: "Best Sellers",
+        disabled: false
     },
     {
-        title: "Best Sellers"
+        title: "Today's Deals",
+        disabled: false
     },
     {
-        title: "Amazon Basics"
+        title: "Amazon Basics",
+        disabled: false
     },
     {
-        title: "Today's Deals"
+        title: "Electronics & Camera",
+        disabled: false
     },
     {
-        title: "Prime Video",
-        disabled: true
+        title: "Computers & Office",
+        disabled: false
     },
     {
-        title: "Customer Service",
-        disabled: true
+        title: "Food, Beverage & Alcohol",
+        disabled: false
     },
     {
-        title: "New Releases"
+        title: "Sports & Outdoors",
+        disabled: false
     },
     {
-        title: "Japanese Books",
-        disabled: true
+        title: "Clothing, Shoes & Jewelry",
+        disabled: false
     },
     {
         title: "Prime",
@@ -39,22 +44,6 @@ const subNavbarTabs = [
     },
     {
         title: "Music",
-        disabled: true
-    },
-    {
-        title: "Amazon Fashion",
-        disabled: true
-    },
-    {
-        title: "Kindle Books",
-        disabled: true
-    },
-    {
-        title: "Computers & Peripherals",
-        disabled: false
-    },
-    {
-        title: "Food & Beverage",
         disabled: true
     },
     {
@@ -66,20 +55,14 @@ const subNavbarTabs = [
         disabled: true
     },
     {
-        title: "Home & Kitchen",
+        title: "Customer Service",
         disabled: true
-    },
-    {
-        title: "Gift Ideas",
-        disabled: true
-    },
-    {
-        title: "Sports & Outdoors",
-        disabled: true
-    },
+    }
 ];
 
-function subNavbar() {
+function subNavbar(props) {
+    const { amazonPoints, name } = props;
+
     return (
         <Toolbar 
             variant="dense" 
@@ -91,19 +74,25 @@ function subNavbar() {
                 variant="scrollable"          
                 className="justify-evenly"
             >
-                <AllTab />
-                {subNavbarTabs.map(tab => {
+                <AllTab name={name} />
+
+                <Tab 
+                    sx={{opacity: 100}}
+                    className="text-gray-300 normal-case min-h-0 text-base font-light"
+                    label={`Amazon Points: ${amazonPoints}`}
+                    disableRipple
+                />
+
+                {subNavbarTabs.map((tab, index) => {
                     return (
                         <Link 
                             href="/thisWorks" 
-                            key={tab.title}
+                            key={`sub-navbar-tab-${index}`}
                         >
                             <Tab 
                                 sx={{opacity: 100}}
                                 className="text-gray-300 normal-case min-h-0 text-base font-light"
                                 label={tab.title}
-                                icon={tab.icon}
-                                iconPosition="start"
                                 disabled={tab.disabled}
                             />
                         </Link>
