@@ -85,6 +85,8 @@ function LoginPage() {
 
     const handleSubmitLoginForm = async (values, actions) => {
         const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
+        const GET_DEFAULT_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_ADDRESS_API);
+        const GET_DEFAULT_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_CREDIT_CARD_API);
 
         setLoading(true);
         actions.setSubmitting(false);
@@ -92,6 +94,7 @@ function LoginPage() {
         try {
             const { data } = await axios.post(LOGIN_API, values);
             const user = data.data;
+            console.log(user);
             
             setData(data);
 
@@ -100,7 +103,7 @@ function LoginPage() {
             if (!data) return new Error("No");
     
             dispatch(authActions.login());
-            disptach(userActions.setUser(user))
+            disptach(userActions.setUser({}))
     
             const cookieOptions = {
                 expires: new Date(
@@ -112,7 +115,7 @@ function LoginPage() {
         
             Cookies.set("jwt", data.token, cookieOptions);
 
-            router.push("/account");
+            // router.push("/account");
         } catch(err) {
             setLoading(false);
 
