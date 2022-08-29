@@ -20,6 +20,7 @@
     "axios": "^0.27.2",
     "dayjs": "^1.11.5",
     "formik": "^2.2.9",
+    "js-cookie": "^3.0.1",
     "next": "12.2.3",
     "node-countries": "^2.1.1",
     "react": "18.2.0",

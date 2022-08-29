@@ -17,8 +17,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
-import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA } from "../ui/forms/form-schema";
+import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA, BOOLEAN_SCHEMA } from "../ui/forms/form-schema";
 import { PREFECTURES } from "../../appConfig";
+import FormikRadio from "../ui/forms/formik-radio";
 
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
     name: "",
@@ -28,6 +29,7 @@ const ADD_ADDRESS_INITIAL_FORM_STATE = {
     city: "",
     rest: "",
     phoneNumber: "",
+    isDefault: true
 };
 
 const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
@@ -38,7 +40,19 @@ const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
     city: STRING_REQUIRED_SCHEMA,
     rest: STRING_REQUIRED_SCHEMA,
     phoneNumber: PHONE_NUMBER_SCHEMA,
+    isDefault: BOOLEAN_SCHEMA
 });
+
+const defaultOptions = [
+    {
+        name: "Yes",
+        value: true
+    },
+    {
+        name: "No",
+        value: false
+    }
+];
 
 function AddAddressForm(props) {
     const { openAddAddressForm, setOpenAddAddressForm } = props;
@@ -157,6 +171,15 @@ function AddAddressForm(props) {
                                         label="Phone number" 
                                         variant="standard"
                                         sx={{ display: "block" }}
+                                    />
+                                </Grid>
+
+
+                                <Grid item xs={12}>
+                                    <FormikRadio 
+                                        name="isDefault"
+                                        label="Set as default?"
+                                        options={defaultOptions}
                                     />
                                 </Grid>
                             </Grid>                    

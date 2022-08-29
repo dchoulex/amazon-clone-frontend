@@ -11,11 +11,17 @@ import AccountButton from "./account-button";
 import AddressSelectionButton from "./address-selection-button";
 import CheckOrderButton from "./check-order-button";
 import HamburgerMenu from "./hamburger-menu";
+import { useSelector } from 'react-redux';
 
 function MainNavbar() {
     const theme = useTheme();
     const isLargeUp = useMediaQuery(theme.breakpoints.up("lg"));
     const isSmallUp = useMediaQuery(theme.breakpoints.up("sm"));
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+    userInfo = {
+        name
+    }
 
     return (
         <Toolbar 

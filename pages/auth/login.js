@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
@@ -8,14 +9,12 @@ import axios from "axios";
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import HomeIcon from '@mui/icons-material/Home';
 import Draggable from 'react-draggable';
 
 import { authActions } from "../../store/auth-slice";
@@ -25,6 +24,7 @@ import FormikPassword from "../../components/ui/forms/formik-password";
 import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
 import getAPI from "../../utils/getAPI";
 import { EMAIL_SCHEMA, PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
+import { CURRENT_TIME } from "../../appConfig";
 
 const dialogContent = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla porttitor erat, sed lobortis dui varius a. Nunc feugiat, neque vitae semper congue, libero urna scelerisque velit, at tempus enim augue sit amet dolor. Sed eu congue velit. Nulla porttitor porttitor felis, sit amet aliquet nibh aliquam nec. Suspendisse pretium est lorem, et maximus dolor dictum vel. Praesent consequat eu lorem sit amet ullamcorper. Morbi sem velit, venenatis eu mi pulvinar, cursus luctus magna. Ut nec urna lacus. Sed cursus dolor dui, in faucibus velit elementum vitae. Maecenas ornare sagittis arcu, ac dapibus erat maximus vel. Donec eget est luctus, commodo ipsum vel, convallis orci. Vivamus purus ipsum, sodales elementum neque a, malesuada cursus magna. Ut sit amet eros non tellus luctus pharetra id id odio. Aenean euismod vitae nibh ut tincidunt.
@@ -63,6 +63,9 @@ function LoginPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
+    const [data, setData] = useState(null)
+    const [ loading, setLoading ] = useState(true);
+    const [ error, setError ] = useState(null);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
@@ -80,16 +83,41 @@ function LoginPage() {
         setPrivacyIsOpen(false);
     };
 
-    const handleSubmitLoginForm = async (values) => {
+    const handleSubmitLoginForm = async (values, actions) => {
         const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
 
-        const data = await axios.post(LOGIN_API, values);
+        setLoading(true);
+        actions.setSubmitting(false);
 
-        dispatch(authActions.login());
+        try {
+            const { data } = await axios.post(LOGIN_API, values);
+            const user = data.data;
+            
+            setData(data);
 
-        router.push('/cart')
+            setLoading(false);
 
-        return data;
+            if (!data) return new Error("No");
+    
+            dispatch(authActions.login());
+            disptach(userActions.setUser(user))
+    
+            const cookieOptions = {
+                expires: new Date(
+                    CURRENT_TIME + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+                ),
+                httpOnly: true,
+                secure: true
+            };
+        
+            Cookies.set("jwt", data.token, cookieOptions);
+
+            router.push("/account");
+        } catch(err) {
+            setLoading(false);
+
+            console.log(err.response.data.message)
+        }
     };
  
     return (

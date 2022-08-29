@@ -4,7 +4,8 @@ import cartReducer from "./cart-slice";
 import orderHistoryReducer from "./order-history-slice";
 import reviewReducer from "./review-slice";
 import addressReducer from "./address-slice";
-import walletReducer from "./wallet-slice"
+import walletReducer from "./wallet-slice";
+import userReducer from "./user-slice";
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         orderHistory: orderHistoryReducer,
         review: reviewReducer,
         address: addressReducer,
-        wallet: walletReducer
+        wallet: walletReducer,
+        user: userReducer
     }
 });
 

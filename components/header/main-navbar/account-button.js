@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from '@mui/icons-material/Person';
@@ -60,6 +59,7 @@ function AccountButton() {
                         <MenuItem 
                             onClick={handleClose} 
                             sx={{ justifyContent: "center" }}
+                            disableRipple
                         >
                             <Button variant="contained" >
                                 Account
@@ -79,6 +79,7 @@ function AccountButton() {
                             pb: 2
                         }}
                         divider
+                        disableRipple
                     >
                         <Button variant="outlined" >
                             {isLogin ? "Logout" : "Login"}
@@ -96,6 +97,7 @@ function AccountButton() {
                                     backgroundColor: "white"
                                 }
                             }}
+                            disableRipple
                         >
                             <Typography 
                                 px={2} 
@@ -115,6 +117,7 @@ function AccountButton() {
                                         backgroundColor: "white"
                                     } 
                                 }}
+                                disableRipple
                             >
                                 <Button variant="contained" >
                                     Sign Up
