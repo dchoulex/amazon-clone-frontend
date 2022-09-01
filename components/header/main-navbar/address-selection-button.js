@@ -7,6 +7,8 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 function AddressSelectionButton(props) {
     const { defaultAddressPostCode, defaultAddressLine } = props;
 
+    const addressLineClass = defaultAddressLine.length > 35 ? "text-sm" : "text-base";
+
     return (
         <Link href="/account/address">
             <Button className="normal-case text-white mx-1 h-56px">
@@ -17,8 +19,11 @@ function AddressSelectionButton(props) {
                         {defaultAddressPostCode}
                     </Typography>
 
-                    <Typography className="text-base">
-                        {defaultAddressLine}
+                    <Typography className={addressLineClass}>
+                        {defaultAddressLine.length > 35 ? 
+                            defaultAddressLine.slice(0, 35) + "..." :
+                            defaultAddressLine
+                        }
                     </Typography>
                 </Box>
             </Button>

@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
+import getAPI from "../../utils/getAPI";
 import PleaseLoginCard from "../../components/ui/please-login-card";
 import CartInfo from "../../components/cart/cart-info";
 
@@ -141,12 +143,12 @@ const cartItems = [
 ]
 
 function CartPage() {
-    const isLogin = true;
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const pageTitle = "Shopping Cart";
 
     return (
         <Box p={3} className="bg-gray-200">
-            {isLogin ? 
+            {isAuthenticated ? 
                 <CartInfo 
                     cartItems={cartItems}  
                     title={pageTitle} 
@@ -161,3 +163,26 @@ function CartPage() {
 };
 
 export default CartPage;
+
+// export async function getServerSideProps(context) {
+//     const { params, req, res } = context;
+
+    
+
+//     const GET_ALL_CART_ITEMS_API = getAPI(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, { query: "isSaved=false"});
+//     console.log(process.env.DEV_URL + GET_ALL_CART_ITEMS_API)
+
+//     const apiRes = await fetch(process.env.DEV_URL + GET_ALL_CART_ITEMS_API);
+
+//     console.log(apiRes)
+//     const data = await apiRes.json();
+
+//     console.log(data);
+
+//     return {
+//         props: {
+//             carts: apiRes.data
+//         }
+//     }
+
+// }

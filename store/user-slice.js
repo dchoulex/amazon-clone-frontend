@@ -17,14 +17,8 @@ const userSlice = createSlice({
             state.name = action.payload.name;
             state.email = action.payload.email;
             state.phoneNumber = action.payload.phoneNumber;
-            state.amazonPoints = action.payload.amazonPoints;
-        },
-
-        setDefaultAddress(state, action) {
-            state.defaultAddress = action.payload.defaultAddress
-        },
-
-        setDefaultCreditCard(state, action) {
+            state.amazonPoints = action.payload.amazonPoints,
+            state.defaultAddress = action.payload.defaultAddress,
             state.defaultCreditCard = action.payload.defaultCreditCard
         }
     }

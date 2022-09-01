@@ -10,9 +10,11 @@ import PersonIcon from '@mui/icons-material/Person';
 
 function AccountButton(props) {
     const { name, isAuthenticated } = props;
+    const firstName = name.split(" ")[0];
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -35,7 +37,10 @@ function AccountButton(props) {
 
                 <Box className="text-left flex-col ml-2">
                     <Typography className="text-zinc-400 text-sm">
-                        Hello, {name}
+                        Hello, {firstName.length > 10 ?
+                            firstName.slice(0, 10) + "...":
+                            firstName
+                        }
                     </Typography>
 
                     <Typography className="text-base">

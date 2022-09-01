@@ -6,7 +6,7 @@ import CategoryButton from "./category-button";
 
 function SearchBar() {
     return (
-        <div className="flex flex-col justify-center flex-1">
+        <div className="flex flex-col justify-center flex-1 min-w-[400px]">
             <div className="mx-2 flex flex-1 h-[36px] items-center">
                 <div className="flex flex-1">
                     <CategoryButton />

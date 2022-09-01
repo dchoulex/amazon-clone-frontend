@@ -17,19 +17,12 @@ function Header() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const isAuthenticatedRes = await axios.get("/api/v1/auth/authenticate");
+            const res = await axios.get(process.env.NEXT_PUBLIC_AUTHENTICATE_API);
 
-            if (!isAuthenticatedRes) return;
-
-            const data = isAuthenticatedRes.data.data;
-            const user = data.data;
-
+            const data = res.data.data;
+            
             if (data.isAuthenticated) {
-                const defaultAddressRes = await axios.get("/api/v1/addresses/default");
-                const defaultCreditCardRes = await axios.get("/api/v1/cards/default");
-                const cartRes = await axios.get("/api/v1/carts");
-
-                if (!defaultAddressRes || !defaultCreditCardRes || !cartRes) return;
+                const { user, defaultAddress, defaultCreditCard, numOfCartItems } = data;
 
                 dispatch(authActions.login());
 
@@ -37,24 +30,19 @@ function Header() {
                     name: user.name,
                     email: user.email,
                     phoneNumber: user.phoneNumber,
-                    amazonPoints: user.amazonPoints
-                }));
-
-                dispatch(userActions.setDefaultAddress({
-                    defaultAddress: defaultAddressRes.data.data
-                }));
-
-                dispatch(userActions.setDefaultCreditCard({
-                    defaultCreditCard: defaultCreditCardRes.data.data
+                    amazonPoints: user.amazonPoints,
+                    defaultAddress,
+                    defaultCreditCard
                 }));
 
                 dispatch(cartActions.setNumOfCartItems({
-                    numOfCartItems: cartRes.data.data.length
+                    numOfCartItems
                 }));
             };
         };
 
         if (!isAuthenticated) fetchData();
+
     }, [isAuthenticated, dispatch]);
     
     const user = useSelector(state => ({
@@ -63,6 +51,7 @@ function Header() {
         phoneNumber: state.user.phoneNumber,
         amazonPoints: state.user.amazonPoints,
         defaultAddress: state.user.defaultAddress,
+        defaultCreditCard: state.user.defaultCreditCard
     }));
 
     let numOfCartItems = useSelector(state => state.cart.numOfCartItems);
@@ -86,7 +75,7 @@ function Header() {
                 <MainNavbar 
                     name={user.name}
                     defaultAddressPostCode={user.defaultAddress.postCode}
-                    defaultAddressLine={isAuthenticated ? `${user.defaultAddress.city} ${user.defaultAddress.rest}` : user.defaultAddress.rest}
+                    defaultAddressLine={isAuthenticated ? `${user.defaultAddress.city} City ${user.defaultAddress.rest}` : user.defaultAddress.rest}
                     cartNumber={numOfCartItems}
                     isAuthenticated={isAuthenticated}
                 />
