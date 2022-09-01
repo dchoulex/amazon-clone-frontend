@@ -4,7 +4,8 @@ const INITIAL_CART_SLICE_STATE = {
     currentTab: "cart",
     cartTabPage: 1,
     saveTabPage: 1,
-    buyAgainTabPage: 1
+    buyAgainTabPage: 1,
+    cartItems: 0
 };
 
 const cartSlice = createSlice({
@@ -26,6 +27,10 @@ const cartSlice = createSlice({
         changeCurrentTab(state, action) {
             state.currentTab = action.payload.currentTab
         },
+
+        setNumOfCartItems(state, action) {
+            state.numOfCartItems = action.payload.numOfCartItems
+        }
     }
 });
 

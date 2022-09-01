@@ -1,6 +1,8 @@
 import { useState, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -62,6 +64,17 @@ function AddCreditCardForm(props) {
         setOpenCreditCardForm(false);
     };
 
+    const handleAddCreditCardForm = async() => {
+        try {
+            const res = await axios.get("/api/v1/cards/default");
+            console.log(res)
+
+        } catch(err) {
+            console.log(err)
+        }
+
+    }
+
     return (
         <Fragment>
             <Dialog open={openCreditCardForm}>
@@ -87,7 +100,7 @@ function AddCreditCardForm(props) {
                 <Formik
                     initialValues={{ ...ADD_CREDIT_CARD_INITIAL_FORM_STATE }}
                     validationSchema={ADD_CREDIT_CARD_FORM_VALIDATION}
-                    onSubmit={values => console.log(values)}
+                    onSubmit={handleAddCreditCardForm}
                 >
                     {({ errors, touched }) => (
                         <Form>

@@ -5,10 +5,8 @@ const INITIAL_USER_SLICE_STATE = {
     email: "",
     phoneNumber: "",
     amazonPoints: 0,
-    defaultAddressPostCode: "",
-    defaultAddressLine: "",
+    defaultAddress: {},
     defaultCreditCard: {},
-    cartNumber: 0
 };
 
 const userSlice = createSlice({
@@ -23,16 +21,11 @@ const userSlice = createSlice({
         },
 
         setDefaultAddress(state, action) {
-            state.defaultAddressPostCode = action.payload.defaultAddressPostCode
-            state.defaultAddressLine = action.payload.defaultAddressLine
+            state.defaultAddress = action.payload.defaultAddress
         },
 
         setDefaultCreditCard(state, action) {
             state.defaultCreditCard = action.payload.defaultCreditCard
-        },
-        
-        setCartNumber(state, action) {
-            state.cartNumber = action.payload.cartNumber
         }
     }
 });

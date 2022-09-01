@@ -66,7 +66,6 @@ function AccountButton(props) {
                                 }
                             }}
                             disableRipple
-                            disableGutters
                         >
                             <Typography 
                                 px={2} 
@@ -81,8 +80,13 @@ function AccountButton(props) {
                                 onClick={handleClose} 
                                 sx={{ 
                                     justifyContent: "center",
+                                    "&:hover": {
+                                        backgroundColor: "white"
+                                    },
+                                    pb: 2
                                 }}
                                 disableRipple
+                                divider
                             >
                                 <Button variant="contained" >
                                     Account
@@ -90,7 +94,7 @@ function AccountButton(props) {
                             </MenuItem>
                         </Link>
 
-                        <Link href="/login">
+                        {/* <Link href="/login">
                             <MenuItem 
                                 onClick={handleClose} 
                                 sx={{ 
@@ -104,7 +108,7 @@ function AccountButton(props) {
                                     Switch Account
                                 </Button>
                             </MenuItem>
-                        </Link>
+                        </Link> */}
                     </Fragment>
                 }
 

@@ -20,6 +20,7 @@ import FormikSelect from "../ui/forms/formik-select";
 import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA, BOOLEAN_SCHEMA } from "../ui/forms/form-schema";
 import { PREFECTURES } from "../../appConfig";
 import FormikRadio from "../ui/forms/formik-radio";
+import axios from "axios";
 
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
     name: "",
@@ -70,6 +71,12 @@ function AddAddressForm(props) {
         setOpenAddAddressForm(false);
     };
 
+    const handleSubmitAddAddressForm = async () => {
+        const res = await axios.get("/api/v1/addresses/default");
+
+        console.log(res)
+    }
+
     return (
         <Fragment>
             <Dialog open={openAddAddressForm}>
@@ -95,7 +102,7 @@ function AddAddressForm(props) {
                 <Formik
                     initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
                     validationSchema={ADD_ADDRESS_FORM_VALIDATION}
-                    onSubmit={values => console.log(values)}
+                    onSubmit={handleSubmitAddAddressForm}
                 >
                     <Form>
                         <DialogContent>

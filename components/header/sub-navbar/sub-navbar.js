@@ -89,12 +89,21 @@ function subNavbar(props) {
                             href="/thisWorks" 
                             key={`sub-navbar-tab-${index}`}
                         >
-                            <Tab 
-                                sx={{opacity: 100}}
-                                className="text-gray-300 normal-case min-h-0 text-base font-light"
-                                label={tab.title}
-                                disabled={tab.disabled}
-                            />
+                            {tab.disabled === true ?
+                                <Tab 
+                                    sx={{opacity: 100}}
+                                    className="text-gray-300 normal-case min-h-0 text-base font-light"
+                                    label={tab.title}
+                                    disabled={tab.disabled}
+                                />:
+                                <Tab 
+                                    sx={{opacity: 100}}
+                                    className="text-gray-300 normal-case min-h-0 text-base font-light"
+                                    label={tab.title}
+                                />                           
+                            }
+
+                            
                         </Link>
                     )
                 })}

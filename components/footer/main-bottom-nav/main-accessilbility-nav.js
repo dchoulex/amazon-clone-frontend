@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Tooltip from "@mui/material/Tooltip";
 
 import { mainAccessibilityData } from "./data/main-accessibility-data";
 
@@ -13,37 +14,41 @@ function MainAccessibilityNav() {
                     container 
                 >
                     {mainAccessibilityData.map(rowItem =>(
-                    <Grid
-                        key={rowItem.title} 
-                        item 
-                        lg={3}
-                        md={6}
-                        sm={12}
-                        xs={12}
-                        className="p-5"
-                    >
-                        <Grid 
-                            container
-                            direction="column"
+                        <Grid
+                            key={rowItem.title} 
+                            item 
+                            lg={3}
+                            md={6}
+                            sm={12}
+                            xs={12}
+                            className="p-5"
                         >
                             <Grid 
-                                item 
-                                className="text-white font-medium text-lg py-2"
+                                container
+                                direction="column"
                             >
-                                {rowItem.title}
-                            </Grid>
-
-                            {rowItem.items.map(columnItem => (
                                 <Grid 
-                                    key={columnItem.title}
                                     item 
-                                    className="text-gray-300 font-light text-base hover:cursor-not-allowed py-1"
+                                    className="text-white font-medium text-lg py-2"
                                 >
-                                    {columnItem.title}
+                                    {rowItem.title}
                                 </Grid>
-                            ))}
-                        </Grid>
-                    </Grid>))}
+
+                                {rowItem.items.map((columnItem, index) => (
+                                    <Tooltip 
+                                        key={`main-accessibility-${index}`}
+                                        title="Not available yet"
+                                    >
+                                        <Grid 
+                                            item 
+                                            className="text-gray-300 font-light text-base hover:cursor-not-allowed py-1"
+                                        >
+                                            {columnItem.title}
+                                        </Grid>
+                                    </Tooltip>
+                                ))}
+                            </Grid>
+                        </Grid>))}
                 </Grid>
             </Box>
         </Fragment>

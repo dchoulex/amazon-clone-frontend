@@ -30,7 +30,7 @@ function WalletInfo(props) {
 
     const handleOpenCreditCardForm = () => {
         setOpenCreditCardForm(true);
-    }
+    };
 
     return (
         <Box>

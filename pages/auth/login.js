@@ -1,11 +1,11 @@
 import { useState } from "react";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -63,8 +63,8 @@ function LoginPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
-    const [data, setData] = useState(null)
-    const [ loading, setLoading ] = useState(true);
+    const [ data, setData ] = useState(null)
+    const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
 
     const handleOpenConditions = () => {
@@ -87,39 +87,49 @@ function LoginPage() {
         const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
         const GET_DEFAULT_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_ADDRESS_API);
         const GET_DEFAULT_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_CREDIT_CARD_API);
+        const GET_ALL_CART_ITEMS_API = getAPI(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API);
 
         setLoading(true);
         actions.setSubmitting(false);
 
         try {
-            const { data } = await axios.post(LOGIN_API, values);
-            const user = data.data;
-            console.log(user);
-            
-            setData(data);
+            const loginRes = await axios.post("/api/v1/auth/login", values);
+            const loginData = loginRes.data;
 
-            setLoading(false);
+            // const defaultAddressRes = await axios.get("/api/v1/addresses/default");
+            // const defaultCreditCardRes = await axios.get("/api/v1/cards/default");
+            // const cartItemsRes = await axios.get(GET_ALL_CART_ITEMS_API);
 
-            if (!data) return new Error("No");
+            // console.log(defaultAddressRes)
+
+            // console.log(loginData, defaultAddressRes, defaultCreditCardRes)
+
+
+            // const user = data.data;
+
+
+            // setLoading(false);
+
+            // if (!data) return new Error("No");
     
-            dispatch(authActions.login());
-            disptach(userActions.setUser({}))
+            // dispatch(authActions.login());
+            // disptach(userActions.setUser({
+            //     name: user.name,
+            //     email: user.email,
+            //     phoneNumber: user.phoneNumber
+            // }))
     
-            const cookieOptions = {
-                expires: new Date(
-                    CURRENT_TIME + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
-                ),
-                httpOnly: true,
-                secure: true
-            };
+
         
-            Cookies.set("jwt", data.token, cookieOptions);
 
-            // router.push("/account");
+
+            router.push("/account");
         } catch(err) {
             setLoading(false);
 
-            console.log(err.response.data.message)
+            console.log(err)
+
+            // console.log(err.response.data.message)
         }
     };
  

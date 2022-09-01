@@ -41,9 +41,9 @@ function MainProductInfo() {
         <Fragment>
             <Box className="relative z-10">   
                 <Grid item container>
-                    {mainProducts.map(product => (
+                    {mainProducts.map((product, index) => (
                         <Grid 
-                            key={product}
+                            key={`product-${index}`}
                             item
                             xs={12}
                             md={6}
