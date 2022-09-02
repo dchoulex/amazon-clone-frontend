@@ -1,7 +1,7 @@
 import { useField } from "formik";
 
 function FormikHidden(props) {
-    const {name } = props;
+    const { name } = props;
     const [ field ] = useField(name);
     
     const configHidden = {

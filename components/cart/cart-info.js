@@ -1,13 +1,13 @@
-import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useSWR from "swr";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
 import { cartActions } from "../../store/cart-slice";
 import getPaginatedItems from "../../utils/getPaginatedItems";
@@ -15,8 +15,7 @@ import CartPanelList from "./cart-panel-list/cart-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import NoItemInfo from "../ui/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
-
-import numberWithCommas from "../../utils/numberWithCommas";
+import CheckoutForm from "./cart-panel-list/checkout-form";
 
 // const buyAgainTabItems = [
 //     {
@@ -32,22 +31,31 @@ import numberWithCommas from "../../utils/numberWithCommas";
 //         point: 1000
 //     },
 // ];
-const buyAgainTabItems = [];
+
+const buyAgainTabItems = []; 
 
 function CartInfo(props) {
-    const { cartItems, title } = props;
+    const { title } = props;
     const dispatch = useDispatch();
-    const totalSelectedItems = 5;
-    const total = 50000;
-    const totalPoints = 500;
-    
-    const cartTabItems = cartItems.filter(cartItem => !cartItem.isSaved);
-    const saveTabItems = cartItems.filter(cartItem => cartItem.isSaved);
-    
+
     const currentTab = useSelector(state => state.cart.currentTab);
     const currentCartTabPage = useSelector(state => state.cart.cartTabPage);
     const currentSaveTabPage = useSelector(state => state.cart.saveTabPage);
     const currentBuyAgainTabPage = useSelector(state => state.cart.buyAgainTabPage);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher);
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+
+    const cartItems = data.data;
+    
+    const cartTabItems = cartItems.filter(cartItem => !cartItem.isSaved);
+    const saveTabItems = cartItems.filter(cartItem => cartItem.isSaved);
+
+    console.log(cartTabItems)
 
     const tabItems = {
         cart: {
@@ -57,7 +65,9 @@ function CartInfo(props) {
             },
             isEmpty: currentTab === "cart" && cartTabItems.length === 0,
             page: currentCartTabPage,
-            paginatedItems: getPaginatedItems(cartTabItems, currentCartTabPage)
+            paginatedItems: getPaginatedItems(cartTabItems, currentCartTabPage),
+            subTotal: cartTabItems.reduce((subTotal, item) => subTotal + item.product.price * item.amount, 0),
+            point: cartTabItems.reduce((point, item) => point + item.product.point * item.amount, 0)
         },
         save: {
             numOfResults: saveTabItems.length,
@@ -84,7 +94,7 @@ function CartInfo(props) {
     };
 
     return (
-        <Box className={currentTab === "cart" ? "lg:flex" : ""}>
+        <Box >
             <Paper className="bg-white">
                 <PageTitle 
                     title={title} 
@@ -115,9 +125,11 @@ function CartInfo(props) {
                         value="cart" 
                         className="py-2"
                     >
-                        <CartPanelList 
-                            items={tabItems["cart"].paginatedItems} 
-                            currentTab={currentTab} 
+                        <CheckoutForm 
+                            items={tabItems["cart"].paginatedItems}
+                            numOfCartItems={tabItems["cart"].numOfResults}
+                            subTotal={(tabItems["cart"].subTotal)}
+                            point={tabItems["cart"].point}
                         />
                     </TabPanel>
 
@@ -141,45 +153,6 @@ function CartInfo(props) {
                         />
                     </TabPanel>
                 </TabContext>
-
-                {(currentTab === "cart" && !tabItems[currentTab].isEmpty) && 
-                    <Fragment>
-                        <Box 
-                            py={2} 
-                            px={4}
-                            className="flex"
-                            sx={{ 
-                                borderTop: 1,
-                                borderColor: "divider"
-                            }}
-                        >
-                            <div className="ml-auto">
-                                <Typography 
-                                    variant="body1" 
-                                    className="text-xl"
-                                >
-                                    Subtotal ({totalSelectedItems} items) : &nbsp;
-                                    <span className="text-red-500">¥{numberWithCommas(total)}</span>
-                                </Typography>
-
-                                <Typography className="text-right my-1">
-                                    Points to be earned : &nbsp;
-                                    <span className="text-blue-700">{totalPoints} pt</span>
-                                </Typography>
-                            </div>
-                        </Box>
-                    
-
-                        <div className="flex justify-center lg:hidden">
-                            <Button 
-                                variant="outlined"
-                                className="normal-case my-3"
-                            >
-                                Proceed to checkout
-                            </Button>
-                        </div>
-                    </Fragment>
-                }
     
                 {tabItems[currentTab].isEmpty ? 
                     <NoItemInfo />:
@@ -190,32 +163,6 @@ function CartInfo(props) {
                     />
                 }   
             </Paper>
-
-            {currentTab === "cart" &&
-                <Paper className="ml-5 p-5 h-[150px] hidden lg:block">
-                    <Typography 
-                        variant="body1" 
-                        className="text-lg"
-                    >
-                        Subtotal ({totalSelectedItems} items) : &nbsp;
-                        <span className="text-red-500">¥{numberWithCommas(total)}</span>
-                    </Typography>
-
-                    <Typography className="my-1">
-                        Points to be earned : &nbsp;
-                        <span className="text-blue-700">{totalPoints} pt</span>
-                    </Typography>
-
-                    <div className="flex justify-center">
-                        <Button 
-                            variant="outlined"
-                            className="normal-case my-3"
-                        >
-                            Proceed to checkout
-                        </Button>
-                    </div>
-                </Paper>
-            }
         </Box>
     )
 };

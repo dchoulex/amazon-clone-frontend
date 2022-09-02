@@ -1,5 +1,6 @@
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
+
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -11,7 +12,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ProductRatingStar from './product-rating-star';
 import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
-import FormikButton from '../ui/forms/formik-submit-button';
+import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import FormikHidden from '../ui/forms/formik-hidden';
 import { REQUIRED_ERROR_MESSAGE, POSITIVE_NUMBER_ERROR_MESSAGE, INTEGER_NUMBER_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE } from '../../appConfig';
 
@@ -94,14 +95,14 @@ function ProductCard(props) {
                                     className="min-w-[60px] max-w-[80px]"
                                 />
 
-                                <FormikButton 
+                                <FormikSubmitButton 
                                     variant="contained"
                                     className="ml-4"
                                     disabled={(touched.amount && errors.amount) ? true : false}
                                     startIcon={<AddShoppingCartIcon />}
                                 >
                                     Add to cart
-                                </FormikButton>
+                                </FormikSubmitButton>
                             </Stack>
                         </CardActions>
                     </Form>

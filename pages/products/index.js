@@ -8,7 +8,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
-import getDevAPI from "../../utils/getDevAPI";
+import getAPI from "../../utils/getAPI";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
@@ -88,8 +88,7 @@ function ProductPage(props) {
 export default ProductPage;
 
 export async function getStaticProps() {
-    const GET_ALL_PRODUCTS_API = getDevAPI(process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
-    const results = await axios.get(GET_ALL_PRODUCTS_API);
+    const results = await axios.get(process.env.DEV_URL + process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
     
     return {
         props: {

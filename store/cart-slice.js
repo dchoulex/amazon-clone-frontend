@@ -30,6 +30,10 @@ const cartSlice = createSlice({
 
         setNumOfCartItems(state, action) {
             state.numOfCartItems = action.payload.numOfCartItems
+        },
+
+        setCheckoutCartItem(state, action) {
+            state.checkoutCartItem = action.payload.checkoutCartItem;
         }
     }
 });

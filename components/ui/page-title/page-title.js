@@ -24,18 +24,6 @@ function PageTitle(props) {
                     {numOfResults === 0 ? "No item avaialable" : `${numOfResults} item(s)`}
                 </Typography>
             }
-
-            {title === "Shopping Cart" &&
-                <Stack direction="row" spacing={2} className="mt-4">
-                    <Button 
-                        disableRipple 
-                        color="error"
-                        className="normal-case text-base hover:bg-inherit p-0"
-                    >
-                        Deselect all items
-                    </Button> 
-                </Stack>
-            }
         </Box>
     )
 };

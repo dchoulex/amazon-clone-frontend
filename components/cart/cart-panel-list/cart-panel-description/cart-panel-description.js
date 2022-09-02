@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 
 import numberWithCommas from "../../../../utils/numberWithCommas";
 import StockLabel from "../../../ui/stock-label";
-import CartItemsButtonStack from "./cart-items-button-stack";
 import SavedItemsButtonStack from "./saved-items-button-stack";
 import BuyAgainItemsButtonStack from "./buy-again-items-button-stack"
 
@@ -12,9 +11,7 @@ function CartPanelDescription(props) {
 
     let buttonStack;
 
-    if (currentTab === "cart") {
-        buttonStack = <CartItemsButtonStack />
-    } else if (currentTab === "save") {
+    if (currentTab === "save") {
         buttonStack = <SavedItemsButtonStack />
     } else if (currentTab === "buy") {
         buttonStack = <BuyAgainItemsButtonStack />
