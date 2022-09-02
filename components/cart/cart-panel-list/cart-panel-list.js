@@ -31,6 +31,8 @@ function CartPanelList(props) {
 
                             <Grid item xs={12} md={8} className="md:flex md:flex-1">
                                 <CartPanelDescription 
+                                    cartId={item._id}
+                                    isSaved={item.isSaved}
                                     productName={item.product.name}
                                     stock={item.product.stock}
                                     price={item.product.price}

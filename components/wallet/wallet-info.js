@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";import axios from "axios";
+import useSWR from "swr";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -16,12 +18,20 @@ import NoItemInfo from "../ui/no-item-info";
 import AddCreditCardForm from "./add-credit-card-form";
 
 function WalletInfo(props) {
-    const { title, creditCards } = props;
+    const { title } = props;
     const [ openCreditCardForm , setOpenCreditCardForm ] = useState(false);
     const dispatch = useDispatch();
-
-    const numOfResults = creditCards.length;
     const currentPage = useSelector(state => state.wallet.walletPage);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+
+    const creditCards = data.data;
+    const numOfResults = data.numOfResults;
     const paginatedCreditCards = getPaginatedItems(creditCards, currentPage);
 
     const handleChangePage = (_, value) => {

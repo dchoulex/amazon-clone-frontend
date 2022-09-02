@@ -97,10 +97,7 @@ function WalletPage() {
     return (
         <Box p={3} className="bg-gray-200">
             {isLogin ? 
-                <WalletInfo 
-                    title={pageTitle}                     
-                    creditCards={creditCards}
-                /> :
+                <WalletInfo title={pageTitle} /> :
                 <PleaseLoginCard 
                     page={"wallet"} 
                     title={pageTitle} 

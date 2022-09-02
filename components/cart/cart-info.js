@@ -15,7 +15,7 @@ import CartPanelList from "./cart-panel-list/cart-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import NoItemInfo from "../ui/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
-import CheckoutForm from "./cart-panel-list/checkout-form";
+import CheckoutForm from "./checkout-form/checkout-form";
 
 // const buyAgainTabItems = [
 //     {
@@ -45,7 +45,7 @@ function CartInfo(props) {
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher);
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher, { refreshInterval: 1000 });
 
     if (!data) return <p>Loading</p>
     if (error) return <p>error</p>
@@ -54,8 +54,6 @@ function CartInfo(props) {
     
     const cartTabItems = cartItems.filter(cartItem => !cartItem.isSaved);
     const saveTabItems = cartItems.filter(cartItem => cartItem.isSaved);
-
-    console.log(cartTabItems)
 
     const tabItems = {
         cart: {
@@ -130,6 +128,7 @@ function CartInfo(props) {
                             numOfCartItems={tabItems["cart"].numOfResults}
                             subTotal={(tabItems["cart"].subTotal)}
                             point={tabItems["cart"].point}
+                            isEmpty={tabItems[currentTab].isEmpty}
                         />
                     </TabPanel>
 
@@ -138,7 +137,7 @@ function CartInfo(props) {
                         className="py-2"
                     >
                         <CartPanelList 
-                            items={ getPaginatedItems(saveTabItems, tabItems["save"].page )} 
+                            items={getPaginatedItems(saveTabItems, tabItems["save"].page)} 
                             currentTab={currentTab} 
                         />
                     </TabPanel>
@@ -168,7 +167,3 @@ function CartInfo(props) {
 };
 
 export default CartInfo;
-
-// export async function getServerSideProps(context) {
-//     const GET_ALL_CART_ITEMS_API = process.env.NEXT_GET_ALL_CART_ITEMS_API
-// }

@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
+import { Field, getIn } from "formik";
 
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack';
@@ -15,9 +16,34 @@ import StockLabel from "../../ui/stock-label";
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikNumber from "../../ui/forms/formik-number";
 import FormikHidden from "../../ui/forms/formik-hidden";
+import axios from "axios";
+import getAPI from "../../../utils/getAPI";
 
-function CartItemList(props) {
-    const { item, index, numOfCartItems, arrayHelpers } = props;
+function CheckoutFormItemList(props) {
+    const { item, index, numOfCartItems, remove, insert } = props;
+    const productId = item.product._id;
+
+    const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
+    const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: item._id, query: `isSaved=${!item.isSaved}` });
+
+    const handleChangeAmount = event => {
+        remove(index);
+
+        insert(index, { 
+            productId: productId, 
+            amount: Number(event.target.value)
+        });
+    };
+
+    const handleDeleteItem = async () => {
+        remove(index);
+
+        await axios.delete(DELETE_CART_ITEM_API);
+    };
+
+    const handleToggleSave = async () => {
+        await axios.patch(TOGGLE_SAVE_CART_ITEM_API)
+    };
 
     return (
         <Fragment>
@@ -64,10 +90,10 @@ function CartItemList(props) {
                             <Typography variant="body2" className="mb-4">
                                 Get <span className="text-orange-400">{numberWithCommas(item.product.point)}</span> amazon points.
                             </Typography>
-    
-                            <FormikHidden 
+
+                            <Field 
                                 name={`checkoutCartItems[${index}].productId`}
-                                value={item.product._id}
+                                type="hidden"
                             />
     
                             <Stack 
@@ -80,7 +106,7 @@ function CartItemList(props) {
                                     name={`checkoutCartItems[${index}].amount`}
                                     className="min-w-[60px] max-w-[80px]"
                                     defaultValue={item.amount}
-                                    onClick={() => arrayHelpers.push({ productId: "", amount: 0})}
+                                    onClick={handleChangeAmount}
                                 />
     
                                 <Button 
@@ -88,7 +114,7 @@ function CartItemList(props) {
                                     variant="outlined"
                                     color="error"
                                     startIcon={<DeleteIcon />}
-                                    onClick={() => arrayHelpers.remove(index)}
+                                    onClick={handleDeleteItem}
                                 >
                                     Delete
                                 </Button>
@@ -97,6 +123,7 @@ function CartItemList(props) {
                                     variant="outlined"
                                     startIcon={<SaveIcon />}
                                     color="success"
+                                    onClick={handleToggleSave}
                                 >
                                     Save for later
                                 </Button>
@@ -116,4 +143,4 @@ function CartItemList(props) {
     )
 };
 
-export default CartItemList;
+export default CheckoutFormItemList;

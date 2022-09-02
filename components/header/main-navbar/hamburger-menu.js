@@ -1,4 +1,6 @@
 import { useState, Fragment } from "react";
+import Link from "next/link";
+
 import { useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
@@ -11,31 +13,53 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Button from "@mui/material/Button";
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import SvgIcon from '@mui/material/SvgIcon';
-import JapanIcon from "../../../public/images/jp-flag-icon.svg";
+import ContactsIcon from '@mui/icons-material/Contacts';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import PaymentIcon from '@mui/icons-material/Payment';
 
+import JapanIcon from "../../../public/images/jp-flag-icon.svg";
 import StyledListItemText from "../styled-list-item-text";
 
 const buttons = [
     {
-        icon: <LocationOnOutlinedIcon />,
-        name: "Select your address"
-    },
-    {
-        icon: <PersonIcon />,
-        name: "Account"
+        icon: <ManageAccountsIcon />,
+        name: "Account",
+        href: "/account"
     },
     {
         icon: <ListAltIcon />,
-        name: "Orders"
+        name: "Orders",
+        href: "/account/order-history"
+    },
+    {
+        icon: <PersonIcon />,
+        name: "My Profile",
+        href: "/account/my-profile"
+    },
+    {
+        icon: <RateReviewIcon />,
+        name: "My Review",
+        href: "/account/review"
+    },
+    {
+        icon: <ContactsIcon />,
+        name: "Select your address",
+        href: "/account/address"
+    },
+    {
+        icon: <PaymentIcon />,
+        name: "Wallet",
+        href: "/account/wallet"
     },
     {
         icon: <ShoppingCartOutlinedIcon />,
-        name: "Cart"
+        name: "Cart",
+        href: "/cart"
     }
 ];
 
@@ -116,14 +140,18 @@ function HamburgerMenu(props) {
 
 
                         {buttons.map(button => (
-                            <ListItemButton 
+                            <Link 
                                 key={`button-${button.name}`}
-                                onClick={handleCloseDrawer} 
+                                href={button.href}
                             >
-                                <ListItemIcon>{button.icon}</ListItemIcon>
+                                <ListItemButton 
+                                    onClick={handleCloseDrawer} 
+                                >
+                                    <ListItemIcon>{button.icon}</ListItemIcon>
 
-                                <StyledListItemText primary={button.name} />
-                            </ListItemButton>
+                                    <StyledListItemText primary={button.name} />
+                                </ListItemButton>
+                            </Link>
                         ))}
                     </List>
                 </Box>

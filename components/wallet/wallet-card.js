@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -10,9 +12,24 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
+import getAPI from "../../utils/getAPI";
+
 function WalletCard(props) {
     const { card } = props;
     const displayedCardNumber = "ending in ..." + card.number.slice(card.number.length - 4);
+    const displayedExpirationDate = card.expirationDate.split("-").slice(0, 2).join(" / ");
+    const displayedCreditCardType = card.type[0].toUpperCase() + card.type.slice(1);
+
+    const DELETE_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CREDIT_CARD_API, { id: card._id });
+    const SET_CREDIT_CARD_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_CREDIT_CARD_AS_DEFAULT_API, { id: card._id });
+
+    const handleRemoveCreditCard = async () => {
+        await axios.delete(DELETE_CREDIT_CARD_API)
+    };
+
+    const handleSetAsDefault = async () => {
+        await axios.patch(SET_CREDIT_CARD_AS_DEFAULT_API)
+    };
 
     return (
         <Card className="border-2 border-solid border-gray-200 w-[350px] h-[300px] flex flex-col">
@@ -21,7 +38,7 @@ function WalletCard(props) {
                 className="flex items-center"
             >
                 <CardHeader 
-                    title={card.type} 
+                    title={displayedCreditCardType} 
                     className="p-0"
                 />
 
@@ -38,7 +55,7 @@ function WalletCard(props) {
 
             <CardContent>
                 <Typography variant="h5">
-                    {card.userName}
+                    {card.name}
                 </Typography>
 
                 <Grid container orientation="column">
@@ -65,7 +82,7 @@ function WalletCard(props) {
 
                         <Grid item xs={6}>
                             <Typography variant="body1">
-                                {card.expirationDate}
+                                {displayedExpirationDate}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -73,15 +90,7 @@ function WalletCard(props) {
             </CardContent>
 
             <CardActions className="mt-auto">
-                <Button>Edit</Button>
-
-                <Divider 
-                    orientation="vertical"
-                    variant="middle" 
-                    flexItem 
-                />
-
-                <Button>Remove</Button>
+                <Button onClick={handleRemoveCreditCard}>Remove</Button>
 
                 {!card.isDefault && (
                     <Fragment>
@@ -91,7 +100,7 @@ function WalletCard(props) {
                             flexItem 
                         />
 
-                        <Button>Set as default</Button>
+                        <Button onClick={handleSetAsDefault}>Set as default</Button>
                     </Fragment>
                 )}
             </CardActions>

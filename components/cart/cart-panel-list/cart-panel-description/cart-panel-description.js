@@ -7,14 +7,14 @@ import SavedItemsButtonStack from "./saved-items-button-stack";
 import BuyAgainItemsButtonStack from "./buy-again-items-button-stack"
 
 function CartPanelDescription(props) {
-    const { productName, stock, price, point, currentTab } = props;
+    const { productName, stock, price, point, currentTab, cartId, isSaved } = props;
 
     let buttonStack;
 
     if (currentTab === "save") {
-        buttonStack = <SavedItemsButtonStack />
+        buttonStack = <SavedItemsButtonStack cartId={cartId} isSaved={isSaved} />
     } else if (currentTab === "buy") {
-        buttonStack = <BuyAgainItemsButtonStack />
+        buttonStack = <BuyAgainItemsButtonStack cartId={cartId} isSaved={isSaved} />
     };
 
     return (

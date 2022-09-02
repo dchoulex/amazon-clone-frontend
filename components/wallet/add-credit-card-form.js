@@ -64,16 +64,17 @@ function AddCreditCardForm(props) {
         setOpenCreditCardForm(false);
     };
 
-    const handleAddCreditCardForm = async() => {
+    const handleAddCreditCardForm = async(values) => {
         try {
-            const res = await axios.get("/api/v1/cards/default");
-            console.log(res)
+            const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CREDIT_CARD_API, values);
 
+            console.log(res)
         } catch(err) {
             console.log(err)
         }
 
-    }
+        setOpenCreditCardForm(false);
+    };
 
     return (
         <Fragment>
