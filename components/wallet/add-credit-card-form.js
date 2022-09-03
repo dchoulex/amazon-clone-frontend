@@ -52,7 +52,6 @@ const defaultOptions = [
 
 function AddCreditCardForm(props) {
     const { openCreditCardForm, setOpenCreditCardForm } = props;
-
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {

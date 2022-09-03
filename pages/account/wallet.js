@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+
 import Box from "@mui/material/Box";
 
 import PleaseLoginCard from "../../components/ui/please-login-card";
@@ -91,12 +93,12 @@ const creditCards = [
 ];
 
 function WalletPage() {
-    const isLogin = true;
-    const pageTitle = "Wallet"
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const pageTitle = "Wallet";
 
     return (
         <Box p={3} className="bg-gray-200">
-            {isLogin ? 
+            {isAuthenticated ? 
                 <WalletInfo title={pageTitle} /> :
                 <PleaseLoginCard 
                     page={"wallet"} 

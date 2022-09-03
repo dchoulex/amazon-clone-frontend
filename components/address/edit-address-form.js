@@ -10,39 +10,26 @@ import IconButton from "@mui/material/IconButton";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA, BOOLEAN_SCHEMA } from "../ui/forms/form-schema";
+import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA } from "../ui/forms/form-schema";
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
 import { PREFECTURES } from "../../appConfig";
-import FormikRadio from "../ui/forms/formik-radio";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
+import getAPI from "../../utils/getAPI";
 
-const ADD_ADDRESS_INITIAL_FORM_STATE = {
-    name: "",
-    country: "Japan",
-    postCode: "",
-    prefecture: "",
-    city: "",
-    rest: "",
-    phoneNumber: "",
-    isDefault: "true"
-};
-
-const ADD_ADDRESS_FORM_VALIDATION = Yup.object().shape({
+const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
     name: NAME_SCHEMA,
     country: STRING_REQUIRED_SCHEMA,
     postCode: POST_CODE_SCHEMA,
     prefecture: PREFECTURE_SCHEMA,
     city: STRING_REQUIRED_SCHEMA,
     rest: STRING_REQUIRED_SCHEMA,
-    phoneNumber: PHONE_NUMBER_SCHEMA,
-    isDefault: BOOLEAN_SCHEMA
+    phoneNumber: PHONE_NUMBER_SCHEMA
 });
 
 const defaultOptions = [
@@ -56,8 +43,8 @@ const defaultOptions = [
     }
 ];
 
-function AddAddressForm(props) {
-    const { openAddAddressForm, setOpenAddAddressForm } = props;
+function EditAddressForm(props) {
+    const { address, openEditAddressForm, setOpenEditAddressForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({
@@ -65,24 +52,38 @@ function AddAddressForm(props) {
         value: prefecture
     }));
 
+    const EDIT_ADDRESS_INITIAL_FORM_STATE = {
+        name: address.name,
+        country: address.country,
+        postCode: address.postCode,
+        prefecture: address.prefecture,
+        city: address.city,
+        rest: address.rest,
+        phoneNumber: address.phoneNumber
+    };
+
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
     };
 
     const handleCloseAllDialog = () => {
         setOpenConfirmCloseDialog(false);
-        setOpenAddAddressForm(false);
+        setOpenEditAddressForm(false);
     };
 
-    const handleSubmitAddAddressForm = async (values) => {
-        const res = await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
+    console.log(address);
 
-        setOpenAddAddressForm(false);
+    const handleSubmitEditAddressForm = async (values) => {
+        const UPDATE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_UPDATE_ADDRESS_API, { id: address._id });
+
+        await axios.put(UPDATE_ADDRESS_API, values);
+
+        setOpenEditAddressForm(false);
     };
 
     return (
         <Fragment>
-            <Dialog open={openAddAddressForm}>
+            <Dialog open={openEditAddressForm}>
                 <DialogTitle              
                     sx={{ 
                         display: "flex", 
@@ -91,7 +92,9 @@ function AddAddressForm(props) {
                     }}
                 >
                     <Box sx={{ display: "flex", flex: "1 1 0%" }}>
-                        <Typography sx={{ paddingTop: "4px"}} variant="h5">Add a new address </Typography> 
+                        <Typography sx={{ paddingTop: "4px"}} variant="h5">
+                            Edit address 
+                        </Typography> 
 
                         <IconButton 
                             sx={{ marginLeft: "auto" }}
@@ -103,17 +106,13 @@ function AddAddressForm(props) {
                 </DialogTitle>
 
                 <Formik
-                    initialValues={{ ...ADD_ADDRESS_INITIAL_FORM_STATE }}
-                    validationSchema={ADD_ADDRESS_FORM_VALIDATION}
-                    onSubmit={handleSubmitAddAddressForm}
+                    initialValues={{ ...EDIT_ADDRESS_INITIAL_FORM_STATE }}
+                    validationSchema={EDIT_ADDRESS_FORM_VALIDATION}
+                    onSubmit={handleSubmitEditAddressForm}
                 >
                     {({ errors, touched }) => (
                         <Form>
                             <DialogContent>
-                                <DialogContentText>
-                                    Please input your address information.
-                                </DialogContentText>
-
                                 <Grid container direction="vertical">
                                     <Grid item xs={12}>
                                         <FormikTextField 
@@ -188,14 +187,6 @@ function AddAddressForm(props) {
                                             sx={{ display: "block" }}
                                         />
                                     </Grid>
-
-                                    <Grid item xs={12}>
-                                        <FormikRadio 
-                                            name="isDefault"
-                                            label="Set as default?"
-                                            options={defaultOptions}
-                                        />
-                                    </Grid>
                                 </Grid>                    
                             </DialogContent>
 
@@ -222,7 +213,7 @@ function AddAddressForm(props) {
                                             false
                                     }
                                 >
-                                    Add address
+                                    Edit address
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>
@@ -239,4 +230,4 @@ function AddAddressForm(props) {
     )
 };
 
-export default AddAddressForm;
+export default EditAddressForm;

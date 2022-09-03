@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useSWR from "swr";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -16,12 +19,21 @@ import AddAddressForm from "./add-address-form";
 import NoItemInfo from "../ui/no-item-info";
 
 function AddressInfo(props) {
-    const { title, addresses } = props;
+    const { title } = props;
     const dispatch = useDispatch();
+    
     const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
-
-    const numOfResults = addresses.length;
     const currentPage = useSelector(state => state.address.addressPage);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+
+    const addresses = data.data;
+    const numOfResults = data.numOfResults;
     const paginatedAddresses = getPaginatedItems(addresses, currentPage);
 
     const handleChangePage = (_, value) => {

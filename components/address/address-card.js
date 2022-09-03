@@ -1,4 +1,6 @@
-import { Fragment } from "react";
+import { useState, Fragment } from "react";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -9,8 +11,28 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
+import getAPI from "../../utils/getAPI";
+import EditAddressForm from "./edit-address-form";
+
 function AddressCard(props) {
     const { address } = props;
+    const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
+
+    const handleOpenEditAddressForm = () => {
+        setOpenEditAddressForm(true);
+    };
+
+    const handleSetAsDefault = async () => {
+        const SET_ADDRESS_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_ADDRESS_AS_DEFAULT_API, { id: address._id });
+
+        await axios.patch(SET_ADDRESS_AS_DEFAULT_API);
+    };
+
+    const handleRemoveAddress = async () => {
+        const DELETE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_DELETE_ADDRESS_API, { id: address._id });
+
+        await axios.delete(DELETE_ADDRESS_API);
+    };
 
     return (
         <Card className="border-2 border-solid border-gray-200 w-[350px] h-[300px] flex flex-col">
@@ -19,7 +41,7 @@ function AddressCard(props) {
                 className="flex items-center"
             >
                 <CardHeader 
-                    title={address.name} 
+                    title={address.name.length > 15 ? address.name.slice(0, 15) + "..." : address.name} 
                     className="p-0"
                 />
 
@@ -44,7 +66,7 @@ function AddressCard(props) {
                 </Typography>
 
                 <Typography variant="body1">
-                    {address.detail}
+                    {address.rest}
                 </Typography>
 
                 <Typography variant="body1">
@@ -57,7 +79,13 @@ function AddressCard(props) {
             </CardContent>
 
             <CardActions className="mt-auto">
-                <Button disableRipple>Edit</Button>
+                <Button disableRipple onClick={handleOpenEditAddressForm}>Edit</Button>
+
+                <EditAddressForm 
+                    openEditAddressForm={openEditAddressForm}
+                    setOpenEditAddressForm={setOpenEditAddressForm}
+                    address={address}
+                />
 
                 <Divider 
                     orientation="vertical"
@@ -65,7 +93,7 @@ function AddressCard(props) {
                     flexItem 
                 />
 
-                <Button disableRipple>Remove</Button>
+                <Button disableRipple onClick={handleRemoveAddress}>Remove</Button>
 
                 {!address.isDefault && (
                     <Fragment>
@@ -75,7 +103,7 @@ function AddressCard(props) {
                             flexItem 
                         />
 
-                        <Button disableRipple>Set as default</Button>
+                        <Button disableRipple onClick={handleSetAsDefault}>Set as default</Button>
                     </Fragment>
                 )}
             </CardActions>

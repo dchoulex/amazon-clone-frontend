@@ -51,7 +51,7 @@ export const PHONE_NUMBER_SCHEMA = Yup
     .string()
     .required(REQUIRED_ERROR_MESSAGE)
     .matches(NUMBER_REGEX, INVALID_NUMBER_TYPE_ERROR_MESSAGE)
-    .max(11, "Phone number must be at most ${max} digits.")
+    .length(11, "Phone number must be ${length} digits.")
 
 export const CREDIT_CARD_TYPE_SCHEMA = Yup
     .string()
