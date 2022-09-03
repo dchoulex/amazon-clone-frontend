@@ -28,7 +28,7 @@ const ADD_CREDIT_CARD_INITIAL_FORM_STATE = {
     type: "",
     expirationDate: "",
     number: "",
-    isDefault: true
+    isDefault: "true"
 };
 
 const ADD_CREDIT_CARD_FORM_VALIDATION = Yup.object().shape({
@@ -42,11 +42,11 @@ const ADD_CREDIT_CARD_FORM_VALIDATION = Yup.object().shape({
 const defaultOptions = [
     {
         name: "Yes",
-        value: true
+        value: "true"
     },
     {
         name: "No",
-        value: false
+        value: "false"
     }
 ];
 
