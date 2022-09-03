@@ -1,5 +1,8 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/router";
 import Link from "next/link";
+import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -11,14 +14,34 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
 
+import { authActions } from "../../store/auth-slice";
 import EditProfileForm from "./edit-profile-form";
+import ConfirmDeleteDialog from "../ui/dialog/confirm-delete-dialog";
 
 function MyProfileCard(props) {
     const { user } = props;
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     const [ openEditProfileForm, setOpenEditProfileForm ] = useState(false);
+    const [ openConfirmDeleteDialog, setOpenConfirmDeleteDialog ] = useState(false);
 
     const handleOpenEditProfileForm = () => {
         setOpenEditProfileForm(true);
+    };
+
+    const handleOpenConfirmDeleteDialog = async() => {
+        setOpenConfirmDeleteDialog(true);
+    };
+
+    const handleDelete = async() => {
+        await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
+
+        setOpenConfirmDeleteDialog(false);
+
+        dispatch(authActions.logout());
+
+        router.push("/");
     };
 
     return (
@@ -45,7 +68,7 @@ function MyProfileCard(props) {
                             {user.name}
                         </Typography>
 
-                        <Stack direction="row" spacing={3} mt="auto" pb={2}>
+                        <Stack direction="row" spacing={3} mt="auto" pb={1}>
                             <Link href="/auth/reset-password">
                                 <Button 
                                     size="small" 
@@ -60,6 +83,21 @@ function MyProfileCard(props) {
                                     Change account
                                 </Button>
                             </Link>
+        
+                            <Button 
+                                size="small" 
+                                variant="contained" 
+                                color="error"
+                                onClick={handleOpenConfirmDeleteDialog}
+                            >
+                                Delete account
+                            </Button>
+
+                            <ConfirmDeleteDialog
+                                openConfirmDeleteDialog={openConfirmDeleteDialog}
+                                setOpenConfirmDeleteDialog={setOpenConfirmDeleteDialog}
+                                handleDelete={handleDelete}
+                            />
                         </Stack>
                     </Box>
 

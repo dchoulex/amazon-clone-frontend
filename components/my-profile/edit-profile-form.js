@@ -1,6 +1,7 @@
 import { useState, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -44,7 +45,9 @@ function EditProfileForm(props) {
     };
 
     const handleSubmitEditProfileForm = async(values) => {
-        await axios.put
+        await axios.put(process.env.NEXT_PUBLIC_UPDATE_MY_PROFILE_API, values);
+
+        setOpenEditProfileForm(false);
     };
 
     return (

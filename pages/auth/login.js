@@ -18,13 +18,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import Draggable from 'react-draggable';
 
 import { authActions } from "../../store/auth-slice";
+import { userActions } from "../../store/user-slice";
+import { cartActions } from "../../store/cart-slice";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 import FormikEmail from "../../components/ui/forms/formik-email";
 import FormikPassword from "../../components/ui/forms/formik-password";
 import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
-import getAPI from "../../utils/getAPI";
 import { EMAIL_SCHEMA, PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
-import { CURRENT_TIME } from "../../appConfig";
 
 const dialogContent = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla porttitor erat, sed lobortis dui varius a. Nunc feugiat, neque vitae semper congue, libero urna scelerisque velit, at tempus enim augue sit amet dolor. Sed eu congue velit. Nulla porttitor porttitor felis, sit amet aliquet nibh aliquam nec. Suspendisse pretium est lorem, et maximus dolor dictum vel. Praesent consequat eu lorem sit amet ullamcorper. Morbi sem velit, venenatis eu mi pulvinar, cursus luctus magna. Ut nec urna lacus. Sed cursus dolor dui, in faucibus velit elementum vitae. Maecenas ornare sagittis arcu, ac dapibus erat maximus vel. Donec eget est luctus, commodo ipsum vel, convallis orci. Vivamus purus ipsum, sodales elementum neque a, malesuada cursus magna. Ut sit amet eros non tellus luctus pharetra id id odio. Aenean euismod vitae nibh ut tincidunt.
@@ -63,7 +63,6 @@ function LoginPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
-    const [ data, setData ] = useState(null)
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState(null);
 
@@ -84,44 +83,28 @@ function LoginPage() {
     };
 
     const handleSubmitLoginForm = async (values, actions) => {
-        const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
-        const GET_DEFAULT_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_ADDRESS_API);
-        const GET_DEFAULT_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_GET_DEFAULT_CREDIT_CARD_API);
-        const GET_ALL_CART_ITEMS_API = getAPI(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API);
-
         setLoading(true);
         actions.setSubmitting(false);
 
         try {
-            const loginRes = await axios.post("/api/v1/auth/login", values);
-            const loginData = loginRes.data;
+            const res = await axios.post(process.env.NEXT_PUBLIC_LOGIN_API, values);
+            
+            const { user, defaultAddress, defaultCreditCard, numOfCartItems } = res.data.data;
 
-            // const defaultAddressRes = await axios.get("/api/v1/addresses/default");
-            // const defaultCreditCardRes = await axios.get("/api/v1/cards/default");
-            // const cartItemsRes = await axios.get(GET_ALL_CART_ITEMS_API);
+            dispatch(authActions.login());
 
-            // console.log(defaultAddressRes)
+            dispatch(userActions.setUser({
+                name: user.name,
+                email: user.email,
+                phoneNumber: user.phoneNumber,
+                amazonPoints: user.amazonPoints,
+                defaultAddress,
+                defaultCreditCard
+            }));
 
-            // console.log(loginData, defaultAddressRes, defaultCreditCardRes)
-
-
-            // const user = data.data;
-
-
-            // setLoading(false);
-
-            // if (!data) return new Error("No");
-    
-            // dispatch(authActions.login());
-            // disptach(userActions.setUser({
-            //     name: user.name,
-            //     email: user.email,
-            //     phoneNumber: user.phoneNumber
-            // }))
-    
-
-        
-
+            dispatch(cartActions.setNumOfCartItems({
+                numOfCartItems
+            }));
 
             router.push("/account");
         } catch(err) {
