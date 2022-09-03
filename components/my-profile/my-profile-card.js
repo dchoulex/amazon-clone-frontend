@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import IconButton from '@mui/material/IconButton';
 import Avatar from "@mui/material/Avatar";
@@ -11,95 +11,111 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
 
-import ChangeProfileForm from "./change-profile-form";
+import EditProfileForm from "./edit-profile-form";
 
-function MyProfileCard() {
-    const [ openChangeProfileForm, setOpenChangeProfileForm ] = useState(false);
+function MyProfileCard(props) {
+    const { user } = props;
+    const [ openEditProfileForm, setOpenEditProfileForm ] = useState(false);
 
-    const handleOpenChangeProfileForm = () => {
-        setOpenChangeProfileForm(true);
+    const handleOpenEditProfileForm = () => {
+        setOpenEditProfileForm(true);
     };
 
     return (
-        <Box px={3} pb={4} pt={2}>
-            <Paper className="p-5 border-2 border-solid border-gray-300 flex">
-                <IconButton>
-                    <Avatar
-                        alt="Remy Sharp"
-                        src="/images/"
-                        sx={{ width: 120, height: 120 }}
-                    />
-                </IconButton>
+        <Box px={3} pb={4}>
+            <Paper className="p-5 border-2 border-solid border-gray-300">
+                <Box 
+                    className="flex" 
+                    sx={{
+                        borderBottom: 1,
+                        borderColor: "divider",
+                    }}
+                    py={2}
+                >
+                    <IconButton>
+                        <Avatar
+                            alt={user.name}
+                            src="/images/"
+                            sx={{ width: 120, height: 120 }}
+                        />
+                    </IconButton>
 
-                <Divider 
-                    orientation="vertical" 
-                    flexItem 
-                    className="border-gray-300 mx-10"
-                />
+                    <Box ml={4} className="flex flex-col">
+                        <Typography variant="h4" className="mt-2">
+                            {user.name}
+                        </Typography>
 
-                <Box className="flex flex-col">
-                    <Typography variant="h5">Fever Pitch</Typography>
+                        <Stack direction="row" spacing={3} mt="auto" pb={2}>
+                            <Link href="/auth/reset-password">
+                                <Button 
+                                    size="small" 
+                                    variant="contained"
+                                >
+                                    Change password
+                                </Button>
+                            </Link>
 
-                    <Box sx={{ width: 300 }}>
-                        <Grid container>
-                            <Grid 
-                                item 
-                                container 
-                                className="mb-1 mt-4"
-                            >
-                                <Grid item xs={6}> 
-                                    <Typography className="font-bold">Email :</Typography>
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                    <Typography>Something@somtehing.com</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Grid 
-                                item 
-                                container 
-                                className="my-1"
-                            >
-                                <Grid item xs={6}>
-                                    <Typography className="font-bold">Phone number :</Typography>
-                                </Grid>
-
-                                <Grid item xs={6}>
-                                    <Typography>xxx-xxxx</Typography>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                            <Link href="/auth/login">
+                                <Button size="small" variant="outlined">
+                                    Change account
+                                </Button>
+                            </Link>
+                        </Stack>
                     </Box>
 
-                    <Stack direction="row" spacing={3} mt={2}>
-                        <Link href="/auth/reset-password">
-                            <Button 
-                                size="small" 
-                                variant="contained"
-                            >
-                                Change password
-                            </Button>
-                        </Link>
-
-                        <Link href="/auth/login">
-                            <Button size="small" variant="outlined">Change account</Button>
-                        </Link>
-                    </Stack>
+                    <Box className="ml-auto flex flex-col">
+                        <IconButton 
+                            color="primary" 
+                            onClick={handleOpenEditProfileForm} 
+                        >
+                            <EditIcon />
+                        </IconButton>
+                        
+                        <Typography variant="caption" className="pl-2">Edit</Typography>
+                    </Box>
                 </Box>
 
-                <Box className="ml-auto flex flex-col">
-                    <IconButton color="primary" onClick={handleOpenChangeProfileForm} >
-                        <EditIcon />
-                    </IconButton>
-                    
-                    <Typography variant="caption" className="pl-2">Edit</Typography>
+                <Box className="flex" pl={2} pt={2}>
+                    <Grid container>
+                        <Grid 
+                            item 
+                            container 
+                            className="mb-1 mt-4"
+                        >
+                            <Grid item xs={2}> 
+                                <Typography className="font-bold">Email :</Typography>
+                            </Grid>
+
+                            <Grid item xs={10}>
+                                <Typography>
+                                    {user.email}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+
+                        <Grid 
+                            item 
+                            container 
+                            className="my-1"
+                        >
+                            <Grid item xs={2}>
+                                <Typography className="font-bold">Phone number :</Typography>
+                            </Grid>
+
+                            <Grid item xs={10}>
+                                <Typography>
+                                    {user.phoneNumber}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Paper>
 
-            <ChangeProfileForm 
-                openChangeProfileForm={openChangeProfileForm}
-                setOpenChangeProfileForm={setOpenChangeProfileForm}
+            <EditProfileForm 
+                user={user}
+                openEditProfileForm={openEditProfileForm}
+                setOpenEditProfileForm={setOpenEditProfileForm}
             />
         </Box>
     )

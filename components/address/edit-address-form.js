@@ -32,17 +32,6 @@ const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
     phoneNumber: PHONE_NUMBER_SCHEMA
 });
 
-const defaultOptions = [
-    {
-        name: "Yes",
-        value: "true"
-    },
-    {
-        name: "No",
-        value: "false"
-    }
-];
-
 function EditAddressForm(props) {
     const { address, openEditAddressForm, setOpenEditAddressForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
@@ -213,7 +202,7 @@ function EditAddressForm(props) {
                                             false
                                     }
                                 >
-                                    Edit address
+                                    Update
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>
