@@ -42,7 +42,6 @@ function Header() {
         };
 
         if (!isAuthenticated) fetchData();
-
     }, [isAuthenticated, dispatch]);
     
     const user = useSelector(state => ({

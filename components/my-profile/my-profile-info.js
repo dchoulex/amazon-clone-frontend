@@ -20,7 +20,7 @@ function MyProfileInfo(props) {
     if (error) return <p>error</p>
 
     const resData = data.data;
-    console.log(resData)
+
     const user = {
         name: resData.name,
         email: resData.email,

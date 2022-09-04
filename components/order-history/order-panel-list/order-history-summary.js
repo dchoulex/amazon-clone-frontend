@@ -2,22 +2,58 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
+import { DELIVERY_STATUS } from "../../../appConfig";
 import numberWithCommas from "../../../utils/numberWithCommas";
 
 function OrderHistorySummary(props) {
-    const { orderAt, total, address, id, status } = props;
+    const { orderDate, total, address, id, orderStatus, isCanceled } = props;
+    const displayedOrderDate = orderDate.split("T")[0];
 
+    const getChipColor = (status, orderStatus) => {
+        let chipColor = "default";
+    
+        if (orderStatus === status && orderStatus === DELIVERY_STATUS[0]) chipColor = "primary";
+
+        if (orderStatus === status && orderStatus === DELIVERY_STATUS[1]) chipColor = "warning";
+
+        if (orderStatus === status && orderStatus === DELIVERY_STATUS[2]) chipColor = "secondary";
+
+        if (orderStatus === status && orderStatus === DELIVERY_STATUS[3]) chipColor = "success";
+
+        return chipColor;
+    };
+    
     return (
         <Box className="flex flex-col flex-1">
-            <div>
-                <Chip 
-                    color="primary"
-                    label="Test"
-                    className="max-w-[100px]"
-                />
-            </div>
+            {isCanceled ?
+                <Box mb={2}>
+                    <Chip 
+                        color="error"
+                        size="small"
+                        label="Canceled"
+                        className="max-w-[100px]"
+                    />
+                </Box> :
+                <Box mb={2}>
+                    <Breadcrumbs   
+                        aria-label="breadcrumb"
+                        separator={<NavigateNextIcon fontSize="small" />}
+                    >
+                        {DELIVERY_STATUS.map((status, index) => (
+                            <Chip
+                                key={`deliver-status-${index}`}
+                                label={status}
+                                size="small"
+                                color={getChipColor(status, orderStatus)}
+                            />
+                        ))}
+                    </Breadcrumbs>
+                </Box> 
+            }
 
             <div className="flex">
                 <div className="min-w-[100px] mr-5">
@@ -26,7 +62,7 @@ function OrderHistorySummary(props) {
                     </Typography>
 
                     <Typography variant="body1">
-                        {orderAt}
+                        {displayedOrderDate}
                     </Typography>
                 </div>
 
@@ -52,9 +88,9 @@ function OrderHistorySummary(props) {
 
                 <div className="ml-auto mr-5">
                     <Typography variant="overline">
-                        Order {id}
+                        Order #{id.slice(0, 10)}
                     </Typography>
-
+{/* 
                     <Stack direction="row" spacing={2}>
                         <Button disableRipple className="hover:bg-inherit normal-case p-0">
                             View order details
@@ -63,7 +99,7 @@ function OrderHistorySummary(props) {
                         <Button disableRipple className="hover:bg-inherit normal-case p-0">
                             Invoice
                         </Button>
-                    </Stack>
+                    </Stack> */}
                 </div>
             </div> 
         </Box>

@@ -1,5 +1,8 @@
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import useSWR from "swr";
+
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
@@ -14,52 +17,25 @@ import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import NoItemInfo from "../ui/no-item-info";
 
-// const orderedItems = [
-//     {
-//         status: "delivered",
-//         orderAt: "12 August 2022",
-//         id: 1,
-//         total: 1578,
-//         address: "Address very long address",
-//         orderId: "250-0899463-0763017",
-//     },
-//     {
-//         status: "notDelivered",
-//         orderAt: "12 August 2022",
-//         id: 2,
-//         total: 1578,
-//         address: "Address very long address",
-//         orderId: "250-0899463-0763017"
-//     },
-// ]
-
-// const cancelledItems = [
-//     {
-//         orderAt: "12 Nov 2022",
-//         id: 3,
-//         total: 1578,
-//         address: "Address very long address",
-//         orderId: "250-0899463-0763017"
-//     },
-//     {
-//         orderAt: "12 Nov 2022",
-//         id: 4,
-//         total: 1578,
-//         address: "Address very long address",
-//         orderId: "250-0899463-0763017"
-//     },
-// ];
-
 function OrderHistoryInfo(props) {
-    const { orders, title } = props;
+    const { title } = props;
     const dispatch = useDispatch();
-
-    const orderHistoryTabItems = orders.filter(order => !order.isCanceled);
-    const cancelTabItems = orders.filter(order => order.isCanceled);
 
     const currentTab = useSelector(state => state.orderHistory.currentTab)
     const currentOrderHistoryTabPage = useSelector(state => state.orderHistory.orderHistoryTabPage);
     const currentCancelTabPage = useSelector(state => state.orderHistory.cancelTabPage);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ORDERS_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+    
+    const orders = data.data;
+
+    const orderHistoryTabItems = orders.filter(data => !data.order.isCanceled);
+    const cancelTabItems = orders.filter(data => data.order.isCanceled);
 
     const tabItems = {
         history: {

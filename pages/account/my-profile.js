@@ -7,7 +7,7 @@ import PleaseLoginCard from "../../components/ui/please-login-card";
 
 function MyProfilePage() {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-    const pageTitle = "My Profile"
+    const pageTitle = "My Profile";
 
     return (
         <Box p={3} className="bg-gray-200">

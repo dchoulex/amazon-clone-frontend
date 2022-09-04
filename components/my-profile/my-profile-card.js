@@ -78,11 +78,11 @@ function MyProfileCard(props) {
                                 </Button>
                             </Link>
 
-                            <Link href="/auth/login">
+                            {/* <Link href="/auth/login">
                                 <Button size="small" variant="outlined">
                                     Change account
                                 </Button>
-                            </Link>
+                            </Link> */}
         
                             <Button 
                                 size="small" 
