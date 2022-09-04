@@ -10,7 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
 function OrderDetailsSummary(props) {
-    const { name, postCode, city, address, credit } = props;
+    const { name, postCode, city, rest, subTotal, total, tax, discount, grandTotal, paymentMethod, creditCard, shippingCost } = props;
 
     return (
         <Box px={3} mb={3}>
@@ -34,18 +34,18 @@ function OrderDetailsSummary(props) {
                         </Typography>
 
                         <Typography className="text-base">
-                            {address}
+                            {rest}
                         </Typography>
                     </div>
                 </div>
 
                 <div className="ml-10">
                     <Typography className="font-semibold mb-1 text-lg">
-                        Payment Methods
+                        Payment Methods <span className="font-light">{paymentMethod}</span>
                     </Typography>
 
                     <Typography className="text-base">
-                        {credit}
+                        {paymentMethod}
                     </Typography>
                 </div>
 
@@ -64,7 +64,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
-                                            {credit}
+                                            {subTotal}
                                         </TableCell>
                                     </TableRow>
 
@@ -74,7 +74,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{borderBottom: "0px", paddingY: "5px" }}>
-                                            {credit}
+                                            {shippingCost}
                                         </TableCell>
                                     </TableRow>
 
@@ -84,7 +84,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ paddingY: "5px"}}>
-                                            {credit}
+                                            {subTotal}
                                         </TableCell>
                                     </TableRow>
 
@@ -94,7 +94,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px"}}>
-                                            {credit}
+                                            {grandTotal}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

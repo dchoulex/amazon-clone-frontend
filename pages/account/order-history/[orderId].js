@@ -32,14 +32,18 @@ const order = {
     ]
 };
 
-function OrderDetailsPage() {
+function OrderDetailsPage(props) {
+    const { orderId } = props;
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const pageTitle = "Order Details";
 
     return (
         <Box p={3} className="bg-gray-200">
             {isAuthenticated ? 
-                <OrderDetailsInfo title={pageTitle} /> :
+                <OrderDetailsInfo 
+                    title={pageTitle} 
+                    orderId={orderId}
+                /> :
                 <PleaseLoginCard 
                     page={"order"} 
                     title={pageTitle} 
@@ -50,3 +54,15 @@ function OrderDetailsPage() {
 };
 
 export default OrderDetailsPage;
+
+export async function getServerSideProps(context) {
+    const { params } = context;
+
+    const orderId = params.orderId;
+
+    return {
+        props: {
+            orderId
+        }
+    }
+};

@@ -15,12 +15,12 @@ function OrderDetailsItems(props) {
                 </Typography>
 
                 <Typography variant="overline" className="pb-3 text-sm ml-5">
-                    {orderItems.length} items
+                    {orderItems.length} item(s)
                 </Typography>
 
                 <Divider />
 
-                <OrderItemList products={orderItems} />
+                <OrderItemList orderItems={orderItems} />
             </Box>
         </Box>
     )
