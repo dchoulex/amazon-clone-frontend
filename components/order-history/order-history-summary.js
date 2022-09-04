@@ -6,23 +6,37 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
-import { DELIVERY_STATUS } from "../../../appConfig";
-import numberWithCommas from "../../../utils/numberWithCommas";
+import { DELIVERY_STATUS } from "../../appConfig";
+import numberWithCommas from "../../utils/numberWithCommas";
 
 function OrderHistorySummary(props) {
     const { orderDate, total, address, id, orderStatus, isCanceled } = props;
     const displayedOrderDate = orderDate.split("T")[0];
 
     const getChipColor = (status, orderStatus) => {
-        let chipColor = "default";
+        let chipColor;
     
-        if (orderStatus === status && orderStatus === DELIVERY_STATUS[0]) chipColor = "primary";
+        switch(true) {
+            case orderStatus === status && orderStatus === DELIVERY_STATUS[0]: 
+                chipColor = "primary";
+                break;
+    
+            case orderStatus === status && orderStatus === DELIVERY_STATUS[1]: 
+                chipColor = "warning";
+                break;
+    
+            case orderStatus === status && orderStatus === DELIVERY_STATUS[2]: 
+                chipColor = "secondary";
+                break;
+    
+            case orderStatus === status && orderStatus === DELIVERY_STATUS[3]: 
+                chipColor = "success";
+                break;
 
-        if (orderStatus === status && orderStatus === DELIVERY_STATUS[1]) chipColor = "warning";
-
-        if (orderStatus === status && orderStatus === DELIVERY_STATUS[2]) chipColor = "secondary";
-
-        if (orderStatus === status && orderStatus === DELIVERY_STATUS[3]) chipColor = "success";
+            default:
+                chipColor = "default";
+                break;
+        }
 
         return chipColor;
     };
@@ -90,7 +104,8 @@ function OrderHistorySummary(props) {
                     <Typography variant="overline">
                         Order #{id.slice(0, 10)}
                     </Typography>
-{/* 
+                    
+                {/* 
                     <Stack direction="row" spacing={2}>
                         <Button disableRipple className="hover:bg-inherit normal-case p-0">
                             View order details

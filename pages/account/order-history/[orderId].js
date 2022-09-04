@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+
 import Box from "@mui/material/Box";
 
 import PleaseLoginCard from "../../../components/ui/please-login-card";
@@ -31,16 +33,13 @@ const order = {
 };
 
 function OrderDetailsPage() {
-    const isLogin = true;
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const pageTitle = "Order Details";
 
     return (
         <Box p={3} className="bg-gray-200">
-            {isLogin ? 
-                <OrderDetailsInfo 
-                    order={order} 
-                    title={pageTitle} 
-                /> :
+            {isAuthenticated ? 
+                <OrderDetailsInfo title={pageTitle} /> :
                 <PleaseLoginCard 
                     page={"order"} 
                     title={pageTitle} 

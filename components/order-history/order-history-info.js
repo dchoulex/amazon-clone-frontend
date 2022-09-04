@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 
 import { orderHistoryActions } from "../../store/order-history-slice";
 import getPaginatedItems from "../../utils/getPaginatedItems";
-import OrderPanelList from "./order-panel-list/order-panel-list";
+import OrderPanelList from "./order-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import NoItemInfo from "../ui/no-item-info";

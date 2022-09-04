@@ -1,13 +1,16 @@
 import { useState } from "react";
+import Link from "next/link";
 
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import OrderHistorySummary from "./order-history-summary";
-import OrderItemList from "../../ui/order-item-list";
+import OrderItemList from "../order/order-item-list";
 
 function OrderPanelList(props) {
     const { items } = props;
@@ -46,6 +49,14 @@ function OrderPanelList(props) {
                         </AccordionSummary>
 
                         <AccordionDetails>
+                            <Link href={`/account/order-history/${orderId}`}>
+                                <Button>
+                                    View order details
+                                </Button>
+                            </Link>
+
+                            <Divider />
+
                             <OrderItemList 
                                 orderItems={orderItems}
                                 status={order.status}

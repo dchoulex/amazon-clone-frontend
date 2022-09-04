@@ -94,7 +94,7 @@ function OrderItemList(props) {
                                     {(status === "Ordered" && !isCanceled) &&
                                         <Button
                                             variant="outlined"
-                                            color="warning"
+                                            color="error"
                                             onClick={handleCancelOrder}
                                         >
                                             Cancel

@@ -74,7 +74,7 @@ function Header() {
                 <MainNavbar 
                     name={user.name}
                     defaultAddressPostCode={user.defaultAddress.postCode}
-                    defaultAddressLine={isAuthenticated ? `${user.defaultAddress.city} City ${user.defaultAddress.rest}` : user.defaultAddress.rest}
+                    defaultAddressLine={isAuthenticated ? `${user.defaultAddress.city}, ${user.defaultAddress.rest}` : user.defaultAddress.rest}
                     cartNumber={numOfCartItems}
                     isAuthenticated={isAuthenticated}
                 />
