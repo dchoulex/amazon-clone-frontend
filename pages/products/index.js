@@ -1,6 +1,7 @@
 import { useState, Fragment } from "react";
 import useSWR from "swr";
 import axios from "axios";
+
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -8,7 +9,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
-import getAPI from "../../utils/getAPI";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";

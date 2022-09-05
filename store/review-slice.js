@@ -1,15 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_REVIEW_SLICE_STATE = {
-    reviewPage: 1
+    currentTab: "review",
+    reviewPage: 1,
+    reviewableProductPage: 1
 };
 
 const reviewSlice = createSlice({
     name: "review",
     initialState: INITIAL_REVIEW_SLICE_STATE,
     reducers: {
-        changeReviewPage(state, action) {
+        changeReviewTabPage(state, action) {
             state.reviewPage = action.payload.page
+        },
+
+        changeReviewTabPage(state, action) {
+            state.reviewPage = action.payload.page
+        },
+
+        changeCurrentTab(state, action) {
+            state.currentTab = action.payload.currentTab
         }
     }
 });
