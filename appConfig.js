@@ -9,6 +9,6 @@ export const PAGINATION_LIMIT = 10;
 const timezoneOffset = new Date().getTimezoneOffset();
 export const CURRENT_TIME = Date.now() - timezoneOffset;
 
-export const DELIVERY_STATUS = ["Ordered", "Shipped",  "Out for Delivery", "Delivered"];
+export const DELIVERY_STATUS = ["Ordered", "Shipped",  "Out for Delivery", "Delivered", "Canceled"];
 
 export const PAYMENT_METHODS = ["Credit Card", "Convenience Store", "ATM", "Amazon Points"];

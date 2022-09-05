@@ -1,16 +1,15 @@
-import { useState } from "react";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
+import PaymentInfo from "./payment-info";
+
 function OrderDetailsSummary(props) {
-    const { name, postCode, city, rest, subTotal, total, tax, discount, grandTotal, paymentMethod, creditCard, shippingCost } = props;
+    const { name, postCode, city, rest, subTotal, tax, discount, grandTotal, paymentMethod, creditCard, shippingCost } = props;
 
     return (
         <Box px={3} mb={3}>
@@ -44,9 +43,7 @@ function OrderDetailsSummary(props) {
                         Payment Methods <span className="font-light">{paymentMethod}</span>
                     </Typography>
 
-                    <Typography className="text-base">
-                        {paymentMethod}
-                    </Typography>
+                    <PaymentInfo paymentMethod={paymentMethod} creditCard={creditCard} />
                 </div>
 
                 <div className="ml-auto">
@@ -79,12 +76,22 @@ function OrderDetailsSummary(props) {
                                     </TableRow>
 
                                     <TableRow>
+                                        <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
+                                            Tax :&nbsp;
+                                        </TableCell>
+
+                                        <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
+                                            {tax}
+                                        </TableCell>
+                                    </TableRow>
+
+                                    <TableRow>
                                         <TableCell sx={{ paddingY: "5px"}}>
-                                            Subtotal :&nbsp;
+                                            Discount :&nbsp;
                                         </TableCell>
 
                                         <TableCell sx={{ paddingY: "5px"}}>
-                                            {subTotal}
+                                            {discount}
                                         </TableCell>
                                     </TableRow>
 

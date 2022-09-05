@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
@@ -15,8 +16,6 @@ function OrderDetailsInfo(props) {
     const { title, orderId } = props;
 
     const GET_ORDER_DETAILS_API = getAPI(process.env.NEXT_PUBLIC_GET_ORDER_DETAILS_API, { id: orderId });
-
-    console.log
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -44,9 +43,19 @@ function OrderDetailsInfo(props) {
 
                     <Divider orientation="vertical" flexItem />
 
-                    <Typography className="ml-3">
+                    <Typography className="ml-3 mr-3">
                         Order# {order._id.slice(0, 10)}
-                    </Typography>        
+                    </Typography>
+
+                    {order.status === "Canceled" && 
+                        <Fragment>
+                            <Divider orientation="vertical" flexItem />
+
+                            <Typography className="ml-3 text-red-500">
+                                {order.status}
+                            </Typography>        
+                        </Fragment>
+                    }        
                 </Box>
 
                 <OrderDetailsSummary 

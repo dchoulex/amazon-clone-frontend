@@ -57,7 +57,7 @@ function OrderHistorySummary(props) {
                         aria-label="breadcrumb"
                         separator={<NavigateNextIcon fontSize="small" />}
                     >
-                        {DELIVERY_STATUS.map((status, index) => (
+                        {DELIVERY_STATUS.slice(0, 4).map((status, index) => (
                             <Chip
                                 key={`deliver-status-${index}`}
                                 label={status}

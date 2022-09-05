@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import LoopIcon from '@mui/icons-material/Loop';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 
+import numberWithCommas from "../../utils/numberWithCommas";
 import getAPI from "../../utils/getAPI";
 
 function OrderItemList(props) {
@@ -54,6 +55,14 @@ function OrderItemList(props) {
                             <div className="ml-8 flex flex-col">
                                 <Typography variant="h6">
                                     {product.name}
+                                </Typography>
+
+                                <Typography variant="body1">
+                                    ¥ {numberWithCommas(product.price)}
+                                </Typography>
+
+                                <Typography variant="body">
+                                    Amount: {orderItem.amount}
                                 </Typography>
 
                                 <Stack 
