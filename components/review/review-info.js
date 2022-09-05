@@ -1,5 +1,7 @@
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useSWR from "swr";
+import axios from "axios";
+
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -18,9 +20,17 @@ function ReviewInfo(props) {
     const { title, reviews } = props;
     const dispatch = useDispatch();
 
-    const numOfResults = reviews.length;
     const currentPage = useSelector(state => state.review.reviewPage);
     const paginatedReviews = getPaginatedItems(reviews, currentPage);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ORDERS_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+    
+    const orders = data.data;
 
     const handleChangePage = (_, value) => {
         dispatch(reviewActions.changeReviewPage({ page: value }));
