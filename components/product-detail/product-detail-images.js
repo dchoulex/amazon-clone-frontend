@@ -3,7 +3,6 @@ import Image from "next/image";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-// import Divider from '@mui/material/Divider';
 
 function ProductDetailImages(props) {
     const { productImages } = props;
@@ -15,9 +14,9 @@ function ProductDetailImages(props) {
         >
             <List>
                 {productImages.map((image, index) => (
-                    <Fragment key={image}>
+                    <Fragment key={`image-${index}`}>
                         <ListItemButton
-                            className="border-2 border-black border-solid w-[70px] h-[70px] mx-auto my-5"
+                            className="border-2 border-gray-300 border-solid w-[70px] h-[70px] mx-auto my-5"
                         >
                             <Image 
                                 src="/images/amazon-logo.png"
@@ -25,13 +24,6 @@ function ProductDetailImages(props) {
                                 layout="fill"
                             />
                         </ListItemButton>
-                        {/* {index === productImages.length - 1 ? 
-                            null :
-                            <Divider 
-                                className="border-blue-400 border-dashed"
-                                variant="fullWidth"
-                            />
-                        } */}
                     </Fragment>
                 ))}
             </List>

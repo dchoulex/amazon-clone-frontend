@@ -1,5 +1,7 @@
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
+import Link from "next/link";
+import axios from 'axios';
 
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -14,20 +16,20 @@ import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import FormikHidden from '../ui/forms/formik-hidden';
-import { REQUIRED_ERROR_MESSAGE, POSITIVE_NUMBER_ERROR_MESSAGE, INTEGER_NUMBER_ERROR_MESSAGE, INVALID_NUMBER_TYPE_ERROR_MESSAGE } from '../../appConfig';
+import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
-    amount: Yup
-        .number()
-        .typeError(INVALID_NUMBER_TYPE_ERROR_MESSAGE)
-        .required(REQUIRED_ERROR_MESSAGE)
-        .integer(INTEGER_NUMBER_ERROR_MESSAGE)
-        .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
-        .max(50, "You cannot buy more than 50 items at once per product.")
+    amount: SELECT_AMOUNT_SCHEMA
 });
 
 function ProductCard(props) {
     const { product } = props;
+
+    const handleSubmitAddCartItemForm = async(values, actions) => {
+        actions.setSubmitting(false);
+        
+        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, values);
+    };
 
     return (
         <Card className="min-w-[250px] max-w-[350px] border-gray-200 border-solid border-2 flex-col flex">
@@ -40,11 +42,13 @@ function ProductCard(props) {
             />
 
             <CardContent>
-                <Typography variant="h6" className="mb-2">
-                    {product.name} 
-                </Typography>
+                <Link href={`/products/${product._id}`}>
+                    <a className="text-2xl hover:text-blue-700">
+                        {product.name} 
+                    </a>
+                </Link>
 
-                <ProductRatingStar rating={product.ratingsAverage}/>
+                <ProductRatingStar rating={product.ratingsAverage} />
 
                 <Typography 
                     variant="h6" 
@@ -60,10 +64,7 @@ function ProductCard(props) {
                     amount: 1
                 }}
                 validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
-                onSubmit={(values, actions) => {
-                    actions.setSubmitting(false);
-                    console.log(values)
-                }}
+                onSubmit={handleSubmitAddCartItemForm}
                 className="mt-auto"
             >
                 {({ errors, touched, isSubmitting }) => (

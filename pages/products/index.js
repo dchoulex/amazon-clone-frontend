@@ -88,13 +88,13 @@ function ProductPage(props) {
 export default ProductPage;
 
 export async function getStaticProps() {
-    const results = await axios.get(process.env.DEV_URL + process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
+    const res = await axios.get(process.env.DEV_URL + process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
     
     return {
         props: {
-            status: results.data.status,
-            numOfResults: results.data.numOfResults,
-            products: results.data.data
+            status: res.data.status,
+            numOfResults: res.data.numOfResults,
+            products: res.data.data
         },
         revalidate: 10
     }

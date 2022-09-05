@@ -1,8 +1,12 @@
 import { Fragment } from "react";
+import axios from "axios";
+import useSWR from "swr";
+
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 
+import getAPI from "../../utils/getAPI";
 import ProductDetailImages from "../../components/product-detail/product-detail-images";
 import ProductDetailInfo from "../../components/product-detail/product-detail-info/product-detail-info";
 import BuyProductCard from "../../components/product-detail/buy-product-card";
@@ -21,9 +25,22 @@ const product = {
     stock: 10
 }
 //use context for active image
-function ProductDetailPage() { 
+function ProductDetailPage(props) { 
+    const { productId } = props;
+
     const theme = useTheme();
     const isMediumScreenDown = useMediaQuery(theme.breakpoints.down("md"));
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const GET_PRODUCT_DETAILS_API = getAPI(process.env.NEXT_PUBLIC_GET_PRODUCT_DETAILS_API, { id: productId })
+
+    const { data, error } = useSWR(GET_PRODUCT_DETAILS_API, fetcher);
+
+    if (!data) return <p>Loading</p>
+    if (error) return <p>error</p>
+    
+    const product = data.data;
 
     return (
         <Fragment>
@@ -33,7 +50,7 @@ function ProductDetailPage() {
                 <ProductDetailInfo 
                     activeImage={"activeImage"} 
                     description={product.description} 
-                    title={product.title} 
+                    title={product.name} 
                     isMediumScreenDown={isMediumScreenDown}
                     stock={product.stock}
                     price={product.price}
@@ -43,6 +60,7 @@ function ProductDetailPage() {
                     <BuyProductCard 
                         stock={product.stock}
                         price={product.price}
+                        productId={product._id}
                     />
                 }
             </Box>
@@ -51,3 +69,13 @@ function ProductDetailPage() {
 };
 
 export default ProductDetailPage;
+
+export async function getServerSideProps(context) {
+    const { params } = context;
+
+    return {
+        props: {
+            productId: params.productId
+        }
+    }
+};
