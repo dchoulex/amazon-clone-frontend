@@ -72,3 +72,13 @@ export const CREDIT_CARD_NUMBER_SCHEMA = Yup
 export const BOOLEAN_SCHEMA = Yup
     .boolean()
     .typeError(INVALID_BOOLEAN_TYPE_ERROR_MESSAGE);
+
+export const REVIEW_SCHEMA = Yup
+    .string()
+    .required(REQUIRED_ERROR_MESSAGE)
+    .max(1500, "Please input less than ${max} characters.");
+
+export const REVIEW_RATING_SCHEMA = Yup
+    .number()
+    .min(0.5, "The least amount you can input is 0.5.")
+    .max(5, "The most amount you can input is 5.");

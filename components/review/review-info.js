@@ -16,6 +16,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 import { reviewActions } from "../../store/review-slice";
 import ReviewPanelList from "./review-panel-list";
+import ReviewablePanelList from "./reviewable-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
@@ -166,10 +167,10 @@ function ReviewInfo(props) {
                                 value="reviewable"
                                 className="py-2"
                             >
-                                {/* <OrderPanelList 
-                                    items={tabItems["cancel"].
+                                <ReviewablePanelList 
+                                    items={tabItems["reviewable"].
                                     paginatedItems} currentTab={currentTab} 
-                                /> */}
+                                />
                             </TabPanel>
                         </Fragment>
                     }

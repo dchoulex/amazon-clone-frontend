@@ -15,7 +15,7 @@ import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 
 function ProductPage(props) {
-    const { status, numOfResults, products } = props;
+    const { numOfResults, products } = props;
     const title = "Search Product";
 
     const [ page, setPage ] = useState(1);
