@@ -1,12 +1,14 @@
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
 
 import BuyProductBox from "./buy-product-box";
 import ActiveProductImage from "./active-product-image";
 import ProductDescription from "./product-description";
+import ProductDetailsReview from '../review-overview/product-details-review';
 
 function ProductDetailInfo(props) {
-    const { activeImage, description, title, isMediumScreenDown, stock, price } = props;
+    const { activeImage, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews } = props;
 
     return (
         <Box className="pt-5 px-5">
@@ -23,6 +25,7 @@ function ProductDetailInfo(props) {
                     >
                         <ActiveProductImage />
                     </Grid>
+
                     <Grid 
                         item
                         xm={12}
@@ -35,8 +38,7 @@ function ProductDetailInfo(props) {
                     </Grid>
                 </Grid>
                 
-                {!isMediumScreenDown ?
-                    null:
+                {isMediumScreenDown &&
                     <Grid item>
                         <BuyProductBox
                             stock={stock}
@@ -44,6 +46,16 @@ function ProductDetailInfo(props) {
                         />
                     </Grid>
                 }
+
+                <Divider />
+
+                <Grid item>
+                    <ProductDetailsReview 
+                        ratingsAverage={ratingsAverage}
+                        ratingsQuantity={ratingsQuantity}
+                        reviews={reviews}
+                    />
+                </Grid>
             </Grid>
         </Box>
     )

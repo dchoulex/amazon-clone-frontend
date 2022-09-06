@@ -14,8 +14,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 import getAPI from "../../utils/getAPI";
-import ProductRatingStar from "../product/product-rating-star";
 import EditReviewForm from "./edit-review-form";
+import ReviewRatingStar from "./review-rating-star";
 
 function ReviewCard(props) {
     const { review } = props;
@@ -93,7 +93,7 @@ function ReviewCard(props) {
                     </Typography>
                 </Box>
 
-                <ProductRatingStar 
+                <ReviewRatingStar 
                     rating={review.rating} 
                     className="pt-2" 
                 />

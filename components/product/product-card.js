@@ -43,12 +43,15 @@ function ProductCard(props) {
 
             <CardContent>
                 <Link href={`/products/${product._id}`}>
-                    <a className="text-2xl hover:text-blue-700">
+                    <a className="text-2xl hover:text-blue-800">
                         {product.name} 
                     </a>
                 </Link>
 
-                <ProductRatingStar rating={product.ratingsAverage} />
+                <ProductRatingStar 
+                    ratingsAverage={product.ratingsAverage} 
+                    ratingsQuantity={product.ratingsQuantity}
+                />
 
                 <Typography 
                     variant="h6" 

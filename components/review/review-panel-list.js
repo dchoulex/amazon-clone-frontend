@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
-import { reviewActions } from "../../store/review-slice";
 import ReviewCard from "./review-card";
 
 function ReviewPanelList(props) {

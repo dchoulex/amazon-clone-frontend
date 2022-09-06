@@ -76,13 +76,13 @@ function BuyProductBox(props) {
                                 Add to cart
                             </FormikSubmitButton>
 
-                            <Button 
+                            {/* <Button 
                                 variant="outlined"
                                 color="warning"
                                 startIcon={<ShoppingBasketIcon />}
                             >
                                 Buy now
-                            </Button>
+                            </Button> */}
                         </Stack>
                     </Box>
                 </Form>

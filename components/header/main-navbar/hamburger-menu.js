@@ -24,6 +24,7 @@ import PaymentIcon from '@mui/icons-material/Payment';
 
 import JapanIcon from "../../../public/images/jp-flag-icon.svg";
 import StyledListItemText from "../styled-list-item-text";
+import { useSelector } from "react-redux";
 
 const buttons = [
     {
@@ -64,6 +65,7 @@ const buttons = [
 ];
 
 function HamburgerMenu(props) {
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const { isSmallUp } = props;
 
     const theme = useTheme();
@@ -153,6 +155,40 @@ function HamburgerMenu(props) {
                                 </ListItemButton>
                             </Link>
                         ))}
+
+                        {isAuthenticated ?
+                            <ListItemButton 
+                                disableRipple 
+                                sx={{
+                                    "&:hover": {
+                                        backgroundColor: "inherit",
+                                        cursor: "default"
+                                    },
+                                    justifyContent: "center"
+                                }}
+                            >
+                                <Button variant="contained">
+                                    Logout
+                                </Button>
+                            </ListItemButton> :
+                            
+                            <Link href="/account/login">
+                                <ListItemButton 
+                                    disableRipple 
+                                    sx={{
+                                        "&:hover": {
+                                            backgroundColor: "inherit",
+                                            cursor: "default"
+                                        },
+                                        justifyContent: "center"
+                                    }}
+                                >
+                                    <Button variant="contained">
+                                        Login
+                                    </Button>
+                                </ListItemButton> 
+                            </Link>
+                        }
                     </List>
                 </Box>
             </SwipeableDrawer>

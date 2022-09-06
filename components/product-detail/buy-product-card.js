@@ -73,19 +73,18 @@ function BuyProductCard(props) {
                                     variant="contained"
                                     disabled={(touched.amount && errors.amount) ? true : false}
                                     startIcon={<AddShoppingCartIcon />}
-                                    fullWidth
                                 >
                                     Add to cart
                                 </FormikSubmitButton>
 
-                                <Button 
+                                {/* <Button 
                                     fullWidth 
                                     variant="outlined"
                                     color="warning"
                                     startIcon={<ShoppingBasketIcon />}
                                 >
                                     Buy now
-                                </Button>
+                                </Button> */}
                             </Stack>
                         </Card>
                     </Box>

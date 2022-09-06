@@ -33,14 +33,17 @@ function ProductDetailPage(props) {
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const GET_PRODUCT_DETAILS_API = getAPI(process.env.NEXT_PUBLIC_GET_PRODUCT_DETAILS_API, { id: productId })
+    const GET_PRODUCT_DETAILS_API = getAPI(process.env.NEXT_PUBLIC_GET_PRODUCT_DETAILS_API, { id: productId });
+    const GET_ALL_REVIEWS_API = getAPI(process.env.NEXT_PUBLIC_GET_ALL_REVIEWS_API, { id: productId });
 
-    const { data, error } = useSWR(GET_PRODUCT_DETAILS_API, fetcher);
+    const { data: productRes, error: productError } = useSWR(GET_PRODUCT_DETAILS_API, fetcher);
+    const { data: reviewsRes, error: reviewsError } = useSWR(GET_ALL_REVIEWS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!productRes || !reviewsRes) return <p>Loading</p>
+    if (productError || reviewsError) return <p>error</p>
     
-    const product = data.data;
+    const product = productRes.data;
+    const reviews = reviewsRes.data;
 
     return (
         <Fragment>
@@ -54,6 +57,9 @@ function ProductDetailPage(props) {
                     isMediumScreenDown={isMediumScreenDown}
                     stock={product.stock}
                     price={product.price}
+                    ratingsAverage={product.ratingsAverage}
+                    ratingsQuantity={product.ratingsQuantity}
+                    reviews={reviews}
                 />
 
                 {!isMediumScreenDown &&

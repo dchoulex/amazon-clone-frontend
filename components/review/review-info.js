@@ -5,14 +5,10 @@ import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 import Tab from "@mui/material/Tab";
 import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 import { reviewActions } from "../../store/review-slice";
 import ReviewPanelList from "./review-panel-list";
