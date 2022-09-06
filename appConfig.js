@@ -26,3 +26,7 @@ export const RATING_LABELS = {
     4.5: 'Excellent',
     5: 'Perfect'
 };
+
+export const SEARCH_CATEGORY = ["All Categories", "Clothing", "Bag", "Jewelry", "Computers", "Peripherals", "Office", "Electronics", "Camera", "Food", "Beverage", "Alcohol", "Sports", "Outdoors"];
+
+export const SORT_BY = ["none", "priceAsc", "priceDesc", "bestSellers", "bestReview"];

@@ -1,4 +1,6 @@
 import { useState, useRef } from "react";
+import slugify from "slugify";
+
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -8,12 +10,11 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
-import InputBase from '@mui/material/InputBase';
 import Typography from "@mui/material/Typography";
 
-const searchOptions = ["All Categories", "Clothing", "Bag", "Jewelry", "Computers", "Peripherals", "Office", "Electronics", "Camera", "Food", "Beverage", "Alcohol", "Sports", "Outdoors"];
+import { SEARCH_CATEGORY } from "../../../appConfig";
+import { useField, useFormikContext } from "formik";
 
 const EmptyDiv = styled("div")(() =>({
     width: "30px"
@@ -23,11 +24,15 @@ const StyledCheckIcon = styled(CheckIcon)(() =>({
     width: "30px"
 }));
 
-function CategoryButton() {
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [open, setOpen] = useState(false);
-    const [categoryIsChange, setCategoryIsChange] = useState(false);
+function CategoryButton(props) {
+    const { name, ...otherProps } = props;
+    const { setFieldValue } = useFormikContext();
+    const [ field, _ ] = useField(name);
+
+    const [ selectedIndex, setSelectedIndex ] = useState(0);
+    const [ anchorEl, setAnchorEl ] = useState(null);
+    const [ open, setOpen ] = useState(false);
+    const [ categoryIsChange, setCategoryIsChange ] = useState(false);
     const anchorRef = useRef(null);
 
     const handleToggle = event => {
@@ -45,12 +50,19 @@ function CategoryButton() {
     };
 
     const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
+        const categorySlug = slugify(SEARCH_CATEGORY[index], { lower: true });
 
+        setSelectedIndex(index);
         setCategoryIsChange(true);
+        setFieldValue(name, categorySlug);
 
         setOpen(false);
     };
+
+    const configCategory = {
+        ...field,
+        ...otherProps
+    }
 
     return (
         <div>
@@ -61,11 +73,12 @@ function CategoryButton() {
                 aria-label="select merge strategy split button"
                 aria-haspopup="menu"
                 onClick={handleToggle}
+                {...configCategory}
             >
                 <Typography 
                     className="text-sm text-neutral-600 normal-case font-light outline-zinc-400"
                 >
-                    {searchOptions[selectedIndex]}
+                    {SEARCH_CATEGORY[selectedIndex]}
                 </Typography>
                 
                 <ArrowDropDownIcon className="text-gray-700"/>
@@ -90,7 +103,7 @@ function CategoryButton() {
                     <Paper className="rounded-2xl">
                         <ClickAwayListener onClickAway={handleClose}>
                             <MenuList id="split-button-menu" autoFocusItem className="rounded-2xl">
-                                {searchOptions.map((option, index) => (
+                                {SEARCH_CATEGORY.map((option, index) => (
                                     <MenuItem
                                         className="w-250 font-light border-solid divide-y divide-white"
                                         key={option}

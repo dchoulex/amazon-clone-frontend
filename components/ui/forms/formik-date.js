@@ -11,7 +11,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 function FormikDate(props) {
     const { name, ...otherProps } = props;
     const { setFieldValue } = useFormikContext();
-    const [field, meta] = useField(name);
+    const [ field, meta ] = useField(name);
 
     const handleChangeDate = newValue => {
         setFieldValue(name, newValue)

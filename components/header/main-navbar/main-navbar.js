@@ -4,7 +4,7 @@ import Box from "@mui/material/Box";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import LogoButton from "./logo-button";
-import SearchBar from "./search-bar/search-bar";
+import SearchBar from "./search-bar";
 import CountrySelectionButton from "./country-selection-button";
 import CartButton from "./cart-button";
 import AccountButton from "./account-button";

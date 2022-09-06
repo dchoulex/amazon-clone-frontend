@@ -13,15 +13,19 @@ import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
+import { useSelector } from "react-redux";
+import getSortedItems from "../../utils/getSortedItems";
 
-function ProductPage(props) {
-    const { numOfResults, products } = props;
+function ProductPage() {
     const title = "Search Product";
 
     const [ page, setPage ] = useState(1);
     const [ sortBy, setSortBy ] = useState("none");
     const [ chipSortBy, setChipSortBy ] = useState("None");
     const [ chipIcon, setChipIcon ] = useState(null);
+
+    let products = useSelector(state => state.product.products).slice();
+    const sortedProducts = getSortedItems(products, sortBy);
 
     const handleChangePage = (_, value) => {
         setPage(value)
@@ -53,14 +57,14 @@ function ProductPage(props) {
                 setChipIcon(null);
                 setChipSortBy("None");   
                 break;
-        }
+        };
     };
 
     return (
         <Fragment>
             <ProductPageTitle 
                 title={title}
-                numberOfResults={numOfResults}
+                numberOfResults={sortedProducts.length}
                 onChange={handleChangeSortBy}
                 sortBy={sortBy}
             />
@@ -74,10 +78,10 @@ function ProductPage(props) {
                 />
             </Divider>
 
-            <ProductInfo products={getPaginatedItems(products, page)} />
+            <ProductInfo products={getPaginatedItems(sortedProducts, page)} />
 
             <PaginationButtons 
-                numOfResults={numOfResults}
+                numOfResults={sortedProducts.length}
                 page={page}
                 onChange={handleChangePage}
             />
@@ -86,16 +90,3 @@ function ProductPage(props) {
 };
 
 export default ProductPage;
-
-export async function getStaticProps() {
-    const res = await axios.get(process.env.DEV_URL + process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API);
-    
-    return {
-        props: {
-            status: res.data.status,
-            numOfResults: res.data.numOfResults,
-            products: res.data.data
-        },
-        revalidate: 10
-    }
-};

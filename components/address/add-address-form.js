@@ -75,7 +75,7 @@ function AddAddressForm(props) {
     };
 
     const handleSubmitAddAddressForm = async (values) => {
-        const res = await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
+        await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
 
         setOpenAddAddressForm(false);
     };

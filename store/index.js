@@ -6,6 +6,7 @@ import reviewReducer from "./review-slice";
 import addressReducer from "./address-slice";
 import walletReducer from "./wallet-slice";
 import userReducer from "./user-slice";
+import productReducer from "./product-slice";
 
 const store = configureStore({
     reducer: {
@@ -15,7 +16,8 @@ const store = configureStore({
         review: reviewReducer,
         address: addressReducer,
         wallet: walletReducer,
-        user: userReducer
+        user: userReducer,
+        product: productReducer
     }
 });
 
