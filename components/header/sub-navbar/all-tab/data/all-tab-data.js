@@ -1,6 +1,7 @@
 import Public from '@mui/icons-material/Public';
 import SvgIcon from '@mui/material/SvgIcon';
 import JapanIcon from "../../../../../public/images/jp-flag-icon.svg";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 export const collapseListItems = [
     {
@@ -25,10 +26,13 @@ export const drawerListItems = [
         title: "Trending",
         items: [
             {
-                title: "Best Sellers"
+                title: "Best Sellers",
+                href: "/products/best/sellers",
+                disabled: false
             },
             {
-                title: "New Releases"
+                title: "New Releases",
+                disabled: true
             },
             {
                 title: "Movers & Shakers",
@@ -77,19 +81,29 @@ export const drawerListItems = [
         title: "Shop By Department",
         items: [
             {
-                title: "Electronics & Camera"
+                title: "Electronics & Camera",
+                disabled: false,
+                href: "/products/electronics/camera"
             },
             {
-                title: "Computers & Office"
+                title: "Computers & Office",
+                disabled: false,
+                href: "/products/computers/office"
             },
             {
-                title: "Food, Beverage & Alcohol"
+                title: "Food, Beverage & Alcohol",
+                disabled: false,
+                href: "/products/food/beverage/alcohol"
             },
             {
-                title: "Sports & Outdoors"
+                title: "Sports & Outdoors",
+                disabled: false,
+                href: "/products/sports/outdoors"
             },
             {
-                title: "Clothing, Shoes & Jewelry"
+                title: "Clothing, Shoes & Jewelry",
+                disabled: false,
+                href: "/products/clothing/shoes/jewelry"
             },
             {
                 title: "Books, Comics & Magazines",
@@ -109,7 +123,9 @@ export const drawerListItems = [
         title: "Programs & Features",
         items: [
             {
-                title: "Credit Cards & Amazon Points"
+                title: "Credit Cards",
+                href: "/account/wallet",
+                disabled: false,
             }, 
             {
                 title: "Amazon Outlet",
@@ -121,7 +137,9 @@ export const drawerListItems = [
         title: "Help & Settings",
         items: [
             {
-                title: "Your Account"
+                title: "Account",
+                icon: <ManageAccountsIcon />,
+                href: "/account"
             },
             {
                 title: "English",
@@ -136,10 +154,8 @@ export const drawerListItems = [
                 disabled: true
             },
             {
-                title: "Help"
-            },
-            {
-                title: "Sign in"
+                title: "Help",
+                disabled: true
             }
         ]
     }

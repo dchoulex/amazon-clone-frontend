@@ -8,9 +8,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 
 import StyledListItemText from "../../styled-list-item-text";
 
-function AllTabCollapseListItem(props) {
-    const { item } = props;
-
+function AllTabCollapseListItem() {
     const [seeAllIsOpen, setOpenSeeAll] = useState(false);
 
     const handleOpenSeeAll = () => setOpenSeeAll(true);

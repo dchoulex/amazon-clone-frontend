@@ -1,6 +1,7 @@
 import { useState, Fragment } from "react";
 import Link from "next/link";
-import { drawerListItems } from "./data/all-tab-data";
+import { useSelector } from "react-redux";
+
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -13,10 +14,13 @@ import Avatar from "@mui/material/Avatar";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { drawerListItems } from "./data/all-tab-data";
 import AllTabListItem from "./all-tab-list-item";
 import AllTabCollapseListItem from "./all-tab-collapse-list-item";
+import StyledListItemText from "../../styled-list-item-text";
 
 function AllTab(props) {
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const { name } = props;
     
     const [openDrawer, setOpenDrawer] = useState(false);
@@ -49,29 +53,28 @@ function AllTab(props) {
                     role="presentation"
                 >      
                     <List disablePadding>
-                        <Link href="/auth/login">
-                            <ListItemButton
-                                sx={{ 
-                                    bgcolor: "#232f3e",
-                                    padding: "1rem",
-                                    width: "350px",
-                                    "&:hover": {
-                                        backgroundColor: "#232f3e" 
-                                    }
-                                }}
-                                onClick={handleCloseDrawer}
-                                className="bg-amazon_blue-light"
-                            >
-                                    <ListItemAvatar>
-                                        <Avatar />
-                                    </ListItemAvatar>
+                        <ListItemButton
+                            sx={{ 
+                                bgcolor: "#232f3e",
+                                padding: "1rem",
+                                width: "350px",
+                                "&:hover": {
+                                    backgroundColor: "#232f3e" 
+                                },
+                                cursor: "default"
+                            }}
+                            className="bg-amazon_blue-light"
+                            disableRipple
+                        >
+                                <ListItemAvatar>
+                                    <Avatar />
+                                </ListItemAvatar>
 
-                                    <ListItemText 
-                                        primaryTypographyProps={{color: "white"}}
-                                        primary={`Hello, ${name}`} 
-                                    />
-                            </ListItemButton>
-                        </Link>
+                                <ListItemText 
+                                    primaryTypographyProps={{color: "white"}}
+                                    primary={isAuthenticated ? `Hello, ${name}` : "Hello, please sign in."} 
+                                />
+                        </ListItemButton>
 
                         {drawerListItems.map((listItem, index) => (
                             <Fragment key={`list-item-${index}`}>
@@ -91,15 +94,33 @@ function AllTab(props) {
                                     item.isCollapseListItem ? 
                                     <AllTabCollapseListItem 
                                         key={item} 
-                                        item={item}
                                         onClick={handleCloseDrawer} 
                                     /> :
+                                    
                                     <AllTabListItem 
                                         key={item} 
                                         item={item} 
                                         onClick={handleCloseDrawer}
                                     />
                                 ))}
+
+                                {!isAuthenticated ?
+                                    <Link href="/auth/login">
+                                        <ListItemButton 
+                                            sx={{ pl: "2rem" }}
+                                            onClick={handleCloseDrawer}
+                                        >
+                                            <StyledListItemText primary={"Login"} />
+                                        </ListItemButton>
+                                    </Link> :
+
+                                    <ListItemButton 
+                                        sx={{ pl: "2rem" }}
+                                        onClick={handleCloseDrawer}
+                                    >
+                                        <StyledListItemText primary={"Logout"} />
+                                    </ListItemButton> 
+                                }
 
                                 <Divider />
                             </Fragment>
