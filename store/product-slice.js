@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_PRODUCT_SLICE_STATE = {
-    products: []
+    products: [],
+    categoryProducts: []
 };
 
 const productSlice = createSlice({
@@ -10,6 +11,10 @@ const productSlice = createSlice({
     reducers: {
         setProducts(state, action) {
             state.products = action.payload.products
+        },
+
+        setCategoryProducts(state, action) {
+            state.categoryProducts = action.payload.categoryProducts
         }
     }
 });

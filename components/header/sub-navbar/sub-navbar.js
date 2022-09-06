@@ -8,35 +8,37 @@ import AllTab from "./all-tab/all-tab";
 const subNavbarTabs = [
     {
         title: "Best Sellers",
-        disabled: false
-    },
-    {
-        title: "Today's Deals",
-        disabled: false
-    },
-    {
-        title: "Amazon Basics",
-        disabled: false
+        disabled: false,
+        href: "/products/best/sellers"
     },
     {
         title: "Electronics & Camera",
-        disabled: false
+        disabled: false,
+        href: "/products/electronics/camera"
     },
     {
         title: "Computers & Office",
-        disabled: false
+        disabled: false,
+        href: "/products/computers/office"
     },
     {
         title: "Food, Beverage & Alcohol",
-        disabled: false
+        disabled: false,
+        href: "/products/food/beverage/alcohol"
     },
     {
         title: "Sports & Outdoors",
-        disabled: false
+        disabled: false,
+        href: "/products/sports/outdoors"
     },
     {
         title: "Clothing, Shoes & Jewelry",
-        disabled: false
+        disabled: false,
+        href: "/products/clothing/shoes/jewelry"
+    },
+    {
+        title: "Amazon Basics",
+        disabled: true
     },
     {
         title: "Prime",
@@ -85,26 +87,25 @@ function subNavbar(props) {
 
                 {subNavbarTabs.map((tab, index) => {
                     return (
-                        <Link 
-                            href="/thisWorks" 
-                            key={`sub-navbar-tab-${index}`}
-                        >
-                            {tab.disabled === true ?
+                        tab.href ?
+                            <Link 
+                                href={tab.href} 
+                                key={`sub-navbar-tab-${index}`}
+                            >
                                 <Tab 
                                     sx={{opacity: 100}}
                                     className="text-gray-300 normal-case min-h-0 text-base font-light"
                                     label={tab.title}
                                     disabled={tab.disabled}
-                                />:
-                                <Tab 
-                                    sx={{opacity: 100}}
-                                    className="text-gray-300 normal-case min-h-0 text-base font-light"
-                                    label={tab.title}
-                                />                           
-                            }
+                                />                     
+                            </Link> :
 
-                            
-                        </Link>
+                            <Tab 
+                                sx={{opacity: 100}}
+                                className="text-gray-300 normal-case min-h-0 text-base font-light"
+                                label={tab.title}
+                                disabled={tab.disabled}
+                            />                         
                     )
                 })}
             </Tabs>
