@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useField, useFormikContext } from "formik";
 import slugify from "slugify";
 
 import Button from "@mui/material/Button";
@@ -13,8 +14,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from "@mui/material/Typography";
 
-import { SEARCH_CATEGORY } from "../../../appConfig";
-import { useField, useFormikContext } from "formik";
+import { SEARCH_CATEGORY } from "../../../../appConfig";
 
 const EmptyDiv = styled("div")(() =>({
     width: "30px"

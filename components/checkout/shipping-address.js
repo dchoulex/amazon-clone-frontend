@@ -1,8 +1,15 @@
+import axios from 'axios';
+import useSWR from 'swr';
+
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
 
 function ShippingAddress() {
+    
+    const { data: addressRes, error: addressError } = useSWR()
+
     return (
         <Paper className="flex p-4 border-2 border-gray-200 border-solid my-5">
             <div>

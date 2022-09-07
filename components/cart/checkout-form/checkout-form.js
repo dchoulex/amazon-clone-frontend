@@ -1,69 +1,111 @@
 import { Fragment } from "react";
-import { Formik, Form, FieldArray, getIn } from "formik";
+import { Formik, Form, FieldArray } from "formik";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
+import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 // import Checkbox from '@mui/material/Checkbox';
 
-import CartItemList from "./checkout-form-item-list";
+import { SELECT_AMOUNT_SCHEMA } from "../../ui/forms/form-schema";
+import CheckoutFormItemList from "./checkout-form-item-list";
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikSubmitButton from "../../ui/forms/formik-submit-button";
 
-// const CHECKOUT_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
-//     amount: Yup
-//         .number()
-//         .typeError(INVALID_NUMBER_TYPE_ERROR_MESSAGE)
-//         .required(REQUIRED_ERROR_MESSAGE)
-//         .integer(INTEGER_NUMBER_ERROR_MESSAGE)
-//         .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
-//         .max(50, "You cannot buy more than 50 items at once per product.")
-// });
+const CHECKOUT_CART_ITEM_OBJECT_SCHEMA = Yup.object().shape({
+    amount: SELECT_AMOUNT_SCHEMA,
+    productId: Yup.string()
+});
+
+const CHECKOUT_CART_ITEM_ARRAY_SCHEMA = Yup.array().of(CHECKOUT_CART_ITEM_OBJECT_SCHEMA);
+
+const CHECKOUT_FORM_VALIDATION = Yup.object().shape({
+    checkoutCartItems: CHECKOUT_CART_ITEM_ARRAY_SCHEMA
+});
+
+function calculateSubTotalAndPoint(items, checkoutCartItems) {
+    let subTotal = 0;
+    let points = 0;
+
+    for (let i = 0; i < checkoutCartItems.length; i++) {
+        const cartItem = checkoutCartItems[i];
+        const itemPrice = items[i]?.product.price;
+        const itemPoint = items[i]?.product.point;
+
+        subTotal += itemPrice * Number(cartItem.amount);
+        points += itemPoint * Number(cartItem.amount);
+    };
+
+    return [ subTotal, points ];
+};
 
 function CheckoutForm(props) {
-    const { items, numOfCartItems, subTotal, point, isEmpty } = props;
+    const { items, numOfCartItems } = props;
+    const router = useRouter();
+
     const CHECKOUT_INITIAL_FORM_STATE = {
-        checkoutCartItems: items.map(item => ({
-            productId: item.product._id,
-            amount: item.amount
-        }))
+        checkoutCartItems: items.map(item => (
+            {
+                productId: item.product._id,
+                amount: item.amount
+            }
+        ))
+    };
+
+    const handleSubmitCheckoutForm = async(values, actions) => {
+        actions.setSubmitting(false);
+        console.log(values)
+    
+        await axios.put(process.env.NEXT_PUBLIC_CHECKOUT_CART_ITEMS_API, values);
+    
+        router.push("/cart/checkout");
     };
 
     return (
         <Formik
             initialValues={CHECKOUT_INITIAL_FORM_STATE}
-            // validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
-            onSubmit={(values, actions) => {
-                actions.setSubmitting(false);
-                console.log(values)
-            }}
+            validationSchema={CHECKOUT_FORM_VALIDATION}
+            onSubmit={handleSubmitCheckoutForm}
             className="mt-auto"
         >
-            {({ touched, errors }) => (
-                <Form>
-                    <FieldArray name="checkoutCartItems">
-                        {({ remove, insert }) => (  
-                            <Box>
-                                {items.map((item, index) => {
-                                    const amount = `checkoutCartItems[${index}].amount`;
+            {({ touched, errors, values }) => {
+                const [ subTotal, points ] = calculateSubTotalAndPoint(items, values.checkoutCartItems);
+            
+                return (
+                    <Form>
+                        <FieldArray name="checkoutCartItems">
+                            {({ remove, insert }) => (  
+                                <Box>
+                                    {items.map((item, index) => {
+                                        const amount = `checkoutCartItems[${index}].amount`;
 
-                                    return (
-                                        <CartItemList 
-                                            key={`cart-item-${index}`}
-                                            item={item}
-                                            index={index}
-                                            numOfCartItems={items.length}
-                                            amount={amount}
-                                            remove={remove}
-                                            insert={insert}
-                                        />
-                                    )
-                                })}
-                            </Box>
-                        )}
-                    </FieldArray>
-                    
-                    {!isEmpty && (
+                                        let errorMessage;
+
+                                        if (errors.checkoutCartItems && errors.checkoutCartItems.length >= 1) {
+                                            const amountError = errors.checkoutCartItems?.at(index)?.amount;
+
+                                            if (amountError) errorMessage = amountError;
+                                        };
+
+                                        return (
+                                            <CheckoutFormItemList 
+                                                key={`cart-item-${index}`}
+                                                item={item}
+                                                index={index}
+                                                numOfCartItems={items.length}
+                                                amount={amount}
+                                                remove={remove}
+                                                insert={insert}
+                                                touched={touched}
+                                                errorMessage={errorMessage}
+                                            />
+                                        )
+                                    })}
+                                </Box>
+                            )}
+                        </FieldArray>
+                        
                         <Fragment>
                             <Box 
                                 py={2} 
@@ -85,7 +127,7 @@ function CheckoutForm(props) {
 
                                     <Typography className="text-right my-1">
                                         Points to be earned : &nbsp;
-                                        <span className="text-orange-400">{numberWithCommas(point)} pt</span>
+                                        <span className="text-orange-400">{numberWithCommas(points)} pt</span>
                                     </Typography>
                                 </div>
                             </Box>
@@ -100,9 +142,9 @@ function CheckoutForm(props) {
                                 </FormikSubmitButton>
                             </div>
                         </Fragment>
-                    )}
-                </Form>
-            )}
+                    </Form>
+                )
+            }}
         </Formik>
     )
 };

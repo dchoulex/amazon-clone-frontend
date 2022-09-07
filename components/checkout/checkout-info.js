@@ -5,7 +5,7 @@ import LogoButtonWhite from '../ui/logo-button-white';
 import CheckoutStep from './checkout-step';
 
 function CheckoutInfo() {
-    const [activeStep, setActiveStep] = useState(0);
+    const [ activeStep, setActiveStep ] = useState(0);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);

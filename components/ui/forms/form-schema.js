@@ -89,4 +89,4 @@ export const SELECT_AMOUNT_SCHEMA = Yup
     .required(REQUIRED_ERROR_MESSAGE)
     .integer(INTEGER_NUMBER_ERROR_MESSAGE)
     .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
-    .max(10, "You cannot buy more than ${max} items at once per product.")
+    .max(5, "You cannot buy more than ${max} items.");

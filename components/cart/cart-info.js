@@ -57,7 +57,7 @@ function CartInfo(props) {
 
     const tabItems = {
         cart: {
-            numOfResults: cartTabItems.length,
+            numOfResults: cartTabItems.reduce((total, cartItem) => total + cartItem.amount, 0),
             handleChange: (_, value) => {
                 dispatch(cartActions.changeSaveTabPage({ page: value }))
             },
@@ -68,7 +68,7 @@ function CartInfo(props) {
             point: cartTabItems.reduce((point, item) => point + item.product.point * item.amount, 0)
         },
         save: {
-            numOfResults: saveTabItems.length,
+            numOfResults: saveTabItems.reduce((total, cartItem) => total + cartItem.amount, 0),
             handleChange: (_, value) => {
                 dispatch(cartActions.changeSaveTabPage({ page: value }))
             },
@@ -123,13 +123,15 @@ function CartInfo(props) {
                         value="cart" 
                         className="py-2"
                     >
-                        <CheckoutForm 
-                            items={tabItems["cart"].paginatedItems}
-                            numOfCartItems={tabItems["cart"].numOfResults}
-                            subTotal={(tabItems["cart"].subTotal)}
-                            point={tabItems["cart"].point}
-                            isEmpty={tabItems[currentTab].isEmpty}
-                        />
+                        {!tabItems["cart"].isEmpty &&
+                            <CheckoutForm 
+                                items={tabItems["cart"].paginatedItems}
+                                numOfCartItems={tabItems["cart"].numOfResults}
+                                subTotal={(tabItems["cart"].subTotal)}
+                                point={tabItems["cart"].point}
+                                isEmpty={tabItems[currentTab].isEmpty}
+                            />
+                        }
                     </TabPanel>
 
                     <TabPanel 

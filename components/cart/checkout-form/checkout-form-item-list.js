@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Image from "next/image";
-import { Field, getIn } from "formik";
+import { Field } from "formik";
 
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack';
@@ -15,12 +15,12 @@ import StockLabel from "../../ui/stock-label";
 
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikNumber from "../../ui/forms/formik-number";
-import FormikHidden from "../../ui/forms/formik-hidden";
 import axios from "axios";
 import getAPI from "../../../utils/getAPI";
+import ErrorMessage from "../../ui/forms/error-message";
 
 function CheckoutFormItemList(props) {
-    const { item, index, numOfCartItems, remove, insert } = props;
+    const { item, index, numOfCartItems, remove, insert, errorMessage, touched } = props;
     const productId = item.product._id;
 
     const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
@@ -78,7 +78,10 @@ function CheckoutFormItemList(props) {
                                 {item.product.name}
                             </Typography>
     
-                            <StockLabel stock={item.product.stock} isCartItem={true} />
+                            <StockLabel 
+                                stock={item.product.stock} 
+                                isCartItem={true} 
+                            />
     
                             <Typography 
                                 variant="h5" 
@@ -95,49 +98,52 @@ function CheckoutFormItemList(props) {
                                 name={`checkoutCartItems[${index}].productId`}
                                 type="hidden"
                             />
-    
-                            <Stack 
-                                direction="row" 
-                                spacing={2}
-                                divider={<Divider orientation="vertical" flexItem />}
-                                className="items-center mt-auto min-w-[430px]"
-                            >
-                                <FormikNumber 
-                                    name={`checkoutCartItems[${index}].amount`}
-                                    className="min-w-[60px] max-w-[80px]"
-                                    defaultValue={item.amount}
-                                    onClick={handleChangeAmount}
-                                />
-    
-                                <Button 
-                                    size="medium"
-                                    variant="outlined"
-                                    color="error"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleDeleteItem}
+
+                            <Box>
+                                <Stack 
+                                    direction="row" 
+                                    spacing={2}
+                                    divider={<Divider orientation="vertical" flexItem />}
+                                    className="items-center mt-auto min-w-[430px]"
                                 >
-                                    Delete
-                                </Button>
-    
-                                <Button                 
-                                    variant="outlined"
-                                    startIcon={<SaveIcon />}
-                                    color="success"
-                                    onClick={handleToggleSave}
-                                >
-                                    Save for later
-                                </Button>
-                            </Stack>
+                                    <FormikNumber 
+                                        name={`checkoutCartItems[${index}].amount`}
+                                        className="min-w-[60px] max-w-[80px]"
+                                        defaultValue={item.amount}
+                                        onClick={handleChangeAmount}
+                                    />                                
+        
+                                    <Button 
+                                        size="medium"
+                                        variant="outlined"
+                                        color="error"
+                                        startIcon={<DeleteIcon />}
+                                        onClick={handleDeleteItem}
+                                    >
+                                        Delete
+                                    </Button>
+        
+                                    <Button                 
+                                        variant="outlined"
+                                        startIcon={<SaveIcon />}
+                                        color="success"
+                                        onClick={handleToggleSave}
+                                    >
+                                        Save for later
+                                    </Button>
+                                </Stack>
+
+                                {errorMessage &&
+                                    <ErrorMessage errorMessage={errorMessage} className="mt-2"/>
+                                }
+                            </Box>
                         </Box>
                     </Grid>
                 </Grid>
             </Box>
     
-            {index === numOfCartItems - 1 ? 
-                null : 
-                (
-                    <Divider sx={{ borderColor: "#bdbdbd", borderStyle: "dashed" }}/>
-                )
+            {index !== numOfCartItems - 1 &&
+                <Divider sx={{ borderColor: "#bdbdbd", borderStyle: "dashed" }}/>
             }
         </Fragment>
     )

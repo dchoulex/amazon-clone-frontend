@@ -79,14 +79,19 @@ function subNavbar(props) {
                 <AllTab name={name} />
 
                 <Tab 
-                    sx={{opacity: 100}}
+                    sx={{
+                        opacity: 100,
+                        "&:hover" : {
+                            cursor: "default"
+                        }
+                    }}
                     className="text-gray-300 normal-case min-h-0 text-base font-light"
                     label={`Amazon Points: ${amazonPoints}`}
                     disableRipple
                 />
 
                 {subNavbarTabs.map((tab, index) => {
-                    return (
+                    return (                   
                         tab.href ?
                             <Link 
                                 href={tab.href} 
@@ -96,16 +101,17 @@ function subNavbar(props) {
                                     sx={{opacity: 100}}
                                     className="text-gray-300 normal-case min-h-0 text-base font-light"
                                     label={tab.title}
-                                    disabled={tab.disabled}
+                                    disabled={false}
                                 />                     
                             </Link> :
 
                             <Tab 
+                                key={`sub-navbar-tab-${index}`}
                                 sx={{opacity: 100}}
-                                className="text-gray-300 normal-case min-h-0 text-base font-light"
+                                className="text-gray-400 normal-case min-h-0 text-base font-light"
                                 label={tab.title}
-                                disabled={tab.disabled}
-                            />                         
+                                disabled={true}
+                            />                     
                     )
                 })}
             </Tabs>

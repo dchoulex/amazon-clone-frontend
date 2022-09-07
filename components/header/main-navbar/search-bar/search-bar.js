@@ -2,20 +2,30 @@ import { Formik, Form } from "formik";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
+import slugify from "slugify";
 
 import SearchIcon from '@mui/icons-material/Search';
 
-import { productActions } from "../../../store/product-slice";
-import FormikSubmitButton from "../../ui/forms/formik-submit-button";
-import FormikSearchInput from "../../ui/forms/formik-search-input";
-import FormikSearchCategory from "../../ui/forms/formik-search-category";
+import { productActions } from "../../../../store/product-slice";
+import FormikSubmitButton from "../../../ui/forms/formik-submit-button";
+import FormikSearchInput from "./formik-search-input";
+import FormikSearchCategory from "./formik-search-category";
 
 function SearchBar() {
     const router = useRouter();
     const dispatch = useDispatch();
 
     const handleSubmitSearchForm = async(values) => {
-        const res = await axios.post(process.env.NEXT_PUBLIC_SEARCH_PRODUCTS_API, values);
+        const { category, keyword } = values;
+        
+        const slugKeyword = keyword === "" ? "" : slugify(keyword, { lower: true });
+
+        const data = {
+            category,
+            keyword: slugKeyword
+        };
+
+        const res = await axios.post(process.env.NEXT_PUBLIC_SEARCH_PRODUCTS_API, data);
 
         const products = res.data.data;
 

@@ -8,7 +8,11 @@ function FormikNumber(props) {
     const [ field, meta ] = useField(name);
 
     const handleChange = event => {
-        setFieldValue(name, event.target.value)
+        const value = Number(event.target.value);
+
+        if (value < 1) return;
+
+        setFieldValue(name, Math.trunc(value));
     };
 
     const configNumber = {

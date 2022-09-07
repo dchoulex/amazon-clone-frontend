@@ -4,6 +4,7 @@ import Link from "next/link";
 import axios from 'axios';
 
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from "@mui/material/CardMedia";
@@ -11,12 +12,13 @@ import CardActions from "@mui/material/CardActions";
 import Stack from "@mui/material/Stack";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
+import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
 import ProductRatingStar from './product-rating-star';
 import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import FormikHidden from '../ui/forms/formik-hidden';
-import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
+import ErrorMessage from '../ui/forms/error-message';
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA
@@ -72,42 +74,37 @@ function ProductCard(props) {
             >
                 {({ errors, touched, isSubmitting }) => (
                     <Form>
-                        {errors.amount &&
-                            <Typography 
-                                variant="caption" 
-                                color="error" 
-                                className="block w-[200px] ml-20"
-                            >
-                                {errors.amount}
-                            </Typography>
-                        }
-
-                        <CardActions>
-                            <Stack 
-                                direction="row" 
-                                ml="auto"
-                                mb="0.5rem"
-                                pr="0.5rem"
-                            >
-                                <FormikHidden 
-                                    name="productId"
-                                    value={product._id}
-                                />
-                                
-                                <FormikNumber 
-                                    name="amount"
-                                    className="min-w-[60px] max-w-[80px]"
-                                />
-
-                                <FormikSubmitButton 
-                                    variant="contained"
-                                    className="ml-4"
-                                    disabled={(touched.amount && errors.amount) ? true : false}
-                                    startIcon={<AddShoppingCartIcon />}
+                        <CardActions className="flex flex-col items-end mr-2">
+                            <Box>
+                                <Stack 
+                                    direction="row" 
+                                    ml="auto"
+                                    mb="0.5rem"
                                 >
-                                    Add to cart
-                                </FormikSubmitButton>
-                            </Stack>
+                                    <FormikHidden 
+                                        name="productId"
+                                        value={product._id}
+                                    />
+                                    
+                                    <FormikNumber 
+                                        name="amount"
+                                        className="min-w-[60px] max-w-[80px]"
+                                    />
+
+                                    <FormikSubmitButton 
+                                        variant="contained"
+                                        className="ml-4"
+                                        disabled={(touched.amount && errors.amount) ? true : false}
+                                        startIcon={<AddShoppingCartIcon />}
+                                    >
+                                        Add to cart
+                                    </FormikSubmitButton>
+                                </Stack>
+                            </Box>
+
+                            {errors.amount &&
+                                <ErrorMessage errorMessage={errors.amount} className="pb-2" />
+                            }
                         </CardActions>
                     </Form>
                 )}

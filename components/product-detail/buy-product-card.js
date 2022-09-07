@@ -10,12 +10,12 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
+import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikHidden from '../ui/forms/formik-hidden';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import numberWithCommas from "../../utils/numberWithCommas";
 import StockLabel from '../ui/stock-label';
-import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA
