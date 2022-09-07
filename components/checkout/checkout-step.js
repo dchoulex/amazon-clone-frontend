@@ -8,7 +8,7 @@ import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
-import ShippingAddress from '../../components/checkout/shipping-address';
+import ShippingAddress from './shipping-address/shipping-address';
 import ShippingMethod from '../../components/checkout/shipping-method';
 import PaymentMethod from '../../components/checkout/payment-method';
 

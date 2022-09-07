@@ -3,9 +3,18 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
-function NoItemInfo() {
+function NoItemInfo(props) {
+    const { errorMessage, className, ...otherProps } = props;
+
+    const configNoItemFound = {
+        ...otherProps,
+        className: className ? "flex justify-center " +className : "flex justify-center",
+        p: 4,
+        pt: 2
+    }
+    
     return (
-        <Box p={4} pt={2} className="flex justify-center" box={{borderTop: "none"}}>
+        <Box {...configNoItemFound} >
             <Avatar 
                 src="/images/dogs/no-item-sad-dog.jpg"
                 alt=""
@@ -13,7 +22,7 @@ function NoItemInfo() {
             />
 
             <Typography className="ml-10 flex flex-col justify-center">
-                No item found.
+                {errorMessage ? errorMessage : "No item found."}
             </Typography>
         </Box>
     )

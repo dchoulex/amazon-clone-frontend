@@ -23,6 +23,7 @@ function AddressInfo(props) {
     const dispatch = useDispatch();
     
     const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
+    
     const currentPage = useSelector(state => state.address.addressPage);
 
     const fetcher = url => axios.get(url).then(res => res.data);
@@ -40,7 +41,7 @@ function AddressInfo(props) {
         dispatch(addressActions.changeAddressPage({ page: value }));
     };
 
-    const handleOpenAddressDialog = () => {
+    const handleOpenAddAddressDialog = () => {
         setOpenAddAddressForm(true);
     };
 
@@ -59,7 +60,7 @@ function AddressInfo(props) {
                     className="ml-5 mb-4"
                     size="small"
                     startIcon={<ControlPointIcon />}
-                    onClick={handleOpenAddressDialog}
+                    onClick={handleOpenAddAddressDialog}
                 >
                     Add new address
                 </Button>
