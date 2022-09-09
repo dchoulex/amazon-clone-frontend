@@ -7,7 +7,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 function AddressSelectionButton(props) {
     const { defaultAddressPostCode, defaultAddressLine } = props;
 
-    const addressLineClass = defaultAddressLine.length > 35 ? "text-sm" : "text-base";
+    const addressLineClass = defaultAddressLine.length > 25 ? "text-sm" : "text-base";
 
     return (
         <Link href="/account/address">

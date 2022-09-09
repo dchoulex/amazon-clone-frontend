@@ -12,21 +12,22 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
 import { checkoutActions } from "../../../store/checkout-slice";
-import EditAddressForm from "../../address/edit-address-form";
 
-function SelectAddressCard(props) {
-    const { address, shippingAddress, setOpenSelectAddressDialog } = props;
-    const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
+function SelectCreditCard(props) {
+    const { creditCard, creditCardUsed, setOpenSelectCreditCardDialog } = props;
     const dispatch = useDispatch();
 
-    const handleOpenEditAddressForm = () => {
-        setOpenEditAddressForm(true);
-    };
+    const creditCardIsEmptyObject = Object.keys(creditCard).length === 0;
 
-    const handleSelectAddress = () => {
-        dispatch(checkoutActions.setShippingAddress({ shippingAddress: address }));
+    const displayedCreditCardName = !creditCardIsEmptyObject && creditCard.name;
+    const displayedCreditCardType = !creditCardIsEmptyObject && creditCard.type[0].toUpperCase() + creditCard.type.slice(1);
+    const displayedCreditCardNumber = !creditCardIsEmptyObject && "ending in ..." + creditCard.number.slice(creditCard.number.length - 4);
+    const displayedCreditCardExpiratiionDate = !creditCardIsEmptyObject && creditCard.expirationDate.split("T")[0];
 
-        setOpenSelectAddressDialog(false);
+    const handleSelectCreditCard = () => {
+        dispatch(checkoutActions.setCreditCard({ creditCard }));
+
+        setOpenSelectCreditCardDialog(false);
     };
 
     return (
@@ -49,11 +50,11 @@ function SelectAddressCard(props) {
                 }}
             >
                 <CardHeader 
-                    title={address.name.length > 15 ? address.name.slice(0, 15) + "..." : address.name} 
+                    title={displayedCreditCardType} 
                     sx={{ p: 0 }}
                 />
 
-                {address.isDefault &&
+                {creditCard.isDefault &&
                     <Chip 
                         label="DEFAULT"
                         color="primary"
@@ -69,50 +70,25 @@ function SelectAddressCard(props) {
 
             <CardContent>
                 <Typography variant="body1">
-                    {address.postCode}
+                    {displayedCreditCardName}
                 </Typography>
 
                 <Typography variant="body1">
-                    {address.city}
+                    {displayedCreditCardNumber}
                 </Typography>
-
+                
                 <Typography variant="body1">
-                    {address.rest}
-                </Typography>
-
-                <Typography variant="body1">
-                    {address.country}
-                </Typography>
-
-                <Typography variant="body1" className="my-2">
-                    <span className="font-semibold">Phone number : </span>{address.phoneNumber}
+                    {displayedCreditCardExpiratiionDate}
                 </Typography>
             </CardContent>
 
             <CardActions sx={{ mt: "auto" }}>
-                <Button 
-                    disableRipple 
-                    onClick={handleOpenEditAddressForm}
-                >
-                    Edit
-                </Button>
-
-                {shippingAddress._id !== address._id && (
-                    <Fragment>
-                        <Divider orientation="vertical" flexItem variant="middle" />
-        
-                        <Button onClick={handleSelectAddress}>Select</Button>
-                    </Fragment>
-                )}
-
-                <EditAddressForm 
-                    openEditAddressForm={openEditAddressForm}
-                    setOpenEditAddressForm={setOpenEditAddressForm}
-                    address={address}
-                />
+                {creditCard._id !== creditCardUsed._id && 
+                    <Button onClick={handleSelectCreditCard}>Select</Button>
+                }
             </CardActions>
         </Card>
     )
 };
 
-export default SelectAddressCard;
+export default SelectCreditCard;

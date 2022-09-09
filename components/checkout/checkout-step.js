@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 import ShippingAddress from './shipping-address/shipping-address';
 import ShippingMethod from '../../components/checkout/shipping-method';
-import PaymentMethod from '../../components/checkout/payment-method';
+import PaymentMethod from './payment-method/payment-method';
 
 const steps = [
     {

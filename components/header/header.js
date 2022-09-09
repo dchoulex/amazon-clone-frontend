@@ -65,6 +65,15 @@ function Header() {
         numOfCartItems = 0
     };
 
+    let defaultAddressPostCode = "No default address found";
+    let defaultAddressLine = "Please select a default address";
+
+    if (user.defaultAddress) {
+        defaultAddressPostCode = user.defaultAddress.postCode;
+
+        defaultAddressLine = isAuthenticated ? `${user.defaultAddress.city}, ${user.defaultAddress.rest}` : user.defaultAddress.rest;
+    };
+
     return(
         <Fragment>
             <AppBar 
@@ -73,8 +82,8 @@ function Header() {
             >
                 <MainNavbar 
                     name={user.name}
-                    defaultAddressPostCode={user.defaultAddress.postCode}
-                    defaultAddressLine={isAuthenticated ? `${user.defaultAddress.city}, ${user.defaultAddress.rest}` : user.defaultAddress.rest}
+                    defaultAddressPostCode={defaultAddressPostCode}
+                    defaultAddressLine={defaultAddressLine}
                     cartNumber={numOfCartItems}
                     isAuthenticated={isAuthenticated}
                 />

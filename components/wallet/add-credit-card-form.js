@@ -51,7 +51,7 @@ const defaultOptions = [
 ];
 
 function AddCreditCardForm(props) {
-    const { openCreditCardForm, setOpenCreditCardForm } = props;
+    const { openAddCreditCardForm, setOpenAddCreditCardForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {
@@ -60,7 +60,7 @@ function AddCreditCardForm(props) {
 
     const handleCloseAllDialog = () => {
         setOpenConfirmCloseDialog(false);
-        setOpenCreditCardForm(false);
+        setOpenAddCreditCardForm(false);
     };
 
     const handleAddCreditCardForm = async(values) => {
@@ -72,12 +72,12 @@ function AddCreditCardForm(props) {
             console.log(err)
         }
 
-        setOpenCreditCardForm(false);
+        setOpenAddCreditCardForm(false);
     };
 
     return (
         <Fragment>
-            <Dialog open={openCreditCardForm}>
+            <Dialog open={openAddCreditCardForm}>
                 <DialogTitle 
                     sx={{ 
                         display: "flex", 

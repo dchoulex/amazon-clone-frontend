@@ -12,6 +12,8 @@ import { SELECT_AMOUNT_SCHEMA } from "../../ui/forms/form-schema";
 import CheckoutFormItemList from "./checkout-form-item-list";
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikSubmitButton from "../../ui/forms/formik-submit-button";
+import { useDispatch } from "react-redux";
+import { checkoutActions } from "../../../store/checkout-slice";
 
 const CHECKOUT_CART_ITEM_OBJECT_SCHEMA = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA,
@@ -43,6 +45,7 @@ function calculateSubTotalAndPoint(items, checkoutCartItems) {
 function CheckoutForm(props) {
     const { items, numOfCartItems } = props;
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const CHECKOUT_INITIAL_FORM_STATE = {
         checkoutCartItems: items.map(item => (
@@ -55,8 +58,7 @@ function CheckoutForm(props) {
 
     const handleSubmitCheckoutForm = async(values, actions) => {
         actions.setSubmitting(false);
-        console.log(values)
-    
+        
         await axios.put(process.env.NEXT_PUBLIC_CHECKOUT_CART_ITEMS_API, values);
     
         router.push("/cart/checkout");

@@ -7,6 +7,7 @@ import addressReducer from "./address-slice";
 import walletReducer from "./wallet-slice";
 import userReducer from "./user-slice";
 import productReducer from "./product-slice";
+import checkoutReducer from "./checkout-slice";
 
 const store = configureStore({
     reducer: {
@@ -17,7 +18,8 @@ const store = configureStore({
         address: addressReducer,
         wallet: walletReducer,
         user: userReducer,
-        product: productReducer
+        product: productReducer,
+        checkout: checkoutReducer
     }
 });
 

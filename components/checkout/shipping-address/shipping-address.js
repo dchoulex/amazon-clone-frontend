@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import useSWR from 'swr';
 
@@ -7,11 +8,14 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
-import SelectAddressForm from './select-address-form';
+import { checkoutActions } from '../../../store/checkout-slice';
+import SelectAddressDialog from './select-address-dialog';
 import NoItemInfo from '../../ui/no-item-info';
 
 function ShippingAddress() {
-    const [ openSelectAddressForm, setOpenSelectAddressForm ] = useState(false);
+    const [ openSelectAddressDialog, setOpenSelectAddressDialog ] = useState(false);
+    const dispatch = useDispatch();
+    const shippingAddress = useSelector(state => state.checkout.shippingAddress);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -22,31 +26,54 @@ function ShippingAddress() {
 
     const addresses = data.data;
 
-    const defaultAddress = addresses.filter(address => address.isDefault)[0];
+    if (Object.keys(shippingAddress).length === 0) {
+        const defaultAddress = addresses.filter(address => address.isDefault)[0];
 
-    const handleOpenSelectAddressForm = () => {
-        setOpenSelectAddressForm(true)
+        if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
+    };
+
+    const handleOpenSelectAddressDialog = () => {
+        setOpenSelectAddressDialog(true)
     };
 
     return (
-        defaultAddress ?
+        Object.keys(shippingAddress).length !== 0 ?
             <Paper className="flex p-4 border-2 border-gray-200 border-solid my-5">
                 <div>
-                    <Typography variant="h6">{defaultAddress.name}</Typography>
+                    <Typography variant="h6" className="pb-2">{shippingAddress.name}</Typography>
 
-                    <Typography variant="body1">{defaultAddress.postCode}</Typography>
+                    <Typography variant="body1">
+                        {shippingAddress.postCode}
+                    </Typography>
 
-                    <Typography variant="body1">{defaultAddress.city}</Typography>
+                    <Typography variant="body1">
+                        {shippingAddress.city}
+                    </Typography>
                     
-                    <Typography variant="body1">{defaultAddress.rest}</Typography>
+                    <Typography variant="body1">
+                        {shippingAddress.rest}
+                    </Typography>
+
+                    <Typography>
+                        {shippingAddress.country}
+                    </Typography>
                 </div>
 
                 <Button 
                     variant="outlined" 
-                    className="h-[30px] ml-auto" size="small"
+                    className="h-[30px] ml-auto" 
+                    size="small"
+                    onClick={handleOpenSelectAddressDialog}
                 >
                     Change
                 </Button>
+
+                <SelectAddressDialog 
+                    openSelectAddressDialog={openSelectAddressDialog}
+                    setOpenSelectAddressDialog={setOpenSelectAddressDialog}
+                    addresses={addresses}
+                    shippingAddress={shippingAddress}
+                />
             </Paper>:
 
             <Box className="flex">
@@ -58,15 +85,16 @@ function ShippingAddress() {
                 <Button 
                     variant="outlined" 
                     className="h-[30px] ml-auto" size="small"
-                    onClick={handleOpenSelectAddressForm}
+                    onClick={handleOpenSelectAddressDialog}
                 >
-                    Select address
+                    Select
                 </Button>
 
-                <SelectAddressForm 
-                    openSelectAddressForm={openSelectAddressForm}
-                    setOpenSelectAddressForm={setOpenSelectAddressForm}
+                <SelectAddressDialog 
+                    openSelectAddressDialog={openSelectAddressDialog}
+                    setOpenSelectAddressDialog={setOpenSelectAddressDialog}
                     addresses={addresses}
+                    shippingAddress={shippingAddress}
                 />
             </Box>
     )
