@@ -2,10 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_CHECKOUT_SLICE_STATE = {
     shippingAddress: {},
-    shippingMethod: "",
+    shippingMethod: "standard",
+    shippingCost: null,
     paymentMethod: "credit",
-    creditCard: {},
-    cartItems: []
+    creditCard: {}
 };
 
 const checkoutSlice = createSlice({
@@ -15,17 +15,21 @@ const checkoutSlice = createSlice({
         setShippingAddress(state, action) {
             state.shippingAddress = action.payload.shippingAddress;
         },
+
         setShippingMethod(state, action) {
             state.shippingMethod = action.payload.shippingMethod
         },
+
+        setShippingCost(state, action) {
+            state.shippingCost = action.payload.shippingCost
+        },
+
         setPaymentMethod(state, action) {
             state.paymentMethod = action.payload.paymentMethod;
         },
+
         setCreditCard(state, action) {
             state.creditCard = action.payload.creditCard
-        },
-        setCheckoutCartItems(state, action) {
-            state.cartItems = action.payload.cartItems
         }
     }
 });

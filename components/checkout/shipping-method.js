@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { Fragment } from 'react';
 import useSWR from 'swr';
 import axios from "axios";
 
@@ -6,13 +7,19 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
-import getAPI from '../../utils/getAPI';
 import { checkoutActions } from '../../store/checkout-slice';
+import getAPI from '../../utils/getAPI';
 
-function ShippingMethod() {
-    const shippingAddress = useSelector(state => state.checkout.shippingAddress);
+function ShippingMethod(props) {
+    const { handleBack, handleNext } = props;
     const dispatch = useDispatch();
+
+    const shippingAddress = useSelector(state => state.checkout.shippingAddress);
+    const orderShippingCost = useSelector(state => state.checkout.shippingCost);
+    const shippingMethod = useSelector(state => state.checkout.shippingMethod)
 
     const GET_SHIPPING_COST_API = getAPI(process.env.NEXT_PUBLIC_GET_SHIPPING_COST_API, { id: shippingAddress._id });
 
@@ -28,30 +35,62 @@ function ShippingMethod() {
     const displayedStandardShippingCost = shippingCost.standardShippingCost;
     const displayedExpeditedShippingCost = shippingCost.expeditedShippingCost;
 
+    if (!orderShippingCost && shippingMethod === "standard") dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.standardShippingCost }));
+
+    if (!orderShippingCost && shippingMethod === "expedited") dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.expeditedShippingCost }));
+
     const handleOnChange = event => {
-        dispatch(checkoutActions.setShippingMethod({ shippingMethod: event.target.value }))
+        const shippingMethod = event.target.value;
+
+        dispatch(checkoutActions.setShippingMethod({ shippingMethod }));
+
+        if (shippingMethod === "standard") {
+            dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.standardShippingCost }))
+        } else {
+            dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.expeditedShippingCost }))
+        }
     };
 
     return (
-        <FormControl className="pl-1 my-4">
-            <RadioGroup
-                defaultValue="standard"
-                name="radio-buttons-group"
-                onChange={handleOnChange}
-            >
-                <FormControlLabel 
-                    value="standard" 
-                    control={<Radio />} 
-                    label={`Standard Shipping (+ ${displayedStandardShippingCost})`} 
-                />
+        <Fragment>
+            <FormControl className="pl-1 my-4">
+                <RadioGroup
+                    defaultValue="standard"
+                    name="radio-buttons-group"
+                    onChange={handleOnChange}
+                >
+                    <FormControlLabel 
+                        value="standard" 
+                        control={<Radio />} 
+                        label={`Standard Shipping (+ ${displayedStandardShippingCost})`} 
+                    />
 
-                <FormControlLabel 
-                    value="expedited" 
-                    control={<Radio />} 
-                    label={`Expedited Shipping (+ ${displayedExpeditedShippingCost})`} 
-                />
-            </RadioGroup>
-        </FormControl>
+                    <FormControlLabel 
+                        value="expedited" 
+                        control={<Radio />} 
+                        label={`Expedited Shipping (+ ${displayedExpeditedShippingCost})`} 
+                    />
+                </RadioGroup>
+            </FormControl>
+
+            <Stack direction="row" spacing={2} >            
+                <Button
+                    variant="contained"
+                    onClick={handleNext}
+                    sx={{ height: "40px" }}
+                >
+                    Next
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    onClick={handleBack}
+                    sx={{ height: "40px" }}
+                >
+                    Back
+                </Button>    
+            </Stack>                        
+        </Fragment>
     );
 };
 

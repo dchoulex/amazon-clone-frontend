@@ -66,7 +66,6 @@ function OrderDetailsInfo(props) {
                     subTotal={order.subTotal}
                     total={order.total}
                     tax={order.tax}
-                    discount={order.discount}
                     grandTotal={order.grandTotal}
                     paymentMethod={order.paymentMethod}
                     creditCard={order.creditCard}

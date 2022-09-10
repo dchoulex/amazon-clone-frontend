@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import PaymentInfo from "./payment-info";
 
 function OrderDetailsSummary(props) {
-    const { name, postCode, city, rest, subTotal, tax, discount, grandTotal, paymentMethod, creditCard, shippingCost } = props;
+    const { name, postCode, city, rest, subTotal, tax, grandTotal, paymentMethod, creditCard, shippingCost } = props;
 
     return (
         <Box px={3} mb={3}>
@@ -82,16 +82,6 @@ function OrderDetailsSummary(props) {
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
                                             {tax}
-                                        </TableCell>
-                                    </TableRow>
-
-                                    <TableRow>
-                                        <TableCell sx={{ paddingY: "5px"}}>
-                                            Discount :&nbsp;
-                                        </TableCell>
-
-                                        <TableCell sx={{ paddingY: "5px"}}>
-                                            {discount}
                                         </TableCell>
                                     </TableRow>
 

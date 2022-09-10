@@ -77,4 +77,6 @@ export const PRODUCTS_NAME = [
     'Sneakers',
     'Whey Protein',
     'Tent'
-]
+];
+
+export const TAX = 0.1;

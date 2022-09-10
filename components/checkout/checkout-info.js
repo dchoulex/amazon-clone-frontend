@@ -8,11 +8,11 @@ function CheckoutInfo() {
     const [ activeStep, setActiveStep ] = useState(0);
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        setActiveStep(prevActiveStep => prevActiveStep - 1);
     };
 
     return (
@@ -26,6 +26,7 @@ function CheckoutInfo() {
 
             <CheckoutStep 
                 activeStep={activeStep}
+                setActiveStep={setActiveStep}
                 handleBack={handleBack}
                 handleNext={handleNext}
             />
