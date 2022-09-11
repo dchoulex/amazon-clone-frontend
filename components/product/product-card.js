@@ -1,13 +1,13 @@
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
 import Link from "next/link";
+import Image from "next/image";
 import axios from 'axios';
 
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
 import Stack from "@mui/material/Stack";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
@@ -17,8 +17,11 @@ import ProductRatingStar from './product-rating-star';
 import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
-import FormikHidden from '../ui/forms/formik-hidden';
 import ErrorMessage from '../ui/forms/error-message';
+
+const ADD_CART_ITEM_INITIAL_FORM_STATE = { 
+    amount: 1 
+};
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA
@@ -26,22 +29,30 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
 
 function ProductCard(props) {
     const { product } = props;
+    const slug = product.slug;
+    const image = product.images[0];
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
+
+        const data = {
+            productId: product._id,
+            amount: values.amount
+        };
         
-        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, values);
+        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
     };
 
     return (
         <Card className="min-w-[250px] max-w-[350px] border-gray-200 border-solid border-2 flex-col flex">
-            <CardMedia 
-                component="img"
-                height="230"
-                image="/images/amazon-logo.png"
-                className="mb-10"
-                alt={product.name}
-            />
+            <Box mx="auto" mt={2}>
+                <Image 
+                    src={`/images/products/${slug}/${image}`}
+                    width={200}
+                    height={260}
+                    alt={product.name}
+                />
+            </Box>
 
             <CardContent>
                 <Link href={`/products/${product._id}`}>
@@ -64,15 +75,12 @@ function ProductCard(props) {
             </CardContent>
             
             <Formik
-                initialValues={{  
-                    productId: product._id,
-                    amount: 1
-                }}
+                initialValues={ADD_CART_ITEM_INITIAL_FORM_STATE}
                 validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
                 onSubmit={handleSubmitAddCartItemForm}
                 className="mt-auto"
             >
-                {({ errors, touched, isSubmitting }) => (
+                {({ errors, touched }) => (
                     <Form>
                         <CardActions className="flex flex-col items-end mr-2">
                             <Box>
@@ -81,11 +89,6 @@ function ProductCard(props) {
                                     ml="auto"
                                     mb="0.5rem"
                                 >
-                                    <FormikHidden 
-                                        name="productId"
-                                        value={product._id}
-                                    />
-                                    
                                     <FormikNumber 
                                         name="amount"
                                         className="min-w-[60px] max-w-[80px]"

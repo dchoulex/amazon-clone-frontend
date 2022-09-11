@@ -8,7 +8,7 @@ import { PRODUCTS_NAME } from "../../../../appConfig";
 function FormikSearchInput(props) {
     const { name, ...otherProps } = props;
     const [ field, _ ] = useField(name);
-    const { setFieldValue, values } = useFormikContext();
+    const { setFieldValue } = useFormikContext();
 
     const handleChangeInput = (_, value) => {
       setFieldValue(name, value);
@@ -19,15 +19,15 @@ function FormikSearchInput(props) {
       ...otherProps,
       className: "bg-white flex flex-1 px-3",
       onInputChange: handleChangeInput,
-      label: "Search Input",
       sx: { height: "36px" },
       freeSolo: true,
       options: PRODUCTS_NAME,
       defaultValue: "",
       getOptionLabel: value => value,
       renderInput: props => {
-        const { InputProps, ...otherProps } = props;
-        return <InputBase {...InputProps} {...otherProps}  />
+        const { InputProps, InputLabelProps: inputlabelprops ,...otherProps } = props;
+        
+        return <InputBase {...InputProps} {...otherProps} />
       }
     };
 

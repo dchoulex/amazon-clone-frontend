@@ -5,7 +5,9 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 
 function ProductDetailImages(props) {
-    const { productImages } = props;
+    const { productImages, slug } = props;
+
+    console.log(slug)
 
     return (
         <Box 
@@ -14,17 +16,17 @@ function ProductDetailImages(props) {
         >
             <List>
                 {productImages.map((image, index) => (
-                    <Fragment key={`image-${index}`}>
+                    <Box key={`image-${index}`}>
                         <ListItemButton
                             className="border-2 border-gray-300 border-solid w-[70px] h-[70px] mx-auto my-5"
                         >
                             <Image 
-                                src="/images/amazon-logo.png"
+                                src={`/images/products/${slug}/${image}`}
                                 alt="picture"
                                 layout="fill"
                             />
                         </ListItemButton>
-                    </Fragment>
+                    </Box>
                 ))}
             </List>
         </Box>

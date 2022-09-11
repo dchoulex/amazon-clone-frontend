@@ -48,10 +48,14 @@ function ProductDetailPage(props) {
     return (
         <Fragment>
             <Box className="flex">
-                <ProductDetailImages productImages={product.images}/>
+                <ProductDetailImages 
+                    slug={product.slug}
+                    productImages={product.images}
+                />
 
                 <ProductDetailInfo 
-                    activeImage={"activeImage"} 
+                    slug={product.slug}
+                    images={product.images} 
                     description={product.description} 
                     title={product.name} 
                     isMediumScreenDown={isMediumScreenDown}
@@ -60,6 +64,7 @@ function ProductDetailPage(props) {
                     ratingsAverage={product.ratingsAverage}
                     ratingsQuantity={product.ratingsQuantity}
                     reviews={reviews}
+                    productId={product._id}
                 />
 
                 {!isMediumScreenDown &&

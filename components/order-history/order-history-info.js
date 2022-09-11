@@ -37,26 +37,26 @@ function OrderHistoryInfo(props) {
     const orderHistoryTabItems = orders.filter(data => !data.order.isCanceled);
     const cancelTabItems = orders.filter(data => data.order.isCanceled);
 
-    const tabItems = {
-        history: {
+    const tabItems = [
+        {
             numOfResults: orderHistoryTabItems.length,
             handleChange: (_, value) => {
                 dispatch(orderHistoryActions.changeOrderHistoryTabPage({ page: value }))
             },
-            isEmpty: currentTab === "history" && orderHistoryTabItems.length === 0,
+            isEmpty: currentTab === 0 && orderHistoryTabItems.length === 0,
             page: currentOrderHistoryTabPage,
             paginatedItems: getPaginatedItems(orderHistoryTabItems, currentOrderHistoryTabPage)
         },
-        cancel: {
+        {
             numOfResults: cancelTabItems.length,
             handleChange: (_, value) => {
                 dispatch(orderHistoryActions.changeCancelTabPage({ page: value }))
             },
-            isEmpty: currentTab === "cancel" && cancelTabItems.length === 0,
+            isEmpty: currentTab === 1 && cancelTabItems.length === 0,
             page: currentCancelTabPage,
             paginatedItems: getPaginatedItems(cancelTabItems, currentCancelTabPage)
         }
-    };
+    ];
 
     const handleChangeTab = (_, value) => {
         dispatch(orderHistoryActions.changeCurrentTab({ currentTab: value }));
@@ -82,30 +82,30 @@ function OrderHistoryInfo(props) {
                             onChange={handleChangeTab} 
                             aria-label="cart-tabs"
                         >
-                            <Tab label="order history" value="history" disableRipple />
+                            <Tab label="order history" value={0} disableRipple />
 
-                            <Tab label="canceled orders" value="cancel" disableRipple />
+                            <Tab label="canceled orders" value={1} disableRipple />
                         </TabList>
                     </Box>
 
                     {!tabItems[currentTab].isEmpty &&
                         <Fragment>
                             <TabPanel 
-                                value="history" 
+                                value={0} 
                                 className="py-2"
                             >
                                 <OrderPanelList 
-                                    items={tabItems["history"].
+                                    items={tabItems[0].
                                     paginatedItems} currentTab={currentTab} 
                                 />
                             </TabPanel>
 
                             <TabPanel 
-                                value="cancel"
+                                value={1}
                                 className="py-2"
                             >
                                 <OrderPanelList 
-                                    items={tabItems["cancel"].
+                                    items={tabItems[1].
                                     paginatedItems} currentTab={currentTab} 
                                 />
                             </TabPanel>

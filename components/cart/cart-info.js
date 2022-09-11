@@ -17,23 +17,6 @@ import NoItemInfo from "../ui/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
 import CheckoutForm from "./checkout-form/checkout-form";
 
-// const buyAgainTabItems = [
-//     {
-//         productName: "Ergotron LX Desk Mount",
-//         stock: 0,
-//         price: 5000000,
-//         point: 1000
-//     },
-//     {
-//         productName: "Ergotron LX Desk Mount",
-//         stock: 1,
-//         price: 5000000,
-//         point: 1000
-//     },
-// ];
-
-const buyAgainTabItems = []; 
-
 function CartInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
@@ -41,7 +24,7 @@ function CartInfo(props) {
     const currentTab = useSelector(state => state.cart.currentTab);
     const currentCartTabPage = useSelector(state => state.cart.cartTabPage);
     const currentSaveTabPage = useSelector(state => state.cart.saveTabPage);
-    const currentBuyAgainTabPage = useSelector(state => state.cart.buyAgainTabPage);
+    // const currentBuyAgainTabPage = useSelector(state => state.cart.buyAgainTabPage);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -55,37 +38,37 @@ function CartInfo(props) {
     const cartTabItems = cartItems.filter(cartItem => !cartItem.isSaved);
     const saveTabItems = cartItems.filter(cartItem => cartItem.isSaved);
 
-    const tabItems = {
-        cart: {
+    const tabItems = [
+        {
             numOfResults: cartTabItems.reduce((total, cartItem) => total + cartItem.amount, 0),
             handleChange: (_, value) => {
                 dispatch(cartActions.changeSaveTabPage({ page: value }))
             },
-            isEmpty: currentTab === "cart" && cartTabItems.length === 0,
+            isEmpty: currentTab === 0 && cartTabItems.length === 0,
             page: currentCartTabPage,
             paginatedItems: getPaginatedItems(cartTabItems, currentCartTabPage),
             subTotal: cartTabItems.reduce((subTotal, item) => subTotal + item.product.price * item.amount, 0),
             point: cartTabItems.reduce((point, item) => point + item.product.point * item.amount, 0)
         },
-        save: {
+        {
             numOfResults: saveTabItems.reduce((total, cartItem) => total + cartItem.amount, 0),
             handleChange: (_, value) => {
                 dispatch(cartActions.changeSaveTabPage({ page: value }))
             },
-            isEmpty: currentTab === "save" && saveTabItems.length === 0,
+            isEmpty: currentTab === 1 && saveTabItems.length === 0,
             page: currentSaveTabPage,
             paginatedItems: getPaginatedItems(saveTabItems, currentSaveTabPage)
         },
-        buyAgain: {
-            numOfResults: buyAgainTabItems.length,
-            handleChange: (_, value) => {
-                dispatch(cartActions.changeSaveTabPage({ page: value }))
-            },
-            isEmpty: currentTab === "buyAgain" && buyAgainTabItems.length === 0,
-            page: currentBuyAgainTabPage,
-            paginatedItems: getPaginatedItems(buyAgainTabItems, currentBuyAgainTabPage)
-        }
-    };
+        // {
+        //     numOfResults: buyAgainTabItems.length,
+        //     handleChange: (_, value) => {
+        //         dispatch(cartActions.changeSaveTabPage({ page: value }))
+        //     },
+        //     isEmpty: currentTab === 3 && buyAgainTabItems.length === 0,
+        //     page: currentBuyAgainTabPage,
+        //     paginatedItems: getPaginatedItems(buyAgainTabItems, currentBuyAgainTabPage)
+        // }
+    ];
 
     const handleChangeTab = (_, value) => {
         dispatch(cartActions.changeCurrentTab({ currentTab: value }));
@@ -111,48 +94,48 @@ function CartInfo(props) {
                             onChange={handleChangeTab} 
                             aria-label="cart-tabs"
                         >
-                            <Tab label="Cart" value="cart" />
+                            <Tab label="Cart" value={0} />
 
-                            <Tab label="Save for later" value="save" />
+                            <Tab label="Save for later" value={1} />
 
-                            <Tab label="Buy again" value="buyAgain" />
+                            {/* <Tab label="Buy again" value={3} /> */}
                         </TabList>
                     </Box>
 
                     <TabPanel 
-                        value="cart" 
+                        value={0} 
                         className="py-2"
                     >
-                        {!tabItems["cart"].isEmpty &&
+                        {!tabItems[0].isEmpty &&
                             <CheckoutForm 
-                                items={tabItems["cart"].paginatedItems}
-                                numOfCartItems={tabItems["cart"].numOfResults}
-                                subTotal={(tabItems["cart"].subTotal)}
-                                point={tabItems["cart"].point}
+                                items={tabItems[0].paginatedItems}
+                                numOfCartItems={tabItems[0].numOfResults}
+                                subTotal={(tabItems[0].subTotal)}
+                                point={tabItems[0].point}
                                 isEmpty={tabItems[currentTab].isEmpty}
                             />
                         }
                     </TabPanel>
 
                     <TabPanel 
-                        value="save"
+                        value={1}
                         className="py-2"
                     >
                         <CartPanelList 
-                            items={getPaginatedItems(saveTabItems, tabItems["save"].page)} 
+                            items={getPaginatedItems(saveTabItems, tabItems[1].page)} 
                             currentTab={currentTab} 
                         />
                     </TabPanel>
 
-                    <TabPanel 
-                        value="buyAgain"  
+                    {/* <TabPanel 
+                        value={3}  
                         className="py-2"
                     >
                         <CartPanelList 
                             items={ getPaginatedItems(buyAgainTabItems, tabItems[currentTab].page)} 
                             currentTab={currentTab} 
                         />
-                    </TabPanel>
+                    </TabPanel> */}
                 </TabContext>
     
                 {tabItems[currentTab].isEmpty ? 

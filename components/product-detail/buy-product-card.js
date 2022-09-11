@@ -1,18 +1,16 @@
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 
 import { SELECT_AMOUNT_SCHEMA } from '../ui/forms/form-schema';
 import FormikNumber from '../ui/forms/formik-number';
-import FormikHidden from '../ui/forms/formik-hidden';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import numberWithCommas from "../../utils/numberWithCommas";
 import StockLabel from '../ui/stock-label';
@@ -26,8 +24,13 @@ function BuyProductCard(props) {
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
+
+        const data = {
+            productId,
+            amount: values.amount
+        };
         
-        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, values);
+        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
     };
 
     return (
@@ -52,11 +55,6 @@ function BuyProductCard(props) {
                                 <StockLabel stock={stock}/>
 
                                 <Box className="flex items-center mt-2">
-                                    <FormikHidden 
-                                        name="productId"
-                                        value={productId}
-                                    />
-
                                     <Typography className="text-lg mr-5">
                                         Quantity
                                     </Typography>

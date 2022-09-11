@@ -25,7 +25,10 @@ function ReviewItems(props) {
     const router = useRouter();
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
+    const shippingAddress = useSelector(state => state.checkout.shippingAddress);
+    const paymentMethod = useSelector(state => state.checkout.paymentMethod);
     const shippingCost = useSelector(state => state.checkout.shippingCost );
+    const creditCard = useSelector(state => state.checkout.creditCard );
 
     const fetcher = url => axios.get(url).then(res => res.data);
 

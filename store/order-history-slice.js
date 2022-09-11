@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_ORDER_HISTORY_SLICE_STATE = {
-    currentTab: "history",
+    currentTab: 0,
     orderHistoryTabPage: 1,
     cancelTabPage: 1
 };

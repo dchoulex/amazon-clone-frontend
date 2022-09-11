@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_CART_SLICE_STATE = {
-    currentTab: "cart",
+    currentTab: 0,
     cartTabPage: 1,
     saveTabPage: 1,
     buyAgainTabPage: 1,

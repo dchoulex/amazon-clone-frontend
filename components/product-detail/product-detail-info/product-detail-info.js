@@ -1,14 +1,15 @@
+import Image from "next/image";
+
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 
 import BuyProductBox from "./buy-product-box";
-import ActiveProductImage from "./active-product-image";
 import ProductDescription from "./product-description";
 import ProductDetailsReview from '../review-overview/product-details-review';
 
 function ProductDetailInfo(props) {
-    const { activeImage, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews } = props;
+    const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId } = props;
 
     return (
         <Box className="pt-5 px-5">
@@ -23,7 +24,16 @@ function ProductDetailInfo(props) {
                         xm={12}
                         lg={6}
                     >
-                        <ActiveProductImage />
+                        <Box className="flex justify-center pb-10">
+                            <div>
+                                <Image 
+                                    src={`/images/products/${slug}/${images[0]}`}
+                                    alt="picture"
+                                    width={300}
+                                    height={300}
+                                />
+                            </div>
+                        </Box>
                     </Grid>
 
                     <Grid 
@@ -43,6 +53,7 @@ function ProductDetailInfo(props) {
                         <BuyProductBox
                             stock={stock}
                             price={price} 
+                            productId={productId}
                         />
                     </Grid>
                 }

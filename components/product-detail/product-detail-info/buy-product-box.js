@@ -1,18 +1,15 @@
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 
 import { SELECT_AMOUNT_SCHEMA } from '../../ui/forms/form-schema';
 import FormikNumber from '../../ui/forms/formik-number';
-import FormikHidden from '../../ui/forms/formik-hidden';
 import FormikSubmitButton from '../../ui/forms/formik-submit-button';
 import numberWithCommas from "../../../utils/numberWithCommas";
 import StockLabel from '../../ui/stock-label';
@@ -26,14 +23,19 @@ function BuyProductBox(props) {
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
+
+        const data = {
+            productId,
+            amount: values.amount
+        }
         
-        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, values);
+        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
     };
 
     return (
         <Formik
             initialValues={{  
-                productId,
+                productId: productId,
                 amount: 1
             }}
             validationSchema={ADD_CART_ITEM_FORM_VALIDATION}
@@ -52,11 +54,6 @@ function BuyProductBox(props) {
                         <Divider className="border-gray-300 mb-2"/>
 
                         <StockLabel stock={stock} />
-
-                        <FormikHidden 
-                            name="productId"
-                            value={productId}
-                        />
 
                         <FormikNumber 
                             name="amount"

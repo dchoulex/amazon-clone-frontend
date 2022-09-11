@@ -1,16 +1,10 @@
-import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/router';
-import axios from 'axios';
 
-import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import StepContent from '@mui/material/StepContent';
-import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import ShippingAddress from './shipping-address/shipping-address';
@@ -18,24 +12,7 @@ import ShippingMethod from '../../components/checkout/shipping-method';
 import PaymentMethod from './payment-method/payment-method';
 import ReviewItems from './review-items/review-items';
 
-const steps = [
-    {
-        label: "Shipping address",
-        description: "Please confirm your shipping address."
-    },
-    {
-        label: "Shipping method",
-        description: "Please select shipping method."
-    },
-    {
-        label: "Payment method",
-        description: "Please provide a payment method."
-    },
-    {
-        label: "Review items",
-        description: "Please review items before place your order."
-    }
-];
+const steps = ["Shipping address", "Shipping method", "Payment method", "Review items" ];
 
 function getDisplayedShippingAddress(shippingAddress) {
     return `〒 ${shippingAddress.postCode}  ${shippingAddress.city}, ${shippingAddress.rest}`;
@@ -47,8 +24,6 @@ function getDisplayedShippingMethod(shippingMethod) {
 
 function getDisplayedPaymentMethod(paymentMethod, creditCard) {
     let displayedPaymentMethod;
-
-    console.log(paymentMethod)
 
     switch (paymentMethod) {
         case "credit":
@@ -87,9 +62,8 @@ function CheckoutStep(props) {
     const paymentMethod = useSelector(state => state.checkout.paymentMethod);
 
     return (
-        <Box 
-            sx={{height:"100vh"}} 
-            className="bg-gray-100 p-10"
+        <Paper 
+            className="border-gray-200 border-solid border-2 m-10 p-10 bg-gray-100"
         >
             <Stepper 
                 activeStep={activeStep} 
@@ -99,7 +73,7 @@ function CheckoutStep(props) {
                     const stepDesc = getStepDescription(shippingAddress, shippingMethod, paymentMethod, creditCard, index);
 
                     return (
-                        <Step key={step.label}>
+                        <Step key={step}>
                             <StepLabel
                                 optional={
                                     index === 0 || index === 1 || index === 2 ? 
@@ -109,12 +83,10 @@ function CheckoutStep(props) {
                                         null
                                 }
                             >
-                                <Typography variant="h5">{step.label}</Typography>
+                                <Typography variant="h5">{step}</Typography>
                             </StepLabel>
 
                             <StepContent>
-                                {/* <Typography variant="body1">{getDisplayedShippingAddress(shippingAddress)}</Typography> */}
-
                                 {index === 0 &&
                                     <ShippingAddress 
                                         handleNext={handleNext}
@@ -154,7 +126,7 @@ function CheckoutStep(props) {
                     </Typography>
                 </Paper>
             )}
-        </Box>
+        </Paper>
     )
 };
 
