@@ -30,6 +30,7 @@ function SearchBar() {
         const products = res.data.data;
 
         dispatch(productActions.setProducts({ products }));
+        dispatch(productActions.setSearchProductPage({ page: 1 }))
 
         router.push("/products");
     };
@@ -48,7 +49,7 @@ function SearchBar() {
                         <div className="flex flex-1">
                             <FormikSearchCategory  name="category" />
 
-                            <FormikSearchInput  name="keyword" />
+                            <FormikSearchInput name="keyword" />
                         </div>
 
                         <FormikSubmitButton 

@@ -58,6 +58,8 @@ function ReviewItems(props) {
         };
 
         await axios.post(process.env.NEXT_PUBLIC_ORDER_ITEMS_API, data);
+
+        router.push("/");
     };
 
     return (

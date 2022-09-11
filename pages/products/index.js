@@ -1,6 +1,7 @@
 import { useState, Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -8,26 +9,29 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
+import { productActions } from "../../store/product-slice";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 import getSortedItems from "../../utils/getSortedItems";
+import NoSearchItemInfo from "../../components/ui/no-search-item-info";
 
 function ProductPage() {
     const title = "Search Product";
+    const dispatch = useDispatch();
 
-    const [ page, setPage ] = useState(1);
+    const searchProductPage = useSelector(state => state.product.searchProductPage);
+    const products = useSelector(state => state.product.products).slice();
+
     const [ sortBy, setSortBy ] = useState("none");
     const [ chipSortBy, setChipSortBy ] = useState("None");
     const [ chipIcon, setChipIcon ] = useState(null);
-
-    const products = useSelector(state => state.product.products).slice();
-
+    
     const sortedProducts = getSortedItems(products, sortBy);
 
     const handleChangePage = (_, value) => {
-        setPage(value)
+        dispatch(productActions.setSearchProductPage({ page: value }))
     };
 
     const handleChangeSortBy = event => {
@@ -60,31 +64,43 @@ function ProductPage() {
     };
 
     return (
-        <Fragment>
-            <ProductPageTitle 
-                title={title}
-                numberOfResults={sortedProducts.length}
-                onChange={handleChangeSortBy}
-                sortBy={sortBy}
-            />
-
-            <Divider>
-                <Chip 
-                    variant="outlined"
-                    color="primary" 
-                    icon={chipIcon} 
-                    label={chipSortBy}
+        products.length === 0 ?
+            <Box>
+                <ProductPageTitle 
+                    title={title}
+                    numberOfResults={sortedProducts.length}
                 />
-            </Divider>
 
-            <ProductInfo products={getPaginatedItems(sortedProducts, page)} />
+                <Divider />
 
-            <PaginationButtons 
-                numOfResults={sortedProducts.length}
-                page={page}
-                onChange={handleChangePage}
-            />
-        </Fragment>
+                <NoSearchItemInfo />
+            </Box> :
+
+            <Box>
+                <ProductPageTitle 
+                    title={title}
+                    numberOfResults={sortedProducts.length}
+                    onChange={handleChangeSortBy}
+                    sortBy={sortBy}
+                />
+    
+                <Divider>
+                    <Chip 
+                        variant="outlined"
+                        color="primary" 
+                        icon={chipIcon} 
+                        label={chipSortBy}
+                    />
+                </Divider>
+    
+                <ProductInfo products={getPaginatedItems(sortedProducts, searchProductPage)} />
+    
+                <PaginationButtons 
+                    numOfResults={sortedProducts.length}
+                    page={searchProductPage}
+                    onChange={handleChangePage}
+                />
+            </Box>
     )
 };
 

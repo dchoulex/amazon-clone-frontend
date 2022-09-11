@@ -2,15 +2,11 @@ import Link from "next/link";
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Tooltip from "@mui/material/Tooltip";
 
 import AllTab from "./all-tab/all-tab";
 
 const subNavbarTabs = [
-    {
-        title: "Best Sellers",
-        disabled: false,
-        href: "/products/best/sellers"
-    },
     {
         title: "Electronics & Camera",
         disabled: false,
@@ -36,30 +32,30 @@ const subNavbarTabs = [
         disabled: false,
         href: "/products/clothing/shoes/jewelry"
     },
-    {
-        title: "Amazon Basics",
-        disabled: true
-    },
-    {
-        title: "Prime",
-        disabled: true
-    },
-    {
-        title: "Music",
-        disabled: true
-    },
-    {
-        title: "Coupons",
-        disabled: true
-    },
-    {
-        title: "Gift Cards",
-        disabled: true
-    },
-    {
-        title: "Customer Service",
-        disabled: true
-    }
+    // {
+    //     title: "Amazon Basics",
+    //     disabled: true
+    // },
+    // {
+    //     title: "Prime",
+    //     disabled: true
+    // },
+    // {
+    //     title: "Music",
+    //     disabled: true
+    // },
+    // {
+    //     title: "Coupons",
+    //     disabled: true
+    // },
+    // {
+    //     title: "Gift Cards",
+    //     disabled: true
+    // },
+    // {
+    //     title: "Customer Service",
+    //     disabled: true
+    // }
 ];
 
 function subNavbar(props) {
@@ -92,26 +88,17 @@ function subNavbar(props) {
 
                 {subNavbarTabs.map((tab, index) => {
                     return (                   
-                        tab.href ?
-                            <Link 
-                                href={tab.href} 
-                                key={`sub-navbar-tab-${index}`}
-                            >
-                                <Tab 
-                                    sx={{opacity: 100}}
-                                    className="text-gray-300 normal-case min-h-0 text-base font-light"
-                                    label={tab.title}
-                                    disabled={false}
-                                />                     
-                            </Link> :
-
+                        <Link 
+                            href={tab.href} 
+                            key={`sub-navbar-tab-${index}`}
+                        >
                             <Tab 
-                                key={`sub-navbar-tab-${index}`}
                                 sx={{opacity: 100}}
-                                className="text-gray-400 normal-case min-h-0 text-base font-light"
+                                className="text-gray-300 normal-case min-h-0 text-base font-light"
                                 label={tab.title}
-                                disabled={true}
+                                disabled={false}
                             />                     
+                        </Link>                  
                     )
                 })}
             </Tabs>

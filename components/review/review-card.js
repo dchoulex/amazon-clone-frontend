@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -9,7 +10,6 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
-import CardMedia from "@mui/material/CardMedia";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
@@ -45,15 +45,14 @@ function ReviewCard(props) {
     return (
         <Card className="flex border-2 border-solid border-gray-200 flex-1">
             <Box className="flex flex-col">
-                <CardMedia 
-                    component="img"
-                    src="/images/amazon-logo.png"
-                    sx={{
-                        width: "200px",
-                        height: "200px",
-                        mb: 2
-                    }}
-                />
+                <Box p={4}>
+                    <Image 
+                        src={`/images/products/${product.slug}/${product.images[0]}`}
+                        width={200}
+                        height={240}
+                        alt={product.name}
+                    />
+                </Box>
 
                 <Stack direction="row">
                     <Button

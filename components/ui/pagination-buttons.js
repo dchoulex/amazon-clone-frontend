@@ -4,13 +4,20 @@ import Stack from '@mui/material/Stack';
 import { PAGINATION_LIMIT } from '../../appConfig';
 
 function PaginationButtons(props) {
-    const { numOfResults, ...otherProps } = props;
+    const { numOfResults, page, ...otherProps } = props;
     const numOfPages =  Math.ceil(numOfResults / PAGINATION_LIMIT);
+
+    let currentPage;
+
+    if (page > numOfPages) {
+        currentPage = 1
+    }
 
     let paginationConfig = {
         ...otherProps,
         count: numOfPages,
-        color: "primary"
+        color: "primary",
+        page: currentPage
     };
 
     if (numOfPages > 2) {

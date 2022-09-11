@@ -1,45 +1,58 @@
 import { Fragment } from "react";
-import Link from "next/link";
+
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
 
 import MainProductCard from "./main-product-card";
 
 const mainProducts = [
     {
+        title: "All products",
+        subheader: "Search all products.",
+        action: "Search",
+        imageName: "all-products.png",
+        href: "/products/all/products"
+    },
+    {
         title: "Best sellers",
-        subheader: "Show best selling products.",
-        action: "Click here for details"
+        subheader: "Show top 10 best seller products.",
+        action: "Check it out",
+        imageName: "best-sellers.png",
+        href: "/products/best/sellers"
     },
     {
-        title: "Find the Perfect Gift",
-        subheader: "Gift recommendations from Amazon.co.jp."
+        title: "Best review",
+        subheader: "Show top 10 best review products.",
+        action: "Check it out",
+        imageName: "best-review.png",
+        href: "/products/best/review"
     },
     {
-        title: "Amazon Prime",
-        subheader: "Unlimited straming of thousands of shows and books. Free expedited shipping.",
-        action: "Sign up"
+        title: "Recommended for you",
+        subheader: "Show recommended products based on top 3 most frequently bought item categories.",
+        action: "Check it out",
+        imageName: "recommended-for-you.png",
+        href: "/products/recommended/for/you"
     },
     {
-        title: "Kindle",
-        subheader: "30 days free trial. Get access to over 2 million books."
+        title: "Buy Again",
+        subheader: "Show products that you have ordered in past.",
+        action: "See more",
+        imageName: "buy-again.png",
+        href: "/products/buy/again"
     },
-    {
-        title: "Amazon Basic",
-        subheader: "Check out amazon basic products."
-    },
-    {
-        title: "Amazon Music",
-        subheader: "30 days free trial. Get access to over 90 million songs."
-    }
+    // {
+    //     title: "Amazon Prime",
+    //     subheader: "Free expedited shipping.",
+    //     action: "Sign up",
+    //     imageName: "amazon-prime.png"
+    // },
 ];
 
 function MainProductInfo() {
     return (
         <Fragment>
-            <Box className="relative z-10">   
+            <Box className="relative z-10 pb-10">   
                 <Grid item container>
                     {mainProducts.map((product, index) => (
                         <Grid 
@@ -55,12 +68,11 @@ function MainProductInfo() {
                                 title={product.title}
                                 subheader={product.subheader}
                                 action={product.action}
-                                imagePath="/images/amazon-logo.png"
+                                imagePath={`/images/icons/${product.imageName}`}
+                                href={product.href}
                             />
                         </Grid>
-                    ))}        
-                    
-                   
+                    ))}      
                 </Grid>
             </Box>
         </Fragment>

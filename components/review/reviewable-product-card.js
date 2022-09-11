@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -18,17 +19,17 @@ function ReviewableProductCard(props) {
     };
 
     return (
-        <Card className="flex flex-col border-2 border-solid border-gray-200 w-[300px]">
-            <CardMedia 
-                component="img"
-                src="/images/amazon-logo.png"
-                sx={{
-                    width: "350px",
-                    height: "200px"
-                }}
-            />
+        <Card className="flex flex-col border-2 border-solid border-gray-200 w-[300px] min-h-[400px]">
+            <Box mx="auto" mt={2}>
+                <Image 
+                    src={`/images/products/${product.slug}/${product.images[0]}`}
+                    width={200}
+                    height={220}
+                    alt={product.name}
+                />
+            </Box>
 
-            <CardContent className="flex flex-col">
+            <CardContent className="flex flex-col flex-1">
                 <Box my={1}>
                     <Typography variant="h5">
                         {product.name}
@@ -36,7 +37,7 @@ function ReviewableProductCard(props) {
                 </Box>
 
                 <Button 
-                    className="mt-4"
+                    className="mt-auto"
                     color="secondary"
                     variant="outlined"
                     onClick={handleOpenReviewProductForm}

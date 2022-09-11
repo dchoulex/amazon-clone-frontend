@@ -46,7 +46,7 @@ function OrderItemList(props) {
                     <Fragment key={`order-item-${index}`}>
                         <Box className="flex" py={3}>
                             <Image 
-                                src="/images/amazon-logo.png"
+                                src={`/images/products/${product.slug}/${product.images[0]}`}
                                 alt={product.name}
                                 width={120}
                                 height={120}

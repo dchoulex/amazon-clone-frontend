@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import useSWR from 'swr';
 
@@ -11,21 +12,41 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
+import { PAGINATION_LIMIT } from '../../appConfig';
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 import getSortedItems from "../../utils/getSortedItems";
 import getAPI from '../../utils/getAPI';
+import { productActions } from '../../store/product-slice';
 
 function getPageTitle(slug) {
     let pageTitle;
     const titleComponents = [];
+    const slugPageTitle = slug.join("-");
 
     switch(true) {
-        case slug.includes("best"):
-            pageTitle = "Best Sellers";
+        case slugPageTitle === "all-products":
+            pageTitle = "All Products";
+            
+            break;
 
+        case slugPageTitle === "best-sellers":
+            pageTitle = "Best Sellers";
+            
+            break;
+        case slugPageTitle === "best-review":
+            pageTitle = "Best Reviews";
+            
+            break;
+        case slugPageTitle === "recommended-for-you":
+            pageTitle = "Recommended For You";
+            
+            break;
+        case slugPageTitle === "buy-again":
+            pageTitle = "Buy Again";
+            
             break;
 
         case slug.length === 2:
@@ -82,24 +103,55 @@ function getQuery(slug) {
     return `category=${querySlug.join(",")}`;
 };
 
+function getPageAPI(slug) {
+    const pageSlug = slug.join("-");
+    let API;
+
+    switch(pageSlug) {
+        case "best-sellers":
+            API = process.env.NEXT_PUBLIC_GET_BEST_SELLER_PRODUCTS_API;
+            break;
+
+        case "all-products":
+            API = process.env.NEXT_PUBLIC_GET_ALL_PRODUCTS_API;
+            break;
+
+        case "best-review":
+            API = process.env.NEXT_PUBLIC_GET_BEST_REVIEW_PRODUCTS_API;
+            break;
+
+        case "recommended-for-you":
+            API = process.env.NEXT_PUBLIC_GET_RECOMMENDATION_PRODUCTS_API;
+            break;
+
+        case "buy-again":
+            API = process.env.NEXT_PUBLIC_GET_BUY_AGAIN_PRODUCTS_API;
+            break;
+
+        default:
+            const query = getQuery(slug);
+
+            API = getAPI(process.env.NEXT_PUBLIC_GET_CATEGORY_PRODUCTS_API, { query });
+
+            break;
+    }
+
+    return API;
+};
+
 function ProductCategoryPage(props) {
-    const { slug } = props
+    const { slug } = props;
+    const dispatch = useDispatch();
+
     const title = getPageTitle(slug);
 
-    const [ page, setPage ] = useState(1);
+    const productCategoryPage = useSelector(state => state.product.productCategoryPage);
+
     const [ sortBy, setSortBy ] = useState("none");
     const [ chipSortBy, setChipSortBy ] = useState("None");
     const [ chipIcon, setChipIcon ] = useState(null);
 
-    let API;
-
-    if (slug.includes("best")) {
-        API = process.env.NEXT_PUBLIC_GET_BEST_SELLER_PRODUCTS_API;
-    } else {
-        const query = getQuery(slug);
-
-        API = getAPI(process.env.NEXT_PUBLIC_GET_CATEGORY_PRODUCTS_API, { query });
-    };
+    const API = getPageAPI(slug);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -111,9 +163,14 @@ function ProductCategoryPage(props) {
     const products = data.data;
 
     const sortedProducts = getSortedItems(products, sortBy);
+    const numOfPages =  Math.ceil(sortedProducts.length / PAGINATION_LIMIT);
+
+    if (productCategoryPage > numOfPages) {
+        dispatch(productActions.setProductCategoryPage({ page: 1 }))
+    };
 
     const handleChangePage = (_, value) => {
-        setPage(value)
+        dispatch(productActions.setProductCategoryPage({ page: value }))
     };
 
     const handleChangeSortBy = event => {
@@ -171,11 +228,11 @@ function ProductCategoryPage(props) {
                 />
             </Divider>
 
-            <ProductInfo products={getPaginatedItems(sortedProducts, page)} />
+            <ProductInfo products={getPaginatedItems(sortedProducts, productCategoryPage)} />
 
             <PaginationButtons 
                 numOfResults={sortedProducts.length}
-                page={page}
+                page={productCategoryPage}
                 onChange={handleChangePage}
             />
         </Fragment>

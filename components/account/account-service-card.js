@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import slugify from "slugify";
+
 import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -31,17 +33,14 @@ const accountCards = [
         description: "Manage payment methods.",
         href: "/account/wallet"
     },
-    {
-        title: "Gift cards",
-        description: "View balance or redeem a gift card.",
-        href: "#"
-    }
+    // {
+    //     title: "Gift cards",
+    //     description: "View balance or redeem a gift card.",
+    //     href: "#"
+    // }
 ];
 
 function AccountServiceCard() {
-    const activeCard = "flex border-2 border-gray-300 border-solid p-4 cursor-pointer";
-    const disabledCard = "flex border-2 border-gray-300 border-solid p-4 bg-gray-300 bg-opacity-70 cursor-not-allowed"
-
     return (
         <Grid container spacing={3}>
             {accountCards.map((card, index) => (      
@@ -54,10 +53,10 @@ function AccountServiceCard() {
                     lg={4}
                 >
                     <Link href={card.href}>
-                        <Card className={index === accountCards.length - 1 ? disabledCard : activeCard}>
+                        <Card className="flex border-2 border-gray-300 border-solid p-4 cursor-pointer" >
                             <Image 
-                                src="/images/amazon-logo.png"
-                                alt="Picture1"
+                                src={`/images/icons/${slugify(card.title, { lower: true })}.png`}
+                                alt=""
                                 width={80}
                                 height={80}
                             />

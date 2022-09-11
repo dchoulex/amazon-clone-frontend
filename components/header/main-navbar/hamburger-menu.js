@@ -167,8 +167,8 @@ function HamburgerMenu(props) {
                                     justifyContent: "center"
                                 }}
                             >
-                                <Button variant="contained">
-                                    Logout
+                                <Button variant="outlined">
+                                    Sign out
                                 </Button>
                             </ListItemButton> :
                             
@@ -183,7 +183,7 @@ function HamburgerMenu(props) {
                                         justifyContent: "center"
                                     }}
                                 >
-                                    <Button variant="contained">
+                                    <Button variant="outlined">
                                         Login
                                     </Button>
                                 </ListItemButton> 

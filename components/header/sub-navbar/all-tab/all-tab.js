@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import Tab from "@mui/material/Tab";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListSubheader from '@mui/material/ListSubheader';
@@ -17,7 +18,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { drawerListItems } from "./data/all-tab-data";
 import AllTabListItem from "./all-tab-list-item";
 import AllTabCollapseListItem from "./all-tab-collapse-list-item";
-import StyledListItemText from "../../styled-list-item-text";
 
 function AllTab(props) {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
@@ -90,41 +90,59 @@ function AllTab(props) {
                                     {listItem.title}
                                 </ListSubheader>
 
-                                {listItem.items.map(item => (
+                                {listItem.items.map((item, index) => (
                                     item.isCollapseListItem ? 
                                     <AllTabCollapseListItem 
-                                        key={item} 
+                                        key={`collapse-list-item-${index}`} 
                                         onClick={handleCloseDrawer} 
                                     /> :
                                     
                                     <AllTabListItem 
-                                        key={item} 
+                                        key={`all-tab-list-item-${index}`} 
                                         item={item} 
                                         onClick={handleCloseDrawer}
                                     />
                                 ))}
 
-                                {!isAuthenticated ?
-                                    <Link href="/auth/login">
-                                        <ListItemButton 
-                                            sx={{ pl: "2rem" }}
-                                            onClick={handleCloseDrawer}
-                                        >
-                                            <StyledListItemText primary={"Login"} />
-                                        </ListItemButton>
-                                    </Link> :
-
-                                    <ListItemButton 
-                                        sx={{ pl: "2rem" }}
-                                        onClick={handleCloseDrawer}
-                                    >
-                                        <StyledListItemText primary={"Logout"} />
-                                    </ListItemButton> 
+                                {index !== drawerListItems.length - 1 &&
+                                    <Divider />
                                 }
-
-                                <Divider />
                             </Fragment>
                         ))}
+                        
+                        {isAuthenticated ?
+                            <ListItemButton 
+                                disableRipple 
+                                sx={{
+                                    "&:hover": {
+                                        backgroundColor: "inherit",
+                                        cursor: "default"
+                                    },
+                                    justifyContent: "center"
+                                }}
+                            >
+                                <Button variant="outlined">
+                                    Sign out
+                                </Button>
+                            </ListItemButton> :
+                            
+                            <Link href="/account/login">
+                                <ListItemButton 
+                                    disableRipple 
+                                    sx={{
+                                        "&:hover": {
+                                            backgroundColor: "inherit",
+                                            cursor: "default"
+                                        },
+                                        justifyContent: "center"
+                                    }}
+                                >
+                                    <Button variant="outlined">
+                                        Login
+                                    </Button>
+                                </ListItemButton> 
+                            </Link>
+                        }
                     </List>
                 </Box>
             </SwipeableDrawer>
