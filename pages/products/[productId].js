@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import axios from "axios";
 import useSWR from "swr";
 
@@ -10,10 +10,17 @@ import getAPI from "../../utils/getAPI";
 import ProductDetailImages from "../../components/product-detail/product-detail-images";
 import ProductDetailInfo from "../../components/product-detail/product-detail-info/product-detail-info";
 import BuyProductCard from "../../components/product-detail/buy-product-card";
+import CustomizedSnackbar from "../../components/ui/customized-snackbar";
 
 //use context for active image
 function ProductDetailPage(props) { 
     const { productId } = props;
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const theme = useTheme();
     const isMediumScreenDown = useMediaQuery(theme.breakpoints.down("md"));
@@ -52,6 +59,7 @@ function ProductDetailPage(props) {
                     ratingsQuantity={product.ratingsQuantity}
                     reviews={reviews}
                     productId={product._id}
+                    setSnackbarState={setSnackbarState}
                 />
 
                 {!isMediumScreenDown &&
@@ -59,9 +67,15 @@ function ProductDetailPage(props) {
                         stock={product.stock}
                         price={product.price}
                         productId={product._id}
+                        setSnackbarState={setSnackbarState}
                     />
                 }
             </Box>
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
+            />
         </Fragment>
     )
 };

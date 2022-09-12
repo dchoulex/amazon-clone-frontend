@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 
 import Box from '@mui/material/Box';
@@ -10,13 +9,7 @@ import ProductDescription from "./product-description";
 import ProductDetailsReview from '../review-overview/product-details-review';
 
 function ProductDetailInfo(props) {
-    const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId } = props;
-
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
+    const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId, setSnackbarState} = props;
 
     return (
         <Box className="pt-5 px-5">
