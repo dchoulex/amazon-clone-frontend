@@ -32,12 +32,7 @@ const accountCards = [
         title: "Wallet",
         description: "Manage payment methods.",
         href: "/account/wallet"
-    },
-    // {
-    //     title: "Gift cards",
-    //     description: "View balance or redeem a gift card.",
-    //     href: "#"
-    // }
+    }
 ];
 
 function AccountServiceCard() {

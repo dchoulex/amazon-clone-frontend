@@ -17,12 +17,18 @@ import PaginationButtons from "../ui/pagination-buttons";
 import AddressCard from "./address-card";
 import AddAddressForm from "./add-address-form";
 import NoItemInfo from "../ui/no-item-info";
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function AddressInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
     
     const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
     
     const currentPage = useSelector(state => state.address.addressPage);
 
@@ -68,6 +74,8 @@ function AddressInfo(props) {
                 <AddAddressForm 
                     openAddAddressForm={openAddAddressForm}
                     setOpenAddAddressForm={setOpenAddAddressForm}
+                    snackbarState={snackbarState}
+                    setSnackbarState={setSnackbarState}
                 />
 
                 <Box px={5} my={2}>
@@ -82,7 +90,11 @@ function AddressInfo(props) {
                                 xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <AddressCard address={address} />
+                                <AddressCard 
+                                    address={address} 
+                                    snackbarState={snackbarState}
+                                    setSnackbarState={setSnackbarState}
+                                />
                             </Grid>
                         ))}   
                     </Grid>
@@ -97,6 +109,11 @@ function AddressInfo(props) {
                     />
                 }
             </Paper>
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
+            />
         </Box>
     )
 };

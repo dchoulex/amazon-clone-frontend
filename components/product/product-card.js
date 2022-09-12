@@ -51,7 +51,7 @@ function ProductCard(props) {
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
 
-            if (res.data.status === "success") {
+            if (res.status === 200) {
                 setSnackbarState({ 
                     open: true , 
                     type: "success", 

@@ -11,7 +11,6 @@ function FormikRadio(props) {
     const { name, defaultValue, label, options} = props;
 
     const [field, meta] = useField(name);
-    console.log(field);
 
     const { setFieldValue } = useFormikContext;
 

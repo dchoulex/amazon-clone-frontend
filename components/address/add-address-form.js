@@ -57,7 +57,7 @@ const defaultOptions = [
 ];
 
 function AddAddressForm(props) {
-    const { openAddAddressForm, setOpenAddAddressForm } = props;
+    const { openAddAddressForm, setOpenAddAddressForm, snackbarState, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({
@@ -74,8 +74,28 @@ function AddAddressForm(props) {
         setOpenAddAddressForm(false);
     };
 
-    const handleSubmitAddAddressForm = async (values) => {
-        await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
+    const handleSubmitAddAddressForm = async(values, actions) => {
+        actions.setSubmitting(false);
+
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully add address."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
 
         setOpenAddAddressForm(false);
     };

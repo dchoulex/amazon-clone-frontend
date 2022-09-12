@@ -33,7 +33,7 @@ const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditAddressForm(props) {
-    const { address, openEditAddressForm, setOpenEditAddressForm } = props;
+    const { address, openEditAddressForm, setOpenEditAddressForm, snackbarState, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({
@@ -60,12 +60,30 @@ function EditAddressForm(props) {
         setOpenEditAddressForm(false);
     };
 
-    console.log(address);
+    const handleSubmitEditAddressForm = async (values, actions) => {
+        actions.setSubmitting(false);
 
-    const handleSubmitEditAddressForm = async (values) => {
         const UPDATE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_UPDATE_ADDRESS_API, { id: address._id });
 
-        await axios.put(UPDATE_ADDRESS_API, values);
+        try {
+            const res = await axios.put(UPDATE_ADDRESS_API, values);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully add address."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
 
         setOpenEditAddressForm(false);
     };

@@ -15,7 +15,7 @@ import getAPI from "../../utils/getAPI";
 import EditAddressForm from "./edit-address-form";
 
 function AddressCard(props) {
-    const { address } = props;
+    const { address, snackbarState, setSnackbarState } = props;
     const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
 
     const handleOpenEditAddressForm = () => {
@@ -25,13 +25,49 @@ function AddressCard(props) {
     const handleSetAsDefault = async () => {
         const SET_ADDRESS_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_ADDRESS_AS_DEFAULT_API, { id: address._id });
 
-        await axios.patch(SET_ADDRESS_AS_DEFAULT_API);
+        try {
+            const res = await axios.patch(SET_ADDRESS_AS_DEFAULT_API);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully set as default."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     const handleRemoveAddress = async () => {
         const DELETE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_DELETE_ADDRESS_API, { id: address._id });
 
-        await axios.delete(DELETE_ADDRESS_API);
+        try {
+            const res = await axios.delete(DELETE_ADDRESS_API);
+
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     return (
@@ -85,6 +121,8 @@ function AddressCard(props) {
                     openEditAddressForm={openEditAddressForm}
                     setOpenEditAddressForm={setOpenEditAddressForm}
                     address={address}
+                    snackbarState={snackbarState}
+                    setSnackbarState={setSnackbarState}                    
                 />
 
                 <Divider 
