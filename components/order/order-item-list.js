@@ -15,7 +15,7 @@ import numberWithCommas from "../../utils/numberWithCommas";
 import getAPI from "../../utils/getAPI";
 
 function OrderItemList(props) {
-    const { orderItems, orderId, status, isCanceled } = props;
+    const { orderItems, orderId, status, isCanceled, setSnackbarState } = props;
 
     return (
         <Box px={2}>
@@ -24,22 +24,52 @@ function OrderItemList(props) {
                 const productId = product._id;
 
                 const handleBuyAgain = async() => {
-                    await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, {
-                        productId,
-                        amount: 1
-                    })
-                };
+                    try {
+                        const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, {
+                            productId,
+                            amount: 1
+                        })
 
-                const handleCancelOrder = async() => {
-                    const CANCEL_ORDER_API = getAPI(process.env.NEXT_PUBLIC_CANCEL_ORDER_API, { id: orderId });
-
-                    await axios.delete(CANCEL_ORDER_API);
+                        if (res.status === 200) {
+                            setSnackbarState({ 
+                                open: true, 
+                                type: "success", 
+                                message: "Successfully add item to cart."
+                            });
+                        } 
+                    } catch(err) {
+                        if (err) {
+                            setSnackbarState({ 
+                                open: true , 
+                                type: "error", 
+                                message: "Oops... Something went wrong."
+                            });
+                        }
+                    }
                 };
 
                 const handleOrderBack = async() => {
                     const ORDER_BACK_API = getAPI(process.env.NEXT_PUBLIC_ORDER_BACK_API, { id: orderId });
 
-                    await axios.patch(ORDER_BACK_API);
+                    try {
+                        const res = await axios.patch(ORDER_BACK_API);
+
+                        if (res.status === 200) {
+                            setSnackbarState({ 
+                                open: true, 
+                                type: "success", 
+                                message: "Successfully order back item."
+                            });
+                        } 
+                    } catch(err) {
+                        if (err) {
+                            setSnackbarState({ 
+                                open: true , 
+                                type: "error", 
+                                message: "Oops... Something went wrong."
+                            });
+                        }
+                    }
                 };
 
                 return (
@@ -98,16 +128,6 @@ function OrderItemList(props) {
                                                 Review
                                             </Button>
                                         </Link>
-                                    }
-
-                                    {(status === "Ordered" && !isCanceled) &&
-                                        <Button
-                                            variant="outlined"
-                                            color="error"
-                                            onClick={handleCancelOrder}
-                                        >
-                                            Cancel
-                                        </Button>
                                     }
 
                                     {isCanceled &&

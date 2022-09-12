@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image from "next/image";
 
 import Box from '@mui/material/Box';
@@ -10,6 +11,12 @@ import ProductDetailsReview from '../review-overview/product-details-review';
 
 function ProductDetailInfo(props) {
     const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId } = props;
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     return (
         <Box className="pt-5 px-5">
@@ -54,6 +61,7 @@ function ProductDetailInfo(props) {
                             stock={stock}
                             price={price} 
                             productId={productId}
+                            setSnackbarState={setSnackbarState}
                         />
                     </Grid>
                 }

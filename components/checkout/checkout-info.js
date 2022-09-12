@@ -3,9 +3,15 @@ import Box from '@mui/material/Box';
 
 import LogoButtonWhite from '../ui/logo-button-white';
 import CheckoutStep from './checkout-step';
+import CustomizedSnackbar from '../ui/customized-snackbar';
 
 function CheckoutInfo() {
     const [ activeStep, setActiveStep ] = useState(0);
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const handleNext = () => {
         setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -29,6 +35,12 @@ function CheckoutInfo() {
                 setActiveStep={setActiveStep}
                 handleBack={handleBack}
                 handleNext={handleNext}
+                setSnackbarState={setSnackbarState}
+            />
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
             />
         </Box>
     )

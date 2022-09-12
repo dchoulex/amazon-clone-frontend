@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
 import useSWR from "swr";
@@ -21,7 +21,8 @@ import NoItemInfo from "../../ui/no-item-info";
 import getOrderTotal from "../../../utils/getOrderTotal";
 
 function ReviewItems(props) {
-    const { handleBack, handleNext } = props;
+    const { handleBack, handleNext, setSnackbarState } = props;
+    const dispatch = useDispatch();
     const router = useRouter();
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
@@ -57,9 +58,29 @@ function ReviewItems(props) {
             creditCard: creditCard?._id,
         };
 
-        await axios.post(process.env.NEXT_PUBLIC_ORDER_ITEMS_API, data);
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_ORDER_ITEMS_API, data);
 
-        router.push("/");
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully order items."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
+
+        dispatch
+
+        router.push("/account/order-history");
     };
 
     return (

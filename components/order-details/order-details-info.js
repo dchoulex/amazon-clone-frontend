@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
@@ -11,9 +11,16 @@ import getAPI from "../../utils/getAPI";
 import PageTitle from "../ui/page-title/page-title";
 import OrderDetailsSummary from "./order-details-summary";
 import OrderDetailsItems from "./order-details-items";
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function OrderDetailsInfo(props) {
     const { title, orderId } = props;
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const GET_ORDER_DETAILS_API = getAPI(process.env.NEXT_PUBLIC_GET_ORDER_DETAILS_API, { id: orderId });
 
@@ -72,8 +79,16 @@ function OrderDetailsInfo(props) {
                     shippingCost={displayedShippingCost}
                 />
                 
-                <OrderDetailsItems orderItems={orderItems}/>
+                <OrderDetailsItems 
+                    orderItems={orderItems}
+                    setSnackbarState={setSnackbarState}
+                />
             </Paper>
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
+            />
         </Box>
     )
 };

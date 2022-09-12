@@ -5,7 +5,7 @@ import Divider from "@mui/material/Divider";
 import OrderItemList from "../order/order-item-list";
 
 function OrderDetailsItems(props) {
-    const { orderItems } = props;
+    const { orderItems, setSnackbarState } = props;
     
     return (
         <Box px={3} pb={3}>
@@ -20,7 +20,10 @@ function OrderDetailsItems(props) {
 
                 <Divider />
 
-                <OrderItemList orderItems={orderItems} />
+                <OrderItemList 
+                    orderItems={orderItems} 
+                    setSnackbarState={setSnackbarState}
+                />
             </Box>
         </Box>
     )

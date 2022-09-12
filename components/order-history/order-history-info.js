@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import useSWR from "swr";
@@ -16,10 +16,17 @@ import OrderPanelList from "./order-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import NoItemInfo from "../ui/no-item-info";
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function OrderHistoryInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const currentTab = useSelector(state => state.orderHistory.currentTab)
     const currentOrderHistoryTabPage = useSelector(state => state.orderHistory.orderHistoryTabPage);
@@ -95,8 +102,9 @@ function OrderHistoryInfo(props) {
                                 className="py-2"
                             >
                                 <OrderPanelList 
-                                    items={tabItems[0].
-                                    paginatedItems} currentTab={currentTab} 
+                                    items={tabItems[0].paginatedItems} 
+                                    currentTab={currentTab} 
+                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
 
@@ -105,8 +113,9 @@ function OrderHistoryInfo(props) {
                                 className="py-2"
                             >
                                 <OrderPanelList 
-                                    items={tabItems[1].
-                                    paginatedItems} currentTab={currentTab} 
+                                    items={tabItems[1].paginatedItems} 
+                                    currentTab={currentTab}
+                                    setSnackbarState={setSnackbarState} 
                                 />
                             </TabPanel>
                         </Fragment>
@@ -122,6 +131,11 @@ function OrderHistoryInfo(props) {
                     />
                 }
             </Paper>
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
+            />
         </Box>
     )
 };

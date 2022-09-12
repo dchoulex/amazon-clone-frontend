@@ -19,7 +19,7 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
 });
 
 function BuyProductBox(props) {
-    const { stock, price, productId } = props;
+    const { stock, price, productId, setSnackbarState } = props;
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
@@ -29,7 +29,25 @@ function BuyProductBox(props) {
             amount: values.amount
         }
         
-        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully add item to cart."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     return (
@@ -42,7 +60,7 @@ function BuyProductBox(props) {
             onSubmit={handleSubmitAddCartItemForm}
             className="mt-auto"
         >
-            {({ errors, touched, isSubmitting }) => (
+            {({ errors, touched }) => (
                 <Form>
                     <Box>
                         <Typography>Price:</Typography>

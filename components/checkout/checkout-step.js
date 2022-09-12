@@ -54,7 +54,7 @@ function getStepDescription(shippingAddress, shippingMethod, paymentMethod, cred
 }
 
 function CheckoutStep(props) {
-    const { activeStep, handleBack, handleNext } = props;
+    const { activeStep, handleBack, handleNext, setSnackbarState } = props;
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
@@ -111,6 +111,7 @@ function CheckoutStep(props) {
                                     <ReviewItems 
                                         handleBack={handleBack} 
                                         handleNext={handleNext}
+                                        setSnackbarState={setSnackbarState}
                                     />
                                 }
                             </StepContent>

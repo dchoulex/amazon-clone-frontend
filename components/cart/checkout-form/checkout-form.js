@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import { useDispatch } from "react-redux";
 import { Formik, Form, FieldArray } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
@@ -42,7 +41,6 @@ function calculateSubTotalAndPoint(items, checkoutCartItems) {
 
 function CheckoutForm(props) {
     const { items, numOfCartItems, setSnackbarState } = props;
-    const dispatch = useDispatch();
     const router = useRouter();
 
     const CHECKOUT_INITIAL_FORM_STATE = {
