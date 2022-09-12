@@ -26,7 +26,7 @@ const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditProfileForm(props) {
-    const { user, openEditProfileForm, setOpenEditProfileForm } = props;
+    const { user, openEditProfileForm, setOpenEditProfileForm, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const EDIT_PROFILE_INITIAL_FORM_STATE = {
@@ -45,7 +45,25 @@ function EditProfileForm(props) {
     };
 
     const handleSubmitEditProfileForm = async(values) => {
-        await axios.put(process.env.NEXT_PUBLIC_UPDATE_MY_PROFILE_API, values);
+        try {
+            const res = await axios.put(process.env.NEXT_PUBLIC_UPDATE_MY_PROFILE_API, values);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully update profile."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }            
+        }
 
         setOpenEditProfileForm(false);
     };

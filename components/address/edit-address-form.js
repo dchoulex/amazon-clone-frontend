@@ -72,7 +72,7 @@ function EditAddressForm(props) {
                 setSnackbarState({ 
                     open: true, 
                     type: "success", 
-                    message: "Successfully add address."
+                    message: "Successfully edit address."
                 });
             } 
         } catch(err) {

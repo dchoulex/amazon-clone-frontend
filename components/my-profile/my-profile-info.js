@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useState } from "react";
 import useSWR from "swr";
 import axios from "axios";
 
@@ -8,9 +8,16 @@ import Divider from "@mui/material/Divider";
 
 import PageTitle from "../ui/page-title/page-title";
 import MyProfileCard from "./my-profile-card";
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function MyProfileInfo(props) {
     const { title } = props;
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -34,7 +41,15 @@ function MyProfileInfo(props) {
 
                 <Divider className="border-gray-400 mb-5"/>
 
-                <MyProfileCard user={user} />
+                <MyProfileCard 
+                    user={user} 
+                    setSnackbarState={setSnackbarState} 
+                />
+
+                <CustomizedSnackbar
+                    snackbarState={snackbarState}
+                    setSnackbarState={setSnackbarState}
+                />
             </Paper>
         </Box>
     )

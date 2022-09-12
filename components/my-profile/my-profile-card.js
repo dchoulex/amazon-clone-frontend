@@ -19,7 +19,7 @@ import EditProfileForm from "./edit-profile-form";
 import ConfirmDeleteDialog from "../ui/dialog/confirm-delete-dialog";
 
 function MyProfileCard(props) {
-    const { user } = props;
+    const { user, setSnackbarState } = props;
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -35,7 +35,25 @@ function MyProfileCard(props) {
     };
 
     const handleDelete = async() => {
-        await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
+        try {
+            const res = await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
+
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }  
+        };
 
         setOpenConfirmDeleteDialog(false);
 
@@ -70,8 +88,7 @@ function MyProfileCard(props) {
 
                         <Stack direction="row" spacing={3} mt="auto" pb={1}>
                             <Link href="/auth/reset-password">
-                                <Button 
-                                    size="small" 
+                                <Button  
                                     variant="contained"
                                 >
                                     Change password
@@ -85,8 +102,7 @@ function MyProfileCard(props) {
                             </Link> */}
         
                             <Button 
-                                size="small" 
-                                variant="contained" 
+                                variant="outlined" 
                                 color="error"
                                 onClick={handleOpenConfirmDeleteDialog}
                             >
@@ -154,6 +170,7 @@ function MyProfileCard(props) {
                 user={user}
                 openEditProfileForm={openEditProfileForm}
                 setOpenEditProfileForm={setOpenEditProfileForm}
+                setSnackbarState={setSnackbarState}
             />
         </Box>
     )
