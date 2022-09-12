@@ -4,8 +4,8 @@ import Grid from "@mui/material/Grid";
 import ReviewCard from "./review-card";
 
 function ReviewPanelList(props) {
-    const { items } = props;
-    
+    const { items, setSnackbarState } = props;
+
     return (
         <Box px={5} my={2}>
             <Grid container spacing={3}>
@@ -16,7 +16,10 @@ function ReviewPanelList(props) {
                         xs={12} 
                         className="flex justify-center items-center"
                     >
-                        <ReviewCard review={item} />
+                        <ReviewCard 
+                            review={item} 
+                            setSnackbarState={setSnackbarState}
+                        />
                     </Grid>
                 ))}   
             </Grid>

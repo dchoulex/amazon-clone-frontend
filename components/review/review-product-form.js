@@ -13,8 +13,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
-import Rating from '@mui/material/Rating';
-import StarIcon from '@mui/icons-material/Star';
 
 import { REVIEW_SCHEMA, REVIEW_RATING_SCHEMA } from "../ui/forms/form-schema";
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
@@ -34,7 +32,7 @@ const REVIEW_PRODUCT_FORM_VALIDATION = Yup.object().shape({
 });
 
 function ReviewProductForm(props) {
-    const { openReviewProductForm, setOpenReviewProductForm, product } = props;
+    const { openReviewProductForm, setOpenReviewProductForm, product, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {
@@ -46,10 +44,30 @@ function ReviewProductForm(props) {
         setOpenReviewProductForm(false);
     };
 
-    const handleSubmitReviewProductForm = async (values) => {
+    const handleSubmitReviewProductForm = async (values, actions) => {
+        actions.setSubmitting(false);
+        
         const CREATE_REVIEW_API = getAPI(process.env.NEXT_PUBLIC_CREATE_REVIEW_API, { id: product._id });
 
-        await axios.post(CREATE_REVIEW_API, values);
+        try {
+            const res = await axios.post(CREATE_REVIEW_API, values);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully review item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
 
         setOpenReviewProductForm(false);
     };

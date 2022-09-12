@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_REVIEW_SLICE_STATE = {
-    currentTab: "review",
+    currentTab: 0,
     reviewPage: 1,
     reviewableProductPage: 1
 };

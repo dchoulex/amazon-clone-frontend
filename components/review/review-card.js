@@ -18,7 +18,7 @@ import EditReviewForm from "./edit-review-form";
 import ReviewRatingStar from "./review-rating-star";
 
 function ReviewCard(props) {
-    const { review } = props;
+    const { review, setSnackbarState } = props;
     const [ reviewIsExpanded, setReviewIsExpanded ] = useState(false);
     const [ openEditReviewForm, setOpenEditReviewForm ] = useState(false);
     const { product } = review;
@@ -35,7 +35,25 @@ function ReviewCard(props) {
     const handleDeleteReview = async() => {
         const DELETE_REVIEW_API = getAPI(process.env.NEXT_PUBLIC_DELETE_REVIEW_API, { id: product._id, id2: review._id });
 
-        await axios.delete(DELETE_REVIEW_API);
+        try {
+            const res = await axios.delete(DELETE_REVIEW_API);
+
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     const handleOpenEditReviewForm = () => {
@@ -68,6 +86,7 @@ function ReviewCard(props) {
                         openEditReviewForm={openEditReviewForm}
                         setOpenEditReviewForm={setOpenEditReviewForm}
                         review={review}
+                        setSnackbarState={setSnackbarState}
                     />
 
                     <Button 

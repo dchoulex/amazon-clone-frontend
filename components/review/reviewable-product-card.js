@@ -6,12 +6,11 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import CardMedia from "@mui/material/CardMedia";
 
 import ReviewProductForm from "./review-product-form";
 
 function ReviewableProductCard(props) {
-    const { product } = props;
+    const { product, setSnackbarState } = props;
     const [ openReviewProductForm, setOpenReviewProductForm ] = useState(false);
 
     const handleOpenReviewProductForm = () => {
@@ -50,6 +49,7 @@ function ReviewableProductCard(props) {
                 openReviewProductForm={openReviewProductForm}
                 setOpenReviewProductForm={setOpenReviewProductForm}
                 product={product}
+                setSnackbarState={setSnackbarState}
             />
         </Card>
     )

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import axios from "axios";
@@ -17,61 +17,17 @@ import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import NoItemInfo from "../ui/no-item-info";
-
-const reviews = [
-    {
-        productName: "Something",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. In hac habitasse platea dictumst. Suspendisse hendrerit quam elit, nec feugiat nulla egestas quis. Nullam vehicula, ligula eget varius congue, dolor diam varius arcu, vel efficitur neque magna sit amet ex. Etiam laoreet odio at erat scelerisque, tempor viverra lorem dapibus. Proin ultricies, nisi ut ullamcorper malesuada, felis nisl lobortis dui, nec finibus turpis enim eget sem. Etiam pharetra est eu leo gravida, quis consectetur libero porta. Integer pulvinar ipsum at vehicula accumsan. Quisque dolor orci, condimentum id accumsan at, laoreet in libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum ultrices nulla, non vestibulum magna euismod id. Mauris interdum augue odio, eu aliquet mi luctus sit amet. Quisque fringilla semper tortor sit amet finibus. In dapibus urna vitae sapien consequat tincidunt. In vitae gravida mi, vel viverra nibh."
-    },
-    {
-        productName: "Something",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. In hac habitasse platea dictumst. Suspendisse hendrerit quam elit, nec feugiat nulla egestas quis. Nullam vehicula, ligula eget varius congue, dolor diam varius arcu, vel efficitur neque magna sit amet ex. Etiam laoreet odio at erat scelerisque, tempor viverra lorem dapibus. Proin ultricies, nisi ut ullamcorper malesuada, felis nisl lobortis dui, nec finibus turpis enim eget sem. Etiam pharetra est eu leo gravida, quis consectetur libero porta. Integer pulvinar ipsum at vehicula accumsan. Quisque dolor orci, condimentum id accumsan at, laoreet in libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean vestibulum ultrices nulla, non vestibulum magna euismod id. Mauris interdum augue odio, eu aliquet mi luctus sit amet. Quisque fringilla semper tortor sit amet finibus. In dapibus urna vitae sapien consequat tincidunt. In vitae gravida mi, vel viverra nibh."
-    },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-    // {
-    //     productName: "Something",
-    //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a turpis quis odio rhoncus imperdiet vitae et leo. Integer consequat ultrices blandit. "
-    // },
-];
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function ReviewInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
+
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
 
     const currentTab = useSelector(state => state.review.currentTab);
     const currentReviewTabPage = useSelector(state => state.review.reviewPage);
@@ -88,26 +44,26 @@ function ReviewInfo(props) {
     const reviewTabItems = reviewRes.data;
     const reviewableProductTabItems = reviewableRes.data;
 
-    const tabItems = {
-        review: {
+    const tabItems = [
+        {
             numOfResults: reviewTabItems.length,
             handleChange: (_, value) => {
                 dispatch(reviewActions.changeReviewTabPage({ page: value }))
             },
-            isEmpty: currentTab === "review" && reviewTabItems.length === 0,
+            isEmpty: currentTab === 0 && reviewTabItems.length === 0,
             page: currentReviewTabPage,
             paginatedItems: getPaginatedItems(reviewTabItems, currentReviewTabPage)
         },
-        reviewable: {
+        {
             numOfResults: reviewableProductTabItems.length,
             handleChange: (_, value) => {
                 dispatch(reviewActions.changeReviewableProductTabPage({ page: value }))
             },
-            isEmpty: currentTab === "reviewable" && reviewableProductTabItems.length === 0,
+            isEmpty: currentTab === 1 && reviewableProductTabItems.length === 0,
             page: currentReviewableProductTabPage,
             paginatedItems: getPaginatedItems(reviewableProductTabItems, currentReviewableProductTabPage)
         }
-    };
+    ];
 
     const handleChangeTab = (_, value) => {
         dispatch(reviewActions.changeCurrentTab({ currentTab: value }));
@@ -135,13 +91,13 @@ function ReviewInfo(props) {
                         >
                             <Tab 
                                 label="review" 
-                                value="review" 
+                                value={0} 
                                 disableRipple 
                             />
 
                             <Tab 
                                 label="review a product" 
-                                value="reviewable" 
+                                value={1} 
                                 disableRipple 
                             />
                         </TabList>
@@ -150,22 +106,24 @@ function ReviewInfo(props) {
                     {!tabItems[currentTab].isEmpty &&
                         <Fragment>
                             <TabPanel 
-                                value="review" 
+                                value={0} 
                                 className="py-2"
                             >
                                 <ReviewPanelList 
-                                    items={tabItems["review"].
-                                    paginatedItems} currentTab={currentTab} 
+                                    items={tabItems[0].paginatedItems} 
+                                    currentTab={currentTab} 
+                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
 
                             <TabPanel 
-                                value="reviewable"
+                                value={1}
                                 className="py-2"
                             >
                                 <ReviewablePanelList 
-                                    items={tabItems["reviewable"].
-                                    paginatedItems} currentTab={currentTab} 
+                                    items={tabItems[1].paginatedItems} 
+                                    currentTab={currentTab} 
+                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
                         </Fragment>
@@ -181,6 +139,11 @@ function ReviewInfo(props) {
                     />
                 }
             </Paper>
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
+            />
         </Box>
     )
 };

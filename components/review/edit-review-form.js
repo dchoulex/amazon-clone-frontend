@@ -27,7 +27,7 @@ const EDIT_REVIEW_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditReviewForm(props) {
-    const { openEditReviewForm, setOpenEditReviewForm, review } = props;
+    const { openEditReviewForm, setOpenEditReviewForm, review, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const EDIT_REVIEW_INITIAL_FORM_STATE = {
@@ -47,7 +47,25 @@ function EditReviewForm(props) {
     const handleSubmitEditReviewForm = async (values) => {
         const UPDATE_REVIEW_API = getAPI(process.env.NEXT_PUBLIC_UPDATE_REVIEW_API, { id: review.product._id, id2: review._id });
 
-        await axios.patch(UPDATE_REVIEW_API, values);
+        try {
+            const res = await axios.patch(UPDATE_REVIEW_API, values);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully update review."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }            
 
         setOpenEditReviewForm(false);
     };
