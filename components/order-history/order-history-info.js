@@ -15,8 +15,10 @@ import getPaginatedItems from "../../utils/getPaginatedItems";
 import OrderPanelList from "./order-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
-import NoItemInfo from "../ui/no-item-info";
+import NoItemInfo from "../ui/dogs-info/no-item-info";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import ErrorInfo from "../ui/dogs-info/error-info";
+import PageSpinner from "../ui/pageSpinner";
 
 function OrderHistoryInfo(props) {
     const { title } = props;
@@ -36,8 +38,8 @@ function OrderHistoryInfo(props) {
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ORDERS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
     
     const orders = data.data;
 

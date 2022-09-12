@@ -11,6 +11,8 @@ import ProductDetailImages from "../../components/product-detail/product-detail-
 import ProductDetailInfo from "../../components/product-detail/product-detail-info/product-detail-info";
 import BuyProductCard from "../../components/product-detail/buy-product-card";
 import CustomizedSnackbar from "../../components/ui/customized-snackbar";
+import PageSpinner from "../../components/ui/pageSpinner";
+import ErrorInfo from "../../components/ui/dogs-info/error-info";
 
 //use context for active image
 function ProductDetailPage(props) { 
@@ -33,8 +35,8 @@ function ProductDetailPage(props) {
     const { data: productRes, error: productError } = useSWR(GET_PRODUCT_DETAILS_API, fetcher);
     const { data: reviewsRes, error: reviewsError } = useSWR(GET_ALL_REVIEWS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!productRes || !reviewsRes) return <p>Loading</p>
-    if (productError || reviewsError) return <p>error</p>
+    if (!productRes || !reviewsRes) return <PageSpinner />
+    if (productError || reviewsError) return <ErrorInfo />
     
     const product = productRes.data;
     const reviews = reviewsRes.data;

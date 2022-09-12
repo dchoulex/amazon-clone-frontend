@@ -14,10 +14,12 @@ import { cartActions } from "../../store/cart-slice";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import CartPanelList from "./cart-panel-list/cart-panel-list";
 import PageTitle from "../ui/page-title/page-title";
-import NoItemInfo from "../ui/no-item-info";
+import NoItemInfo from "../ui/dogs-info/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
 import CheckoutForm from "./checkout-form/checkout-form";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
 
 function CartInfo(props) {
     const { title } = props;
@@ -37,8 +39,8 @@ function CartInfo(props) {
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const cartItems = data.data;
     

@@ -9,6 +9,8 @@ import Divider from "@mui/material/Divider";
 import PageTitle from "../ui/page-title/page-title";
 import MyProfileCard from "./my-profile-card";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
 
 function MyProfileInfo(props) {
     const { title } = props;
@@ -23,8 +25,8 @@ function MyProfileInfo(props) {
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_MY_PROFILE_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const resData = data.data;
 

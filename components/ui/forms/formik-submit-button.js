@@ -11,7 +11,6 @@ function FormikSubmitButton(props) {
 
     const configSubmitButton = {
         ...otherProps,
-        type: "submit",
         onClick: handleSubmit
     }
 

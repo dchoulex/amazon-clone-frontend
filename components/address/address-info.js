@@ -16,8 +16,10 @@ import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import AddressCard from "./address-card";
 import AddAddressForm from "./add-address-form";
-import NoItemInfo from "../ui/no-item-info";
+import NoItemInfo from "../ui/dogs-info/no-item-info";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
 
 function AddressInfo(props) {
     const { title } = props;
@@ -36,8 +38,8 @@ function AddressInfo(props) {
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const addresses = data.data;
     const numOfResults = data.numOfResults;

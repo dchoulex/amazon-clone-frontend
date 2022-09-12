@@ -51,7 +51,7 @@ const defaultOptions = [
 ];
 
 function AddCreditCardForm(props) {
-    const { openAddCreditCardForm, setOpenAddCreditCardForm } = props;
+    const { openAddCreditCardForm, setOpenAddCreditCardForm, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {
@@ -63,13 +63,27 @@ function AddCreditCardForm(props) {
         setOpenAddCreditCardForm(false);
     };
 
-    const handleAddCreditCardForm = async(values) => {
+    const handleAddCreditCardForm = async(values, actions) => {
+        actions.setSubmitting(false);
+
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CREDIT_CARD_API, values);
 
-            console.log(res)
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
         } catch(err) {
-            console.log(err)
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
         }
 
         setOpenAddCreditCardForm(false);

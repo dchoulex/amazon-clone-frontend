@@ -2,6 +2,7 @@ import { useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import axios from 'axios';
+import useSWR from "swr";
 
 import AppBar from "@mui/material/AppBar";
 
@@ -14,6 +15,10 @@ import SubNavbar from "./sub-navbar/sub-navbar";
 function Header() {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
+
+    // const fetcher = url => axios.get(url).then(res => res.data);
+
+    // const { data, error } = useSWR(process.env.NEXT_PUBLIC_AUTHENTICATE_API, fetcher, { refreshInterval: 1000 });
 
     useEffect(() => {
         const fetchData = async () => {

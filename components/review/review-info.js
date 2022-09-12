@@ -16,8 +16,10 @@ import ReviewablePanelList from "./reviewable-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
-import NoItemInfo from "../ui/no-item-info";
+import NoItemInfo from "../ui/dogs-info/no-item-info";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import ErrorInfo from "../ui/dogs-info/error-info";
+import PageSpinner from "../ui/pageSpinner";
 
 function ReviewInfo(props) {
     const { title } = props;
@@ -38,8 +40,8 @@ function ReviewInfo(props) {
     const { data: reviewRes, error: reviewError } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_MY_REVIEWS, fetcher, { refreshInterval: 5000 });
     const { data: reviewableRes, error: reviewableError } = useSWR(process.env.NEXT_PUBLIC_GET_REVIEWABLE_PRODUCTS, fetcher, { refreshInterval: 5000 });
 
-    if (!reviewRes || !reviewableRes) return <p>Loading</p>
-    if (reviewError || reviewableError) return <p>error</p>
+    if (!reviewRes || !reviewableRes) return <PageSpinner />
+    if (reviewError || reviewableError) return <ErrorInfo />
     
     const reviewTabItems = reviewRes.data;
     const reviewableProductTabItems = reviewableRes.data;

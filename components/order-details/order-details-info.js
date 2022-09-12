@@ -12,6 +12,8 @@ import PageTitle from "../ui/page-title/page-title";
 import OrderDetailsSummary from "./order-details-summary";
 import OrderDetailsItems from "./order-details-items";
 import CustomizedSnackbar from "../ui/customized-snackbar";
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
 
 function OrderDetailsInfo(props) {
     const { title, orderId } = props;
@@ -28,8 +30,8 @@ function OrderDetailsInfo(props) {
 
     const { data, error } = useSWR(GET_ORDER_DETAILS_API, fetcher);
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const { order, orderItems } = data.data;
     const { user, shippingAddress, shippingCost } = order;

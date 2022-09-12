@@ -14,12 +14,21 @@ import WalletCard from "./wallet-card";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
-import NoItemInfo from "../ui/no-item-info";
+import NoItemInfo from "../ui/dogs-info/no-item-info";
 import AddCreditCardForm from "./add-credit-card-form";
+import CustomizedSnackbar from "../ui/customized-snackbar";
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
 
 function WalletInfo(props) {
     const { title } = props;
-    const [ openCreditCardForm , setOpenCreditCardForm ] = useState(false);
+    const [ openAddCreditCardForm , setOpenAddCreditCardForm ] = useState(false);
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
+
     const dispatch = useDispatch();
     const currentPage = useSelector(state => state.wallet.walletPage);
 
@@ -27,8 +36,8 @@ function WalletInfo(props) {
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const creditCards = data.data;
     const numOfResults = data.numOfResults;
@@ -39,7 +48,7 @@ function WalletInfo(props) {
     };
 
     const handleOpenCreditCardForm = () => {
-        setOpenCreditCardForm(true);
+        setOpenAddCreditCardForm(true);
     };
 
     return (
@@ -74,7 +83,10 @@ function WalletInfo(props) {
                                 xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <WalletCard card={card} />
+                                <WalletCard 
+                                    card={card} 
+                                    setSnackbarState={setSnackbarState}
+                                />
                             </Grid>
                         ))}   
                     </Grid>
@@ -91,8 +103,14 @@ function WalletInfo(props) {
             </Paper>
 
             <AddCreditCardForm 
-                openCreditCardForm={openCreditCardForm}
-                setOpenCreditCardForm={setOpenCreditCardForm}
+                openAddCreditCardForm={openAddCreditCardForm}
+                setOpenAddCreditCardForm={setOpenAddCreditCardForm}
+                setSnackbarState={setSnackbarState}
+            />
+
+            <CustomizedSnackbar
+                snackbarState={snackbarState}
+                setSnackbarState={setSnackbarState}
             />
         </Box>
     )

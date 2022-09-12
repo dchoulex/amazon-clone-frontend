@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Box from '@mui/material/Box';
@@ -16,7 +16,7 @@ import ProductInfo from "../../components/product/product-info";
 import PaginationButtons from "../../components/ui/pagination-buttons";
 import ProductPageTitle from "../../components/product/product-page-title";
 import getSortedItems from "../../utils/getSortedItems";
-import NoSearchItemInfo from "../../components/ui/no-search-item-info";
+import NoSearchItemInfo from "../../components/ui/dogs-info/no-search-item-info";
 
 function ProductPage() {
     const title = "Search Product";

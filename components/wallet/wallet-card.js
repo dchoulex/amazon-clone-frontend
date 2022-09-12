@@ -15,7 +15,7 @@ import Chip from "@mui/material/Chip";
 import getAPI from "../../utils/getAPI";
 
 function WalletCard(props) {
-    const { card } = props;
+    const { card, setSnackbarState } = props;
     const displayedCardNumber = "ending in ..." + card.number.slice(card.number.length - 4);
     const displayedExpirationDate = card.expirationDate.split("-").slice(0, 2).join(" / ");
     const displayedCreditCardType = card.type[0].toUpperCase() + card.type.slice(1);
@@ -24,11 +24,47 @@ function WalletCard(props) {
     const SET_CREDIT_CARD_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_CREDIT_CARD_AS_DEFAULT_API, { id: card._id });
 
     const handleRemoveCreditCard = async () => {
-        await axios.delete(DELETE_CREDIT_CARD_API)
+        try {
+            const res = await axios.delete(DELETE_CREDIT_CARD_API);
+
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     const handleSetAsDefault = async () => {
-        await axios.patch(SET_CREDIT_CARD_AS_DEFAULT_API)
+        try {
+            const res = await axios.patch(SET_CREDIT_CARD_AS_DEFAULT_API);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully set credit card as default."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     return (

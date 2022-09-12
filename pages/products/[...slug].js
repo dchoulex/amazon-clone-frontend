@@ -20,6 +20,8 @@ import ProductPageTitle from "../../components/product/product-page-title";
 import getSortedItems from "../../utils/getSortedItems";
 import getAPI from '../../utils/getAPI';
 import { productActions } from '../../store/product-slice';
+import PageSpinner from '../../components/ui/pageSpinner';
+import ErrorInfo from '../../components/ui/dogs-info/error-info';
 
 function getPageTitle(slug) {
     let pageTitle;
@@ -157,8 +159,8 @@ function ProductCategoryPage(props) {
 
     const { data, error } = useSWR(API, fetcher);
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>Error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
     
     const products = data.data;
 
