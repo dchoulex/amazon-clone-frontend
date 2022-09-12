@@ -30,53 +30,13 @@ export const drawerListItems = [
                 href: "/products/best/sellers",
                 disabled: false
             },
-            // {
-            //     title: "New Releases",
-            //     disabled: true
-            // },
-            // {
-            //     title: "Movers & Shakers",
-            //     disabled: true
-            // }
+            {
+                title: "Best Review",
+                href:"/products/best/review",
+                disabled: false
+            },
         ]
     },
-    // {
-    //     title: "Digital Content & Devices",
-    //     items: [
-    //         {
-    //             title: "Prime Video",
-    //             disabled: true
-    //         }, 
-    //         {
-    //             title: "Amazon Music",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Appstore for Android",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Echo, Alexa & Ring",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Fire Tablets",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Fire TV",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Kindle E-readers & Books",
-    //             disabled: true
-    //         },
-    //         {
-    //             title: "Audible Audiobooks",
-    //             disabled: true
-    //         }
-    //     ]
-    // }, 
     {
         title: "Shop By Department",
         items: [
@@ -126,11 +86,22 @@ export const drawerListItems = [
                 title: "Credit Cards",
                 href: "/account/wallet",
                 disabled: false,
+            },  
+            {
+                title: "All Products",
+                href: "/products/all/products",
+                disabled: false,
+            },  
+            {
+                title:  "Recommended for you",
+                href: "/products/recommended/for/you",
+                disabled: false,
             }, 
-            // {
-            //     title: "Amazon Outlet",
-            //     disabled: true
-            // }
+            {
+                title: "Buy Again",
+                href: "/products/buy/again",
+                disabled: false,
+            }, 
         ]
     },
     {
@@ -149,14 +120,6 @@ export const drawerListItems = [
                 title: "Japan",
                 icon: <SvgIcon component={JapanIcon} inheritViewBox />
             },
-            // {
-            //     title: "Currency Settings",
-            //     disabled: true
-            // },
-            // {
-            //     title: "Help",
-            //     disabled: true
-            // }
         ]
     }
 ];

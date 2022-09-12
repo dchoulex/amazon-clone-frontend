@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import { useState } from 'react';
 import * as Yup from "yup";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,6 +19,7 @@ import numberWithCommas from '../../utils/numberWithCommas';
 import FormikNumber from '../ui/forms/formik-number';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import ErrorMessage from '../ui/forms/error-message';
+import CustomizedSnackbar from '../ui/customized-snackbar';
 
 const ADD_CART_ITEM_INITIAL_FORM_STATE = { 
     amount: 1 
@@ -32,6 +34,12 @@ function ProductCard(props) {
     const slug = product.slug;
     const image = product.images[0];
 
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
+
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
 
@@ -39,8 +47,26 @@ function ProductCard(props) {
             productId: product._id,
             amount: values.amount
         };
-        
-        await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
+
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CART_ITEM_API, data);
+
+            if (res.data.status === "success") {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully add item to cart."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     return (
@@ -103,6 +129,11 @@ function ProductCard(props) {
                                         Add to cart
                                     </FormikSubmitButton>
                                 </Stack>
+
+                                <CustomizedSnackbar 
+                                    snackbarState={snackbarState}
+                                    setSnackbarState={setSnackbarState}
+                                />
                             </Box>
 
                             {errors.amount &&

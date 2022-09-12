@@ -9,6 +9,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import StarRateIcon from '@mui/icons-material/StarRate';
 
+import { PAGINATION_LIMIT } from "../../appConfig";
 import { productActions } from "../../store/product-slice";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import ProductInfo from "../../components/product/product-info";
@@ -29,9 +30,14 @@ function ProductPage() {
     const [ chipIcon, setChipIcon ] = useState(null);
     
     const sortedProducts = getSortedItems(products, sortBy);
+    const numOfPages =  Math.ceil(sortedProducts.length / PAGINATION_LIMIT);
 
     const handleChangePage = (_, value) => {
         dispatch(productActions.setSearchProductPage({ page: value }))
+    };
+
+    if (searchProductPage > numOfPages) {
+        dispatch(productActions.setSearchProductPage({ page: 1 }))
     };
 
     const handleChangeSortBy = event => {

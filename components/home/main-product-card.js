@@ -5,18 +5,9 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import Button from "@mui/material/Button";
-import { Fragment, useState } from "react";
-// import AmazonPrimeDialog from "./amazon-prime-dialog";
 
 function MainProductCard(props) {
     const { title, subheader, action, imagePath, href } = props
-    // const isAmazonPrimeCard = title === "Amazon Prime";
-
-    // const [ openAmazonPrimeDialog, setOpenAmazonPrimeDialog ] = useState(false);
-
-    // const handleOpenAmazonPrimeDialog = () => {
-    //     setOpenAmazonPrimeDialog(true)
-    // }
 
     return (
         <Card className="w-[350px] flex-col flex">
