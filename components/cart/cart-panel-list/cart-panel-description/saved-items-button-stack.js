@@ -8,17 +8,54 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import getAPI from "../../../../utils/getAPI";
 
 function SavedItemsButtonStack(props) {
-    const { cartId, isSaved } = props;
-
-    const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: cartId });
-    const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: cartId, query: `isSaved=${!isSaved}` });
+    const { cartId, isSaved, setSnackbarState } = props;
 
     const handleDelete = async () => {
-        await axios.delete(DELETE_CART_ITEM_API)
+        const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: cartId });
+
+        try {
+            const res = await axios.delete(DELETE_CART_ITEM_API)
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     const handleToggleSave = async () => {
-        await axios.patch(TOGGLE_SAVE_CART_ITEM_API)
+        const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: cartId, query: `isSaved=${!isSaved}` });
+
+        try {
+            const res = await axios.patch(TOGGLE_SAVE_CART_ITEM_API);
+            
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully move item back to cart."
+                });
+            } 
+        } catch(err) {
+            console.log(err)
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }   
+        }
     };
 
     return (

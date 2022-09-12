@@ -4,15 +4,14 @@ import Typography from "@mui/material/Typography";
 import numberWithCommas from "../../../../utils/numberWithCommas";
 import StockLabel from "../../../ui/stock-label";
 import SavedItemsButtonStack from "./saved-items-button-stack";
-// import BuyAgainItemsButtonStack from "./buy-again-items-button-stack"
 
 function CartPanelDescription(props) {
-    const { productName, stock, price, point, currentTab, cartId, isSaved } = props;
+    const { productName, stock, price, point, currentTab, cartId, isSaved, setSnackbarState } = props;
 
     let buttonStack;
 
     if (currentTab === 1) {
-        buttonStack = <SavedItemsButtonStack cartId={cartId} isSaved={isSaved} />
+        buttonStack = <SavedItemsButtonStack cartId={cartId} isSaved={isSaved} setSnackbarState={setSnackbarState} />
     }
     // if (currentTab === 2) {
     //     buttonStack = <BuyAgainItemsButtonStack cartId={cartId} isSaved={isSaved} />

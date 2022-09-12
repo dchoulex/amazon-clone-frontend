@@ -20,7 +20,7 @@ import getAPI from "../../../utils/getAPI";
 import ErrorMessage from "../../ui/forms/error-message";
 
 function CheckoutFormItemList(props) {
-    const { item, index, numOfCartItems, remove, insert, errorMessage, touched } = props;
+    const { item, index, numOfCartItems, remove, insert, errorMessage, setSnackbarState } = props;
     const productId = item.product._id;
 
     const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
@@ -38,11 +38,47 @@ function CheckoutFormItemList(props) {
     const handleDeleteItem = async () => {
         remove(index);
 
-        await axios.delete(DELETE_CART_ITEM_API);
+        try {
+            const res = await axios.delete(DELETE_CART_ITEM_API);
+
+            if (res.status === 204) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully delete item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }
+        }
     };
 
     const handleToggleSave = async () => {
-        await axios.patch(TOGGLE_SAVE_CART_ITEM_API)
+        try {
+            const res = await axios.patch(TOGGLE_SAVE_CART_ITEM_API);
+
+            if (res.status === 200) {
+                setSnackbarState({ 
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully save item."
+                });
+            } 
+        } catch(err) {
+            if (err) {
+                setSnackbarState({ 
+                    open: true , 
+                    type: "error", 
+                    message: "Oops... Something went wrong."
+                });
+            }            
+        }
     };
 
     return (

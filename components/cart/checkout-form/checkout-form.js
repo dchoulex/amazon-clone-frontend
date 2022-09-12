@@ -7,10 +7,8 @@ import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-// import Checkbox from '@mui/material/Checkbox';
 
 import { SELECT_AMOUNT_SCHEMA } from "../../ui/forms/form-schema";
-import { checkoutActions } from "../../../store/checkout-slice";
 import CheckoutFormItemList from "./checkout-form-item-list";
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikSubmitButton from "../../ui/forms/formik-submit-button";
@@ -43,7 +41,7 @@ function calculateSubTotalAndPoint(items, checkoutCartItems) {
 };
 
 function CheckoutForm(props) {
-    const { items, numOfCartItems } = props;
+    const { items, numOfCartItems, setSnackbarState } = props;
     const dispatch = useDispatch();
     const router = useRouter();
 
@@ -101,6 +99,7 @@ function CheckoutForm(props) {
                                                 insert={insert}
                                                 touched={touched}
                                                 errorMessage={errorMessage}
+                                                setSnackbarState={setSnackbarState}
                                             />
                                         )
                                     })}

@@ -92,7 +92,6 @@ function AddressInfo(props) {
                             >
                                 <AddressCard 
                                     address={address} 
-                                    snackbarState={snackbarState}
                                     setSnackbarState={setSnackbarState}
                                 />
                             </Grid>

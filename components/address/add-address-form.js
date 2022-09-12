@@ -57,7 +57,7 @@ const defaultOptions = [
 ];
 
 function AddAddressForm(props) {
-    const { openAddAddressForm, setOpenAddAddressForm, snackbarState, setSnackbarState } = props;
+    const { openAddAddressForm, setOpenAddAddressForm, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({

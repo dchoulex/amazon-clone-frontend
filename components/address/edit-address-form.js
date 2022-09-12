@@ -33,7 +33,7 @@ const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditAddressForm(props) {
-    const { address, openEditAddressForm, setOpenEditAddressForm, snackbarState, setSnackbarState } = props;
+    const { address, openEditAddressForm, setOpenEditAddressForm, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({

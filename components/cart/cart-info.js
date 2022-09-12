@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useSWR from "swr";
 import axios from "axios";
@@ -16,15 +17,21 @@ import PageTitle from "../ui/page-title/page-title";
 import NoItemInfo from "../ui/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
 import CheckoutForm from "./checkout-form/checkout-form";
+import CustomizedSnackbar from "../ui/customized-snackbar";
 
 function CartInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
 
+    const [ snackbarState, setSnackbarState ] = useState({
+        open: false,
+        type: null,
+        message: null
+    });
+
     const currentTab = useSelector(state => state.cart.currentTab);
     const currentCartTabPage = useSelector(state => state.cart.cartTabPage);
     const currentSaveTabPage = useSelector(state => state.cart.saveTabPage);
-    // const currentBuyAgainTabPage = useSelector(state => state.cart.buyAgainTabPage);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -58,16 +65,7 @@ function CartInfo(props) {
             isEmpty: currentTab === 1 && saveTabItems.length === 0,
             page: currentSaveTabPage,
             paginatedItems: getPaginatedItems(saveTabItems, currentSaveTabPage)
-        },
-        // {
-        //     numOfResults: buyAgainTabItems.length,
-        //     handleChange: (_, value) => {
-        //         dispatch(cartActions.changeSaveTabPage({ page: value }))
-        //     },
-        //     isEmpty: currentTab === 3 && buyAgainTabItems.length === 0,
-        //     page: currentBuyAgainTabPage,
-        //     paginatedItems: getPaginatedItems(buyAgainTabItems, currentBuyAgainTabPage)
-        // }
+        }
     ];
 
     const handleChangeTab = (_, value) => {
@@ -97,8 +95,6 @@ function CartInfo(props) {
                             <Tab label="Cart" value={0} />
 
                             <Tab label="Save for later" value={1} />
-
-                            {/* <Tab label="Buy again" value={3} /> */}
                         </TabList>
                     </Box>
 
@@ -113,6 +109,7 @@ function CartInfo(props) {
                                 subTotal={(tabItems[0].subTotal)}
                                 point={tabItems[0].point}
                                 isEmpty={tabItems[currentTab].isEmpty}
+                                setSnackbarState={setSnackbarState}
                             />
                         }
                     </TabPanel>
@@ -124,18 +121,9 @@ function CartInfo(props) {
                         <CartPanelList 
                             items={getPaginatedItems(saveTabItems, tabItems[1].page)} 
                             currentTab={currentTab} 
+                            setSnackbarState={setSnackbarState}
                         />
                     </TabPanel>
-
-                    {/* <TabPanel 
-                        value={3}  
-                        className="py-2"
-                    >
-                        <CartPanelList 
-                            items={ getPaginatedItems(buyAgainTabItems, tabItems[currentTab].page)} 
-                            currentTab={currentTab} 
-                        />
-                    </TabPanel> */}
                 </TabContext>
     
                 {tabItems[currentTab].isEmpty ? 
@@ -146,6 +134,11 @@ function CartInfo(props) {
                         onChange={tabItems[currentTab].handleChange}
                     />
                 }   
+
+                <CustomizedSnackbar
+                    snackbarState={snackbarState}
+                    setSnackbarState={setSnackbarState}
+                />
             </Paper>
         </Box>
     )

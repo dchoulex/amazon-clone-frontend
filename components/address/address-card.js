@@ -15,7 +15,7 @@ import getAPI from "../../utils/getAPI";
 import EditAddressForm from "./edit-address-form";
 
 function AddressCard(props) {
-    const { address, snackbarState, setSnackbarState } = props;
+    const { address, setSnackbarState } = props;
     const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
 
     const handleOpenEditAddressForm = () => {
@@ -121,7 +121,6 @@ function AddressCard(props) {
                     openEditAddressForm={openEditAddressForm}
                     setOpenEditAddressForm={setOpenEditAddressForm}
                     address={address}
-                    snackbarState={snackbarState}
                     setSnackbarState={setSnackbarState}                    
                 />
 
