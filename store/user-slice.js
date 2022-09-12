@@ -20,6 +20,14 @@ const userSlice = createSlice({
             state.amazonPoints = action.payload.amazonPoints,
             state.defaultAddress = action.payload.defaultAddress,
             state.defaultCreditCard = action.payload.defaultCreditCard
+        },
+        
+        changeUserDefaultAddress(state, action) {
+            state.defaultAddress = action.payload.defaultAddress
+        },
+
+        changeUserName(state, action) {
+            state.name = action.payload.name
         }
     }
 });

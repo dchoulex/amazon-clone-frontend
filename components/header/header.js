@@ -2,7 +2,6 @@ import { useEffect, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import axios from 'axios';
-import useSWR from "swr";
 
 import AppBar from "@mui/material/AppBar";
 
@@ -16,10 +15,6 @@ function Header() {
     let isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const dispatch = useDispatch();
 
-    // const fetcher = url => axios.get(url).then(res => res.data);
-
-    // const { data, error } = useSWR(process.env.NEXT_PUBLIC_AUTHENTICATE_API, fetcher, { refreshInterval: 1000 });
-
     useEffect(() => {
         const fetchData = async () => {
             const res = await axios.get(process.env.NEXT_PUBLIC_AUTHENTICATE_API);
@@ -27,7 +22,7 @@ function Header() {
             const data = res.data.data;
             
             if (data.isAuthenticated) {
-                const { user, defaultAddress, defaultCreditCard, numOfCartItems } = data;
+                const { user, defaultAddress, defaultCreditCard, totalAmount } = data;
 
                 dispatch(authActions.login());
 
@@ -40,8 +35,8 @@ function Header() {
                     defaultCreditCard
                 }));
 
-                dispatch(cartActions.setNumOfCartItems({
-                    numOfCartItems
+                dispatch(cartActions.setTotalAmount({
+                    totalAmount
                 }));
             };
         };
@@ -58,7 +53,7 @@ function Header() {
         defaultCreditCard: state.user.defaultCreditCard
     }));
 
-    let numOfCartItems = useSelector(state => state.cart.numOfCartItems);
+    let totalAmount = useSelector(state => state.cart.totalAmount);
 
     if (!isAuthenticated) {
         user.name = "Sign in",
@@ -67,7 +62,7 @@ function Header() {
             postCode : "Your address",
             rest : "Select your address"
         },
-        numOfCartItems = 0
+        totalAmount = 0
     };
 
     let defaultAddressPostCode = "No default address found";
@@ -76,7 +71,11 @@ function Header() {
     if (user.defaultAddress) {
         defaultAddressPostCode = user.defaultAddress.postCode;
 
-        defaultAddressLine = isAuthenticated ? `${user.defaultAddress.city}, ${user.defaultAddress.rest}` : user.defaultAddress.rest;
+        if (user.defaultAddress.city) {
+            defaultAddressLine = isAuthenticated ? `${user.defaultAddress.city}, ${user.defaultAddress.rest}` : user.defaultAddress.rest
+        } else {
+            defaultAddressLine = user.defaultAddress.rest 
+        };
     };
 
     return(
@@ -89,7 +88,7 @@ function Header() {
                     name={user.name}
                     defaultAddressPostCode={defaultAddressPostCode}
                     defaultAddressLine={defaultAddressLine}
-                    cartNumber={numOfCartItems}
+                    cartNumber={totalAmount}
                     isAuthenticated={isAuthenticated}
                 />
 

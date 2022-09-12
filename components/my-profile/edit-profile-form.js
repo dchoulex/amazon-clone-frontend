@@ -2,6 +2,7 @@ import { useState, Fragment } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -18,6 +19,7 @@ import FormikTextField from "../ui/forms/formik-text-field";
 import { NAME_SCHEMA, PHONE_NUMBER_SCHEMA, EMAIL_SCHEMA } from "../ui/forms/form-schema";
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
+import { userActions } from "../../store/user-slice";
 
 const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
     name: NAME_SCHEMA,
@@ -28,6 +30,7 @@ const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
 function EditProfileForm(props) {
     const { user, openEditProfileForm, setOpenEditProfileForm, setSnackbarState } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const dispatch = useDispatch()
 
     const EDIT_PROFILE_INITIAL_FORM_STATE = {
         name: user.name,
@@ -54,7 +57,9 @@ function EditProfileForm(props) {
                     type: "success", 
                     message: "Successfully update profile."
                 });
-            } 
+            };
+
+            dispatch(userActions.changeUserName({ name: res.data.data.name }))
         } catch(err) {
             if (err) {
                 setSnackbarState({ 

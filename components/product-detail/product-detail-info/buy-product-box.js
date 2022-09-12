@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import { Formik, Form } from 'formik';
 import * as Yup from "yup";
 import axios from 'axios';
@@ -13,6 +14,7 @@ import FormikNumber from '../../ui/forms/formik-number';
 import FormikSubmitButton from '../../ui/forms/formik-submit-button';
 import numberWithCommas from "../../../utils/numberWithCommas";
 import StockLabel from '../../ui/stock-label';
+import { cartActions } from '../../../store/cart-slice';
 
 const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA
@@ -20,6 +22,8 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
 
 function BuyProductBox(props) {
     const { stock, price, productId, setSnackbarState } = props;
+
+    const dispatch = useDispatch();
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);
@@ -39,6 +43,8 @@ function BuyProductBox(props) {
                     message: "Successfully add item to cart."
                 });
             } 
+
+            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }))
         } catch(err) {
             if (err) {
                 setSnackbarState({ 

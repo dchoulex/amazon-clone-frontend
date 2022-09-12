@@ -5,7 +5,7 @@ const INITIAL_CART_SLICE_STATE = {
     cartTabPage: 1,
     saveTabPage: 1,
     buyAgainTabPage: 1,
-    cartItems: 0
+    totalAmount: 0
 };
 
 const cartSlice = createSlice({
@@ -28,8 +28,8 @@ const cartSlice = createSlice({
             state.currentTab = action.payload.currentTab
         },
 
-        setNumOfCartItems(state, action) {
-            state.numOfCartItems = action.payload.numOfCartItems
+        setTotalAmount(state, action) {
+            state.totalAmount = action.payload.totalAmount
         },
 
         setCheckoutCartItem(state, action) {

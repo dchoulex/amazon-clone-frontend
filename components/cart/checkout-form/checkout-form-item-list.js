@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import Image from "next/image";
 import { Field } from "formik";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 import Button from "@mui/material/Button";
 import Stack from '@mui/material/Stack';
@@ -15,13 +17,15 @@ import StockLabel from "../../ui/stock-label";
 
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikNumber from "../../ui/forms/formik-number";
-import axios from "axios";
 import getAPI from "../../../utils/getAPI";
 import ErrorMessage from "../../ui/forms/error-message";
+import { cartActions } from "../../../store/cart-slice";
 
 function CheckoutFormItemList(props) {
     const { item, index, numOfCartItems, remove, insert, errorMessage, setSnackbarState } = props;
     const productId = item.product._id;
+
+    const dispatch = useDispatch();
 
     const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
     const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: item._id, query: `isSaved=${!item.isSaved}` });
@@ -41,13 +45,15 @@ function CheckoutFormItemList(props) {
         try {
             const res = await axios.delete(DELETE_CART_ITEM_API);
 
-            if (res.status === 204) {
+            if (res.status === 200) {
                 setSnackbarState({ 
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
                 });
-            } 
+            };
+
+            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
         } catch(err) {
             if (err) {
                 setSnackbarState({ 
@@ -69,7 +75,9 @@ function CheckoutFormItemList(props) {
                     type: "success", 
                     message: "Successfully save item."
                 });
-            } 
+            };
+
+            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
         } catch(err) {
             if (err) {
                 setSnackbarState({ 

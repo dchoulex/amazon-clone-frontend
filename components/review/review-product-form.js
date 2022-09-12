@@ -119,7 +119,6 @@ function ReviewProductForm(props) {
                                             variant="outlined"
                                             fullWidth
                                             multiline
-                                            autoFocus
                                             rows={10}
                                             sx={{
                                                 width: "500px"

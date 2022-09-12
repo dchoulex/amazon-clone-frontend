@@ -1,4 +1,5 @@
 import { Formik, Form } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import * as Yup from "yup";
 import Link from "next/link";
@@ -20,6 +21,7 @@ import FormikNumber from '../ui/forms/formik-number';
 import FormikSubmitButton from '../ui/forms/formik-submit-button';
 import ErrorMessage from '../ui/forms/error-message';
 import CustomizedSnackbar from '../ui/customized-snackbar';
+import { cartActions } from '../../store/cart-slice';
 
 const ADD_CART_ITEM_INITIAL_FORM_STATE = { 
     amount: 1 
@@ -31,6 +33,8 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
 
 function ProductCard(props) {
     const { product } = props;
+
+    const dispatch = useDispatch();
     const slug = product.slug;
     const image = product.images[0];
 
@@ -58,6 +62,8 @@ function ProductCard(props) {
                     message: "Successfully add item to cart."
                 });
             } 
+
+            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }))
         } catch(err) {
             if (err) {
                 setSnackbarState({ 

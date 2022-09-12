@@ -1,5 +1,6 @@
 import { useState, Fragment } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -13,10 +14,12 @@ import Chip from "@mui/material/Chip";
 
 import getAPI from "../../utils/getAPI";
 import EditAddressForm from "./edit-address-form";
+import { userActions } from "../../store/user-slice";
 
 function AddressCard(props) {
     const { address, setSnackbarState } = props;
     const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
+    const dispatch = useDispatch();
 
     const handleOpenEditAddressForm = () => {
         setOpenEditAddressForm(true);
@@ -34,7 +37,11 @@ function AddressCard(props) {
                     type: "success", 
                     message: "Successfully set as default."
                 });
-            } 
+            };
+
+            console.log(res.data.data)
+
+            dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }))
         } catch(err) {
             if (err) {
                 setSnackbarState({ 
@@ -58,7 +65,16 @@ function AddressCard(props) {
                     type: "success", 
                     message: "Successfully delete item."
                 });
-            } 
+            };
+
+            if (address.isDefault) {
+                dispatch(userActions.changeUserDefaultAddress({
+                    defaultAddress: {
+                        postCode : "Your address",
+                        rest : "Select your address"
+                    }
+                }))
+            }
         } catch(err) {
             if (err) {
                 setSnackbarState({ 
@@ -67,7 +83,7 @@ function AddressCard(props) {
                     message: "Oops... Something went wrong."
                 });
             }
-        }
+        };
     };
 
     return (
