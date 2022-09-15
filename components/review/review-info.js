@@ -31,7 +31,7 @@ function ReviewInfo(props) {
     const fetcher = url => axios.get(url).then(res => res.data);
 
     const { data: reviewRes, error: reviewError } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_MY_REVIEWS, fetcher, { refreshInterval: 1000 });
-    const { data: reviewableRes, error: reviewableError } = useSWR(process.env.NEXT_PUBLIC_GET_REVIEWABLE_PRODUCTS, fetcher);
+    const { data: reviewableRes, error: reviewableError } = useSWR(process.env.NEXT_PUBLIC_GET_REVIEWABLE_PRODUCTS, fetcher, { refreshInterval: 1000 });
 
     if (!reviewRes || !reviewableRes) return <PageSpinner />
     if (reviewError || reviewableError) return <ErrorInfo />

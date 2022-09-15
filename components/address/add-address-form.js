@@ -112,7 +112,7 @@ function AddAddressForm(props) {
                     sx={{ 
                         display: "flex", 
                         borderBottom: 1,
-                        borderColor: "divider" 
+                        borderColor: "divider",
                     }}
                 >
                     <Box sx={{ display: "flex", flex: "1 1 0%" }}>
@@ -139,7 +139,7 @@ function AddAddressForm(props) {
                                     Please input your address information.
                                 </DialogContentText>
 
-                                <Grid container direction="vertical">
+                                <Grid container>
                                     <Grid item xs={12}>
                                         <FormikTextField 
                                             name="name"

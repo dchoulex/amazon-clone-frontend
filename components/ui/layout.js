@@ -18,10 +18,14 @@ function Layout(props) {
                     <main>{props.children}</main> :
                     
                     <Fragment>
-                        <Header />
+                        <Box className="flex flex-col flex-1">
+                            <Header />
+    
+                            <main>{props.children}</main>
 
-                        <main>{props.children}</main>
-
+                            <Box className="bg-gray-200 flex flex-col flex-1"></Box>
+                        </Box>
+    
                         <Footer />
                     </Fragment>
                 }

@@ -55,7 +55,7 @@ function ReviewItems(props) {
         router.replace("/cart")
     };
 
-    const handleProceedToCheckout = async() => {
+    const handlePlaceOrder = async() => {
         try {
             const data = {
                 isExpedited: shippingMethod === "standard" ? false : true,
@@ -200,10 +200,10 @@ function ReviewItems(props) {
                 <Button
                     variant="contained"
                     sx={{ height: "40px" }}
-                    onClick={handleProceedToCheckout}
+                    onClick={handlePlaceOrder}
                     disabled={cartItemsIsEmpty}
                 >
-                    Confirm
+                    Place order
                 </Button> 
 
                 <Button

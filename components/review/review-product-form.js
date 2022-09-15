@@ -106,7 +106,7 @@ function ReviewProductForm(props) {
                     {({ errors, touched, values }) => (
                         <Form>
                             <DialogContent>
-                                <Grid container direction="vertical">
+                                <Grid container>
                                     <Grid item xs={12}>
                                         <FormikRating 
                                             name="rating"

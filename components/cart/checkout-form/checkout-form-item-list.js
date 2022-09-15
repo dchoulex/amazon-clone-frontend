@@ -23,7 +23,7 @@ import { cartActions } from "../../../store/cart-slice";
 import { snackbarActions } from "../../../store/snackbar-slice";
 
 function CheckoutFormItemList(props) {
-    const { item, index, numOfCartItems, remove, insert, errorMessage, setSnackbarState } = props;
+    const { item, index, numOfCartItems, remove, insert, errorMessage } = props;
     const productId = item.product._id;
     
     const dispatch = useDispatch();
@@ -98,14 +98,7 @@ function CheckoutFormItemList(props) {
 
     return (
         <Fragment>
-            <Box className="flex py-7">
-                {/* Only checkout checked items feature. Will available in future version.
-                <Box 
-                    className="w-[50px] flex flex-col justify-center items-center"
-                >
-                    <Checkbox defaultChecked /> 
-                </Box>  */}
-    
+            <Box className="flex py-7">    
                 <Grid container className="px-5 md:flex md:flex-1">
                     <Grid item xs={12} md={4}>
                         <Box className="flex justify-center md:mr-5 pb-5">
@@ -155,16 +148,18 @@ function CheckoutFormItemList(props) {
                                 <Stack 
                                     direction="row" 
                                     spacing={2}
-                                    divider={<Divider orientation="vertical" flexItem />}
+                                    divider={
+                                        <Divider orientation="vertical" flexItem />
+                                    }
                                     className="items-center mt-auto min-w-[430px]"
                                 >
                                     <FormikNumber 
                                         name={`checkoutCartItems.${index}.amount`}
                                         className="min-w-[60px] max-w-[80px]"
-                                        defaultValue={Number(item.amount)}
+                                        value={Number(item.amount)}
                                         onClick={handleChangeAmount}
-                                    />                                
-        
+                                    />
+
                                     <Button 
                                         size="medium"
                                         variant="outlined"

@@ -12,6 +12,29 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 import ReviewRatingStar from "../../review/review-rating-star";
 
+function getImagePath(name) {
+    let imagePath;
+
+    switch(name) {
+        case "User One":
+            imagePath = "/images/users/dummy-user-1.jpg";
+            break;
+
+        case "User Two":
+            imagePath = "/images/users/dummy-user-2.jpg";
+            break; 
+
+        case "User Three":
+            imagePath = "/images/users/dummy-user-3.jpg";
+            break;     
+
+        default:
+            break;
+    }
+
+    return imagePath
+};
+
 function ReviewOverviewItemList(props) {
     const { review } = props;
     const { user } = review;
@@ -32,7 +55,7 @@ function ReviewOverviewItemList(props) {
                 <IconButton>
                     <Avatar
                         alt={user.name}
-                        src="/images/"
+                        src={getImagePath(user.name)}
                         sx={{ width: 30, height: 30 }}
                     />
                 </IconButton>

@@ -121,7 +121,7 @@ function EditAddressForm(props) {
                     {({ errors, touched }) => (
                         <Form>
                             <DialogContent>
-                                <Grid container direction="vertical">
+                                <Grid container>
                                     <Grid item xs={12}>
                                         <FormikTextField 
                                             name="name"

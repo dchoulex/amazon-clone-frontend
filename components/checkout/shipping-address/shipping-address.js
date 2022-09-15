@@ -1,4 +1,4 @@
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import useSWR from 'swr';
@@ -21,6 +21,14 @@ function ShippingAddress(props) {
 
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
     const [ openSelectAddressDialog, setOpenSelectAddressDialog ] = useState(false);
+    
+    useEffect(() => {
+        if (Object.keys(shippingAddress).length === 0) {
+            const defaultAddress = addresses?.filter(address => address.isDefault)[0];
+    
+            if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
+        };
+    }, [ shippingAddress, dispatch, addresses])
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -30,12 +38,6 @@ function ShippingAddress(props) {
     if (error) return <ErrorInfo />
 
     const addresses = data.data;
-
-    if (Object.keys(shippingAddress).length === 0) {
-        const defaultAddress = addresses.filter(address => address.isDefault)[0];
-
-        if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
-    };
 
     const handleOpenSelectAddressDialog = () => {
         setOpenSelectAddressDialog(true)

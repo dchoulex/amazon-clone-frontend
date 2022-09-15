@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import { checkoutActions } from '../../../store/checkout-slice';
 import NoItemInfo from '../../ui/dogs-info/no-item-info';
 import SelectCreditCardDialog from './select-credit-card-dialog';
+import ErrorInfo from '../../ui/dogs-info/error-info';
+import PageSpinner from '../../ui/pageSpinner';
 
 function CreditCardPaymentInfo() {
     const [ openSelectCreditCardDialog, setOpenSelectCreditCardDialog ] = useState(false);
@@ -22,10 +24,10 @@ function CreditCardPaymentInfo() {
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher);
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const creditCards = data.data;
 

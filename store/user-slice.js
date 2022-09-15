@@ -36,6 +36,15 @@ const userSlice = createSlice({
 
         changeAmazonPoints(state, action) {
             state.amazonPoints = action.payload.amazonPoints
+        },
+
+        reinitialize(state) {
+            state.name = "Hello, Sign in",
+            state.email = "",
+            phoneNumber = "",
+            amazonPoints = 0,
+            defaultAddress = {},
+            defaultCreditCard = {}
         }
     }
 });

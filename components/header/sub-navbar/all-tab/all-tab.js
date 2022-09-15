@@ -49,6 +49,8 @@ function AllTab(props) {
                 }))
     
                 dispatch(authActions.logout());
+
+                dispatch(authActions.reinitialize());
     
                 setOpenDrawer(false);
     

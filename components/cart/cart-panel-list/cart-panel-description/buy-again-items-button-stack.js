@@ -8,7 +8,9 @@ function BuyAgainItemsButtonStack() {
         <Stack 
             direction="row" 
             spacing={2}
-            divider={<Divider orientation="vertical" flexItem />}
+            divider={
+                <Divider orientation="vertical" flexItem />
+            }
             className="items-center mt-auto"
         >
             <Button 

@@ -45,6 +45,8 @@ function AccountButton(props) {
                 }))
     
                 dispatch(authActions.logout());
+
+                dispatch(authActions.reinitialize());
     
                 router.replace("/");
             }

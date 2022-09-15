@@ -19,6 +19,29 @@ import EditProfileForm from "./edit-profile-form";
 import ConfirmDeleteDialog from "./confirm-delete-dialog";
 import { snackbarActions } from "../../store/snackbar-slice";
 
+function getImagePath(name) {
+    let imagePath;
+
+    switch(name) {
+        case "User One":
+            imagePath = "/images/users/dummy-user-1.jpg";
+            break;
+
+        case "User Two":
+            imagePath = "/images/users/dummy-user-2.jpg";
+            break; 
+
+        case "User Three":
+            imagePath = "/images/users/dummy-user-3.jpg";
+            break;     
+
+        default:
+            break;
+    }
+
+    return imagePath
+};
+
 function MyProfileCard(props) {
     const { user } = props;
     const router = useRouter();
@@ -75,7 +98,7 @@ function MyProfileCard(props) {
                     <IconButton>
                         <Avatar
                             alt={user.name}
-                            src="/images/"
+                            src={getImagePath(user.name)}
                             sx={{ width: 120, height: 120 }}
                         />
                     </IconButton>
@@ -86,13 +109,13 @@ function MyProfileCard(props) {
                         </Typography>
 
                         <Stack direction="row" spacing={3} mt="auto" pb={1}>
-                            <Link href="/auth/reset-password">
+                            {/* <Link href="/auth/reset-password">
                                 <Button  
                                     variant="contained"
                                 >
                                     Change password
                                 </Button>
-                            </Link>
+                            </Link> */}
 
                             {/* <Link href="/auth/login">
                                 <Button size="small" variant="outlined">
