@@ -25,6 +25,7 @@ import FormikEmail from "../../components/ui/forms/formik-email";
 import FormikPassword from "../../components/ui/forms/formik-password";
 import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
 import { EMAIL_SCHEMA, PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 const dialogContent = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque fringilla porttitor erat, sed lobortis dui varius a. Nunc feugiat, neque vitae semper congue, libero urna scelerisque velit, at tempus enim augue sit amet dolor. Sed eu congue velit. Nulla porttitor porttitor felis, sit amet aliquet nibh aliquam nec. Suspendisse pretium est lorem, et maximus dolor dictum vel. Praesent consequat eu lorem sit amet ullamcorper. Morbi sem velit, venenatis eu mi pulvinar, cursus luctus magna. Ut nec urna lacus. Sed cursus dolor dui, in faucibus velit elementum vitae. Maecenas ornare sagittis arcu, ac dapibus erat maximus vel. Donec eget est luctus, commodo ipsum vel, convallis orci. Vivamus purus ipsum, sodales elementum neque a, malesuada cursus magna. Ut sit amet eros non tellus luctus pharetra id id odio. Aenean euismod vitae nibh ut tincidunt.
@@ -63,8 +64,6 @@ function LoginPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
-    const [ loading, setLoading ] = useState(false);
-    const [ error, setError ] = useState(null);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
@@ -83,13 +82,12 @@ function LoginPage() {
     };
 
     const handleSubmitLoginForm = async (values, actions) => {
-        setLoading(true);
         actions.setSubmitting(false);
 
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_LOGIN_API, values);
             
-            const { user, defaultAddress, defaultCreditCard, numOfCartItems } = res.data.data;
+            const { user, defaultAddress, defaultCreditCard, totalAmount } = res.data.data;
 
             dispatch(authActions.login());
 
@@ -102,17 +100,23 @@ function LoginPage() {
                 defaultCreditCard
             }));
 
-            dispatch(cartActions.setNumOfCartItems({
-                numOfCartItems
+            dispatch(cartActions.setTotalAmount({
+                totalAmount
+            }));
+
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "success", 
+                message: "Successfully logged in."
             }));
 
             router.push("/account");
         } catch(err) {
-            setLoading(false);
-
-            console.log(err)
-
-            // console.log(err.response.data.message)
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Email or password is invalid."
+            }))
         }
     };
  

@@ -15,6 +15,7 @@ import Chip from "@mui/material/Chip";
 import getAPI from "../../utils/getAPI";
 import EditAddressForm from "./edit-address-form";
 import { userActions } from "../../store/user-slice";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function AddressCard(props) {
     const { address, setSnackbarState } = props;
@@ -32,24 +33,20 @@ function AddressCard(props) {
             const res = await axios.patch(SET_ADDRESS_AS_DEFAULT_API);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
                     message: "Successfully set as default."
-                });
+                }))
             };
-
-            console.log(res.data.data)
 
             dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }))
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 
@@ -60,11 +57,11 @@ function AddressCard(props) {
             const res = await axios.delete(DELETE_ADDRESS_API);
 
             if (res.status === 204) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             };
 
             if (address.isDefault) {
@@ -76,13 +73,11 @@ function AddressCard(props) {
                 }))
             }
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         };
     };
 

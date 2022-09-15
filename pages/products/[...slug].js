@@ -22,6 +22,7 @@ import getAPI from '../../utils/getAPI';
 import { productActions } from '../../store/product-slice';
 import PageSpinner from '../../components/ui/pageSpinner';
 import ErrorInfo from '../../components/ui/dogs-info/error-info';
+import NoItemInfo from '../../components/ui/dogs-info/no-item-info';
 
 function getPageTitle(slug) {
     let pageTitle;
@@ -38,14 +39,17 @@ function getPageTitle(slug) {
             pageTitle = "Best Sellers";
             
             break;
+            
         case slugPageTitle === "best-review":
             pageTitle = "Best Reviews";
             
             break;
+
         case slugPageTitle === "recommended-for-you":
             pageTitle = "Recommended For You";
             
             break;
+
         case slugPageTitle === "buy-again":
             pageTitle = "Buy Again";
             
@@ -165,6 +169,7 @@ function ProductCategoryPage(props) {
     const products = data.data;
 
     const sortedProducts = getSortedItems(products, sortBy);
+    const numOfResults = sortedProducts.length;
     const numOfPages =  Math.ceil(sortedProducts.length / PAGINATION_LIMIT);
 
     if (productCategoryPage > numOfPages) {
@@ -216,7 +221,7 @@ function ProductCategoryPage(props) {
 
             <ProductPageTitle 
                 title={title}
-                numberOfResults={sortedProducts.length}
+                numberOfResults={numOfResults}
                 onChange={handleChangeSortBy}
                 sortBy={sortBy}
             />
@@ -232,11 +237,14 @@ function ProductCategoryPage(props) {
 
             <ProductInfo products={getPaginatedItems(sortedProducts, productCategoryPage)} />
 
-            <PaginationButtons 
-                numOfResults={sortedProducts.length}
-                page={productCategoryPage}
-                onChange={handleChangePage}
-            />
+            {numOfResults === 0 ?
+                <NoItemInfo /> :
+                <PaginationButtons 
+                    numOfResults={numOfResults} 
+                    page={productCategoryPage}
+                    onChange={handleChangePage}
+                />
+            }
         </Fragment>
     );
 }

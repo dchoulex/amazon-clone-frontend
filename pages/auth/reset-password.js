@@ -1,15 +1,20 @@
+import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
-import Link from 'next/link';
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { useRouter } from "next/router";
+
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 import FormikPassword from "../../components/ui/forms/formik-password";
 import { PASSWORD_SCHEMA, CONFIRM_PASSWORD_SCHEMA } from "../../components/ui/forms/form-schema";
+import { authActions } from "../../store/auth-slice";
+import { snackbarActions } from "../../store/snackbar-slice";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
+import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
 
 const RESET_PASSWORD_FORM_INITIAL_STATE = {
     password: "",
@@ -22,18 +27,43 @@ const RESET_PASSWORD_FORM_VALIDATION = Yup.object().shape({
 });
 
 function ResetPasswordPage() {
+    const OTP = useSelector(state => state.auth.OTP);
+    const router = useRouter();
     const dispatch = useDispatch();
+    
+    useEffect(() => {
+        if (!OTP || OTP === "" || OTP.length !== 6) {
+            router.push("/auth/forgot-password");
+            return;
+        }
+    }, [ OTP, router ])
 
-    const handleSubmitResetPasswordForm = async (values) => {
-        const SIGN_UP_API = getAPI(process.env.NEXT_PUBLIC_SIGN_UP_API);
+    const handleSubmitResetPasswordForm = async(values) => {
+        try {
+            const res = await axios.patch(process.env.NEXT_PUBLIC_RESET_PASSWORD_API, values);
 
-        const data = await axios.post(SIGN_UP_API, values);
+            if (res.status === 200) {
+                dispatch(snackbarActions.setSnackbarState({
+                    open: true, 
+                    type: "success", 
+                    message: "Successfully reset password."
+                }));
 
-        dispatch(authActions.login());
+                dispatch(authActions.login());
 
-        router.push('/');
+                dispatch(authActions.setOTP({ OTP: null }));
 
-        return data;
+                dispatch(authActions.setUserEmail({ email: null }));
+        
+                router.replace('/');
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
     };
 
     return (
@@ -77,7 +107,7 @@ function ResetPasswordPage() {
                                     className="my-2"
                                 />
 
-                                <Button 
+                                <FormikSubmitButton 
                                     fullWidth
                                     disableRipple
                                     disabled={(touched.confirmPassword && errors.confirmPassword) || (touched.password && errors.password) ? true : false }
@@ -85,7 +115,7 @@ function ResetPasswordPage() {
                                     className="my-5"
                                 >
                                     Save changes
-                                </Button>
+                                </FormikSubmitButton>
                             </Paper>
                         </Form>
                     )}

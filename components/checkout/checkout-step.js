@@ -7,12 +7,11 @@ import StepContent from '@mui/material/StepContent';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import { CHECKOUT_STEPS } from '../../appConfig';
 import ShippingAddress from './shipping-address/shipping-address';
 import ShippingMethod from '../../components/checkout/shipping-method';
 import PaymentMethod from './payment-method/payment-method';
 import ReviewItems from './review-items/review-items';
-
-const steps = ["Shipping address", "Shipping method", "Payment method", "Review items" ];
 
 function getDisplayedShippingAddress(shippingAddress) {
     return `〒 ${shippingAddress.postCode}  ${shippingAddress.city}, ${shippingAddress.rest}`;
@@ -54,7 +53,7 @@ function getStepDescription(shippingAddress, shippingMethod, paymentMethod, cred
 }
 
 function CheckoutStep(props) {
-    const { activeStep, handleBack, handleNext, setSnackbarState } = props;
+    const { activeStep, handleBack, handleNext } = props;
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
@@ -69,7 +68,7 @@ function CheckoutStep(props) {
                 activeStep={activeStep} 
                 orientation="vertical"
             >
-                {steps.map((step, index) => {
+                {CHECKOUT_STEPS.map((step, index) => {
                     const stepDesc = getStepDescription(shippingAddress, shippingMethod, paymentMethod, creditCard, index);
 
                     return (
@@ -111,7 +110,6 @@ function CheckoutStep(props) {
                                     <ReviewItems 
                                         handleBack={handleBack} 
                                         handleNext={handleNext}
-                                        setSnackbarState={setSnackbarState}
                                     />
                                 }
                             </StepContent>
@@ -120,7 +118,7 @@ function CheckoutStep(props) {
                 })}
             </Stepper>
 
-            {activeStep === steps.length && (
+            {activeStep === CHECKOUT_STEPS.length && (
                 <Paper square elevation={0} sx={{ p: 3 }}>
                     <Typography>
                         Thank you for purchasing!

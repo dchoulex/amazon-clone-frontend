@@ -16,71 +16,78 @@ import TableRow from '@mui/material/TableRow';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
+import { userActions } from "../../../store/user-slice";
+import { cartActions } from "../../../store/cart-slice";
 import ReviewItemsList from "./review-items-list";
-import NoItemInfo from "../../ui/no-item-info";
+import NoItemInfo from "../../ui/dogs-info/no-item-info";
 import getOrderTotal from "../../../utils/getOrderTotal";
+import { snackbarActions } from "../../../store/snackbar-slice";
+import PageSpinner from "../../ui/pageSpinner";
+import ErrorInfo from "../../ui/dogs-info/error-info";
+import numberWithCommas from "../../../utils/numberWithCommas";
 
 function ReviewItems(props) {
-    const { handleBack, handleNext, setSnackbarState } = props;
+    const { handleBack, handleNext } = props;
     const dispatch = useDispatch();
     const router = useRouter();
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
     const paymentMethod = useSelector(state => state.checkout.paymentMethod);
-    const shippingCost = useSelector(state => state.checkout.shippingCost );
-    const creditCard = useSelector(state => state.checkout.creditCard );
+    const shippingCost = useSelector(state => state.checkout.shippingCost);
+    const creditCard = useSelector(state => state.checkout.creditCard);
+    const pointUsed = useSelector(state => state.checkout.pointUsed);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
     const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher);
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const cartItems = data.data;
 
     const cartItemsIsEmpty = cartItems.length === 0;
 
-    const { totalAmount, subTotal, points, tax, shippingCost : orderShippingCost, grandTotal } = getOrderTotal(cartItems, shippingCost);
+    const { totalAmount, subTotal, points, tax, shippingCost : orderShippingCost, grandTotal } = getOrderTotal(cartItems, pointUsed, shippingCost);
 
     const handleBackToCartPage = () => {
         router.replace("/cart")
     };
 
     const handleProceedToCheckout = async() => {
-        handleNext();
-
-        const data = {
-            isExpedited: shippingMethod === "standard" ? false : true,
-            shippingAddress: shippingAddress._id,
-            paymentMethod,
-            creditCard: creditCard?._id,
-        };
-
         try {
+            const data = {
+                isExpedited: shippingMethod === "standard" ? false : true,
+                shippingAddress: shippingAddress._id,
+                paymentMethod,
+                creditCard: creditCard?._id,
+                pointUsed
+            };
+
             const res = await axios.post(process.env.NEXT_PUBLIC_ORDER_ITEMS_API, data);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully order items."
-                });
-            } 
+                }))
+            };
+
+            dispatch(userActions.changeAmazonPoints({ amazonPoints: res.data.currentPoint }));
+            dispatch(cartActions.setTotalAmount({ totalAmount: 0 }));
+
+            router.push("/account/order-history");
+
+            handleNext();
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
-
-        dispatch
-
-        router.push("/account/order-history");
     };
 
     return (
@@ -152,6 +159,16 @@ function ReviewItems(props) {
 
                                                     <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
                                                         {tax}
+                                                    </TableCell>
+                                                </TableRow>
+
+                                                <TableRow>
+                                                    <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
+                                                        Point used :&nbsp;
+                                                    </TableCell>
+
+                                                    <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
+                                                        {numberWithCommas(pointUsed)}
                                                     </TableCell>
                                                 </TableRow>
 

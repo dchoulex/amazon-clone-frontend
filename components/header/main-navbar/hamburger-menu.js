@@ -1,5 +1,8 @@
 import { useState, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
@@ -24,7 +27,8 @@ import PaymentIcon from '@mui/icons-material/Payment';
 
 import JapanIcon from "../../../public/images/jp-flag-icon.svg";
 import StyledListItemText from "../styled-list-item-text";
-import { useSelector } from "react-redux";
+import { authActions } from "../../../store/auth-slice";
+import { snackbarActions } from "../../../store/snackbar-slice";
 
 const buttons = [
     {
@@ -68,6 +72,9 @@ function HamburgerMenu(props) {
     const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const { isSmallUp } = props;
 
+    const dispatch = useDispatch();
+    const router = useRouter();
+
     const theme = useTheme();
     const [openDrawer, setOpenDrawer] = useState(false);
     const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -75,6 +82,34 @@ function HamburgerMenu(props) {
     const handleOpenDrawer = () => setOpenDrawer(true);
 
     const handleCloseDrawer = () => setOpenDrawer(false);
+
+    const handleSignOut = async() => {
+        try {
+            const res = await axios.get(process.env.NEXT_PUBLIC_SIGNOUT_API);
+
+            console.log(res)
+
+            if (res.status === 200) {
+                dispatch(snackbarActions.setSnackbarState({
+                    open: true,
+                    type: "success",
+                    message: "Successfully logged out."
+                }))
+    
+                dispatch(authActions.logout());
+    
+                setOpenDrawer(false);
+    
+                router.push("/");
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
+    };
 
     return (
         <Fragment>
@@ -167,7 +202,7 @@ function HamburgerMenu(props) {
                                     justifyContent: "center"
                                 }}
                             >
-                                <Button variant="outlined">
+                                <Button variant="outlined" onClick={handleSignOut}>
                                     Sign out
                                 </Button>
                             </ListItemButton> :

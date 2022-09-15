@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -22,6 +23,8 @@ import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import FormikDate from "../ui/forms/formik-date";
 import FormikRadio from "../ui/forms/formik-radio";
+import { snackbarActions } from "../../store/snackbar-slice";
+import { userActions } from "../../store/user-slice";
 
 const ADD_CREDIT_CARD_INITIAL_FORM_STATE = {
     name: "",
@@ -51,8 +54,10 @@ const defaultOptions = [
 ];
 
 function AddCreditCardForm(props) {
-    const { openAddCreditCardForm, setOpenAddCreditCardForm, setSnackbarState } = props;
+    const { openAddCreditCardForm, setOpenAddCreditCardForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+
+    const dispatch = useDispatch();
 
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
@@ -68,22 +73,23 @@ function AddCreditCardForm(props) {
 
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CREDIT_CARD_API, values);
+            const creditCard = res.data.data;
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }));
+
+                if (creditCard.isDefault) dispatch(userActions.changeUserDefaultAddress({ defaultCreditCard: creditCard}))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
 
         setOpenAddCreditCardForm(false);

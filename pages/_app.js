@@ -6,6 +6,7 @@ import { SWRConfig } from 'swr';
 
 import Layout from "../components/ui/layout";
 import store from '../store';
+import CustomizedSnackbar from '../components/ui/customized-snackbar';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -21,6 +22,8 @@ function MyApp({ Component, pageProps }) {
           </StyledEngineProvider>
         </SWRConfig>
       </Layout>
+
+      <CustomizedSnackbar />
     </Provider>
   )
 };

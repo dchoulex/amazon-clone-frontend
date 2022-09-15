@@ -20,15 +20,13 @@ import FormikNumber from "../../ui/forms/formik-number";
 import getAPI from "../../../utils/getAPI";
 import ErrorMessage from "../../ui/forms/error-message";
 import { cartActions } from "../../../store/cart-slice";
+import { snackbarActions } from "../../../store/snackbar-slice";
 
 function CheckoutFormItemList(props) {
     const { item, index, numOfCartItems, remove, insert, errorMessage, setSnackbarState } = props;
     const productId = item.product._id;
-
+    
     const dispatch = useDispatch();
-
-    const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
-    const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: item._id, query: `isSaved=${!item.isSaved}` });
 
     const handleChangeAmount = event => {
         remove(index);
@@ -40,52 +38,61 @@ function CheckoutFormItemList(props) {
     };
 
     const handleDeleteItem = async () => {
+        const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
+
         remove(index);
 
         try {
             const res = await axios.delete(DELETE_CART_ITEM_API);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             };
 
             dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 
     const handleToggleSave = async () => {
+        const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: item._id, query: `isSaved=${!item.isSaved}` });
+
         try {
             const res = await axios.patch(TOGGLE_SAVE_CART_ITEM_API);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully save item."
+                }))
+            };
+
+            if (!item.isSaved) {
+                remove(index)
+            } else {
+                insert(index, { 
+                    productId: productId, 
+                    amount: Number(item.amount)
                 });
             };
 
             dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }            
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))          
         }
     };
 
@@ -139,7 +146,8 @@ function CheckoutFormItemList(props) {
                             </Typography>
 
                             <Field 
-                                name={`checkoutCartItems[${index}].productId`}
+                                name={`checkoutCartItems.${index}.productId`}
+                                value={item.product._id + ""}
                                 type="hidden"
                             />
 
@@ -151,9 +159,9 @@ function CheckoutFormItemList(props) {
                                     className="items-center mt-auto min-w-[430px]"
                                 >
                                     <FormikNumber 
-                                        name={`checkoutCartItems[${index}].amount`}
+                                        name={`checkoutCartItems.${index}.amount`}
                                         className="min-w-[60px] max-w-[80px]"
-                                        defaultValue={item.amount}
+                                        defaultValue={Number(item.amount)}
                                         onClick={handleChangeAmount}
                                     />                                
         

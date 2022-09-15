@@ -1,6 +1,8 @@
 import { useState, Fragment } from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
@@ -15,13 +17,18 @@ import Avatar from "@mui/material/Avatar";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { authActions } from "../../../../store/auth-slice";
 import { drawerListItems } from "./data/all-tab-data";
 import AllTabListItem from "./all-tab-list-item";
 import AllTabCollapseListItem from "./all-tab-collapse-list-item";
+import { snackbarActions } from "../../../../store/snackbar-slice";
 
 function AllTab(props) {
-    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
     const { name } = props;
+
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+    const router = useRouter();
+    const dispatch = useDispatch();
     
     const [openDrawer, setOpenDrawer] = useState(false);
     const iOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -29,6 +36,32 @@ function AllTab(props) {
     const handleOpenDrawer = () => setOpenDrawer(true);
 
     const handleCloseDrawer = () => setOpenDrawer(false);
+
+    const handleSignOut = async() => {
+        try {
+            const res = await axios.get(process.env.NEXT_PUBLIC_SIGNOUT_API);
+
+            if (res.status === 200) {
+                dispatch(snackbarActions.setSnackbarState({
+                    open: true,
+                    type: "success",
+                    message: "Successfully logged out."
+                }))
+    
+                dispatch(authActions.logout());
+    
+                setOpenDrawer(false);
+    
+                router.push("/");
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
+    };
 
     return (
         <Fragment>
@@ -121,7 +154,7 @@ function AllTab(props) {
                                     justifyContent: "center"
                                 }}
                             >
-                                <Button variant="outlined">
+                                <Button variant="outlined" onClick={handleSignOut}>
                                     Sign out
                                 </Button>
                             </ListItemButton> :

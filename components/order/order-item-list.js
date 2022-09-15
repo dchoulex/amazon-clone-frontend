@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
@@ -13,9 +14,13 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 
 import numberWithCommas from "../../utils/numberWithCommas";
 import getAPI from "../../utils/getAPI";
+import { snackbarActions } from "../../store/snackbar-slice";
+import { cartActions } from "../../store/cart-slice";
 
 function OrderItemList(props) {
-    const { orderItems, orderId, status, isCanceled, setSnackbarState } = props;
+    const { orderItems, orderId, status, isCanceled } = props;
+
+    const dispatch = useDispatch();
 
     return (
         <Box px={2}>
@@ -31,20 +36,20 @@ function OrderItemList(props) {
                         })
 
                         if (res.status === 200) {
-                            setSnackbarState({ 
+                            dispatch(snackbarActions.setSnackbarState({
                                 open: true, 
                                 type: "success", 
                                 message: "Successfully add item to cart."
-                            });
+                            }));
+
+                            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }))
                         } 
                     } catch(err) {
-                        if (err) {
-                            setSnackbarState({ 
-                                open: true , 
-                                type: "error", 
-                                message: "Oops... Something went wrong."
-                            });
-                        }
+                        dispatch(snackbarActions.setSnackbarState({
+                            open: true , 
+                            type: "error", 
+                            message: "Oops... Something went wrong."
+                        }))
                     }
                 };
 
@@ -55,20 +60,18 @@ function OrderItemList(props) {
                         const res = await axios.patch(ORDER_BACK_API);
 
                         if (res.status === 200) {
-                            setSnackbarState({ 
+                            dispatch(snackbarActions.setSnackbarState({
                                 open: true, 
                                 type: "success", 
                                 message: "Successfully order back item."
-                            });
+                            }))
                         } 
                     } catch(err) {
-                        if (err) {
-                            setSnackbarState({ 
-                                open: true , 
-                                type: "error", 
-                                message: "Oops... Something went wrong."
-                            });
-                        }
+                        dispatch(snackbarActions.setSnackbarState({
+                            open: true , 
+                            type: "error", 
+                            message: "Oops... Something went wrong."
+                        }))
                     }
                 };
 

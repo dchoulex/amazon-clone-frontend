@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -20,6 +21,7 @@ import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import FormikRating from "../ui/forms/formik-rating";
 import getAPI from "../../utils/getAPI";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 const REVIEW_PRODUCT_INITIAL_FORM_STATE = {
     rating: 0.5,
@@ -32,8 +34,10 @@ const REVIEW_PRODUCT_FORM_VALIDATION = Yup.object().shape({
 });
 
 function ReviewProductForm(props) {
-    const { openReviewProductForm, setOpenReviewProductForm, product, setSnackbarState } = props;
+    const { openReviewProductForm, setOpenReviewProductForm, product } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+
+    const dispatch = useDispatch();
 
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
@@ -53,20 +57,18 @@ function ReviewProductForm(props) {
             const res = await axios.post(CREATE_REVIEW_API, values);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
                     message: "Successfully review item."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
 
         setOpenReviewProductForm(false);

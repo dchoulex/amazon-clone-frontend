@@ -11,7 +11,9 @@ import Stack from '@mui/material/Stack';
 
 import { checkoutActions } from '../../../store/checkout-slice';
 import SelectAddressDialog from './select-address-dialog';
-import NoItemInfo from '../../ui/no-item-info';
+import NoItemInfo from '../../ui/dogs-info/no-item-info';
+import PageSpinner from '../../ui/pageSpinner';
+import ErrorInfo from '../../ui/dogs-info/error-info';
 
 function ShippingAddress(props) {
     const { handleNext } = props;
@@ -22,10 +24,10 @@ function ShippingAddress(props) {
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher);
+    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const addresses = data.data;
 
@@ -81,7 +83,7 @@ function ShippingAddress(props) {
                         />
                     </Fragment> :
 
-                    <Box className="flex">
+                    <Box className="flex flex-1">
                         <NoItemInfo 
                             errorMessage="No default address found. Please input your address" 
                             className="flex-1"

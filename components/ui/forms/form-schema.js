@@ -90,3 +90,8 @@ export const SELECT_AMOUNT_SCHEMA = Yup
     .integer(INTEGER_NUMBER_ERROR_MESSAGE)
     .positive(POSITIVE_NUMBER_ERROR_MESSAGE)
     .max(5, "You cannot buy more than ${max} items.");
+
+export const POINT_SCHEMA = Yup
+    .number()
+    .typeError(INVALID_NUMBER_TYPE_ERROR_MESSAGE)
+    .required(REQUIRED_ERROR_MESSAGE)

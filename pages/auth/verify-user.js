@@ -1,4 +1,8 @@
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -10,27 +14,70 @@ import Button from '@mui/material/Button';
 import LogoButtonWhite from "../../components/ui/logo-button-white";
 import FormikOTP from "../../components/ui/forms/formik-otp";
 import { OTP_SCHEMA } from "../../components/ui/forms/form-schema";
+import { snackbarActions } from '../../store/snackbar-slice';
+import FormikSubmitButton from '../../components/ui/forms/formik-submit-button';
+import { authActions } from '../../store/auth-slice';
 
 const VERIFY_USER_FORM = {
     OTP: ""
 };
 
 const VERIFY_USER_FORM_VALIDATION = Yup.object().shape({
-    OTP: OTP_SCHEMA,
+    OTP: OTP_SCHEMA
 });
 
 function VerifyUserPage() {
-    const handleVerifyUserForm = async (values) => {
-        const LOGIN_API = getAPI(process.env.NEXT_PUBLIC_LOGIN_API);
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const email = useSelector(state => state.auth.email);
 
-        const data = await axios.post(LOGIN_API, values);
+    useEffect(() => {
+        if (!email || email === "") {
+            router.push("/auth/forgot-password");
 
-        dispatch(authActions.login());
+            return;
+        }
+    }, [ email, router ])
 
-        router.push('/reset-password');
+    const handleVerifyUserForm = async(values) => {
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_VERIFY_OTP_API, values);
 
-        return data;
+            if (res.status === 200) {
+                router.push("/auth/reset-password");
+
+                dispatch(authActions.setOTP({ OTP: values.OTP }));
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "OTP is invalid."
+            }))
+        }
     };
+
+    const handleResendOTP = async() => {
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_FORGOT_PASSWORD_API, { email });
+
+            if (res.status === 200) {
+                router.push('/auth/verify-user');
+
+                dispatch(snackbarActions.setSnackbarState({
+                    open: true , 
+                    type: "success", 
+                    message: "Successfully resend OTP."
+                }))
+            };
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "No user found."
+            }))
+        }
+    }
 
     return (
         <Box
@@ -77,20 +124,21 @@ function VerifyUserPage() {
                                     label="OTP"
                                 />
 
-                                <Button 
+                                <FormikSubmitButton 
                                     fullWidth
                                     variant="contained"
                                     className="mt-3 mb-5"
                                     disabled={touched.OTP && errors.OTP}
                                 >
                                     Continue
-                                </Button>
+                                </FormikSubmitButton>
 
                                 <Button 
                                     fullWidth
                                     variant="text"
                                     className="mb-5"
                                     disableRipple
+                                    onClick={handleResendOTP}
                                 >
                                     Resend OTP
                                 </Button>

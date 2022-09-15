@@ -8,6 +8,7 @@ import walletReducer from "./wallet-slice";
 import userReducer from "./user-slice";
 import productReducer from "./product-slice";
 import checkoutReducer from "./checkout-slice";
+import snackbarReducer from "./snackbar-slice";
 
 const store = configureStore({
     reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
         wallet: walletReducer,
         user: userReducer,
         product: productReducer,
-        checkout: checkoutReducer
+        checkout: checkoutReducer,
+        snackbar: snackbarReducer
     }
 });
 

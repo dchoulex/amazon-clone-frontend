@@ -9,12 +9,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { checkoutActions } from '../../../store/checkout-slice';
-import NoItemInfo from '../../ui/no-item-info';
+import NoItemInfo from '../../ui/dogs-info/no-item-info';
 import SelectCreditCardDialog from './select-credit-card-dialog';
 
 function CreditCardPaymentInfo() {
-    const dispatch = useDispatch();
     const [ openSelectCreditCardDialog, setOpenSelectCreditCardDialog ] = useState(false);
+    
+    const dispatch = useDispatch();
 
     const creditCardUsed = useSelector(state => state.checkout.creditCard);
     const creditCardUsedIsEmptyObject = Object.keys(creditCardUsed).length === 0;

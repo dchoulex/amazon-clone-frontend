@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -22,6 +23,8 @@ import FormikSelect from "../ui/forms/formik-select";
 import { PREFECTURES } from "../../appConfig";
 import FormikRadio from "../ui/forms/formik-radio";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
+import { snackbarActions } from "../../store/snackbar-slice";
+import { userActions } from "../../store/user-slice";
 
 const ADD_ADDRESS_INITIAL_FORM_STATE = {
     name: "",
@@ -57,8 +60,9 @@ const defaultOptions = [
 ];
 
 function AddAddressForm(props) {
-    const { openAddAddressForm, setOpenAddAddressForm, setSnackbarState } = props;
+    const { openAddAddressForm, setOpenAddAddressForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const dispatch = useDispatch();
 
     const prefectures = PREFECTURES.map(prefecture => ({
         name: prefecture,
@@ -79,22 +83,23 @@ function AddAddressForm(props) {
 
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
+            const address = res.data.data;
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully add address."
-                });
-            } 
+                }));
+
+                if (address.isDefault) dispatch(userActions.changeUserDefaultAddress({ defaultAddress: address}))
+            };
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
 
         setOpenAddAddressForm(false);

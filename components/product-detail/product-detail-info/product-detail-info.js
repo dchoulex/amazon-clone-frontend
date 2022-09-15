@@ -9,7 +9,7 @@ import ProductDescription from "./product-description";
 import ProductDetailsReview from '../review-overview/product-details-review';
 
 function ProductDetailInfo(props) {
-    const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId, setSnackbarState} = props;
+    const { slug, images, description, title, isMediumScreenDown, stock, price, ratingsAverage, ratingsQuantity, reviews, productId} = props;
 
     return (
         <Box className="pt-5 px-5">
@@ -54,7 +54,6 @@ function ProductDetailInfo(props) {
                             stock={stock}
                             price={price} 
                             productId={productId}
-                            setSnackbarState={setSnackbarState}
                         />
                     </Grid>
                 }

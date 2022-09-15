@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -20,6 +21,7 @@ import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import FormikRating from "../ui/forms/formik-rating";
 import getAPI from "../../utils/getAPI";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 const EDIT_REVIEW_FORM_VALIDATION = Yup.object().shape({
     rating: REVIEW_RATING_SCHEMA,
@@ -27,8 +29,10 @@ const EDIT_REVIEW_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditReviewForm(props) {
-    const { openEditReviewForm, setOpenEditReviewForm, review, setSnackbarState } = props;
+    const { openEditReviewForm, setOpenEditReviewForm, review } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+
+    const dispatch = useDispatch();
 
     const EDIT_REVIEW_INITIAL_FORM_STATE = {
         rating: review.rating,
@@ -51,20 +55,18 @@ function EditReviewForm(props) {
             const res = await axios.patch(UPDATE_REVIEW_API, values);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
                     message: "Successfully update review."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }            
 
         setOpenEditReviewForm(false);

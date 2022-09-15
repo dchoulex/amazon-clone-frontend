@@ -8,7 +8,8 @@ import { DELIVERY_STATUS } from "../../appConfig";
 import numberWithCommas from "../../utils/numberWithCommas";
 
 function OrderHistorySummary(props) {
-    const { orderDate, total, address, id, orderStatus, isCanceled } = props;
+    const { orderDate, total, address, id, isCanceled, orderStatus } = props;
+
     const displayedOrderDate = orderDate.split("T")[0];
 
     const getChipColor = (status, orderStatus) => {
@@ -102,17 +103,6 @@ function OrderHistorySummary(props) {
                     <Typography variant="overline">
                         Order #{id.slice(0, 10)}
                     </Typography>
-                    
-                {/* 
-                    <Stack direction="row" spacing={2}>
-                        <Button disableRipple className="hover:bg-inherit normal-case p-0">
-                            View order details
-                        </Button>
-
-                        <Button disableRipple className="hover:bg-inherit normal-case p-0">
-                            Invoice
-                        </Button>
-                    </Stack> */}
                 </div>
             </div> 
         </Box>

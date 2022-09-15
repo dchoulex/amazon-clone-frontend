@@ -1,5 +1,9 @@
 import { useState, Fragment } from "react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { useRouter } from "next/router";
+
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -8,9 +12,15 @@ import Typography from "@mui/material/Typography";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PersonIcon from '@mui/icons-material/Person';
 
+import { snackbarActions } from "../../../store/snackbar-slice";
+import { authActions } from "../../../store/auth-slice";
+
 function AccountButton(props) {
     const { name, isAuthenticated } = props;
+
     const firstName = name.split(" ")[0];
+    const router = useRouter();
+    const dispatch = useDispatch();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -21,6 +31,30 @@ function AccountButton(props) {
     
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleSignOut = async() => {
+        try {
+            const res = await axios.get(process.env.NEXT_PUBLIC_SIGNOUT_API);
+
+            if (res.status === 200) {
+                dispatch(snackbarActions.setSnackbarState({
+                    open: true,
+                    type: "success",
+                    message: "Successfully logged out."
+                }))
+    
+                dispatch(authActions.logout());
+    
+                router.replace("/");
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
     };
   
     return (
@@ -117,7 +151,7 @@ function AccountButton(props) {
                     </Fragment>
                 }
 
-                <Link href={isAuthenticated ? "/" : "/auth/login"}>
+                {isAuthenticated ?
                     <MenuItem 
                         onClick={handleClose}   
                         sx={{ 
@@ -130,11 +164,31 @@ function AccountButton(props) {
                         divider={isAuthenticated ? false : true}
                         disableRipple
                     >
-                        <Button variant="outlined" >
-                            {isAuthenticated ? "Sign out" : "Login"}
+                        <Button variant="outlined" onClick={handleSignOut}>
+                            Sign out
                         </Button>
-                    </MenuItem>
-                </Link>
+                    </MenuItem> :
+
+                    <Link href="/auth/login" >
+                        <MenuItem 
+                            onClick={handleClose}   
+                            sx={{ 
+                                justifyContent: "center",
+                                "&:hover": {
+                                    backgroundColor: "white"
+                                },
+                                py: 1
+                            }}
+                            divider={isAuthenticated ? false : true}
+                            disableRipple
+                        >
+                            <Button variant="outlined" >
+                                Login
+                            </Button>
+                        </MenuItem>
+                    </Link> 
+                }
+
 
                 {!isAuthenticated &&
                     <Fragment>

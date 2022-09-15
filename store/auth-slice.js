@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_AUTH_SLICE_STATE = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    OTP: null,
+    email: null
 };
 
 const authSlice = createSlice({
@@ -14,6 +16,14 @@ const authSlice = createSlice({
         
         logout(state) {
             state.isAuthenticated = false;
+        },
+
+        setOTP(state, action) {
+            state.OTP = action.payload.OTP
+        },
+
+        setUserEmail(state, action) {
+            state.email = action.payload.email
         }
     }
 });

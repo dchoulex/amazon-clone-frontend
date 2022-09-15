@@ -8,18 +8,11 @@ import Divider from "@mui/material/Divider";
 
 import PageTitle from "../ui/page-title/page-title";
 import MyProfileCard from "./my-profile-card";
-import CustomizedSnackbar from "../ui/customized-snackbar";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
 
 function MyProfileInfo(props) {
     const { title } = props;
-
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -43,15 +36,7 @@ function MyProfileInfo(props) {
 
                 <Divider className="border-gray-400 mb-5"/>
 
-                <MyProfileCard 
-                    user={user} 
-                    setSnackbarState={setSnackbarState} 
-                />
-
-                <CustomizedSnackbar
-                    snackbarState={snackbarState}
-                    setSnackbarState={setSnackbarState}
-                />
+                <MyProfileCard user={user} />
             </Paper>
         </Box>
     )

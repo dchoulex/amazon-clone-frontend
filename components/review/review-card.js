@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import Image from "next/image";
 
@@ -16,13 +17,16 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import getAPI from "../../utils/getAPI";
 import EditReviewForm from "./edit-review-form";
 import ReviewRatingStar from "./review-rating-star";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function ReviewCard(props) {
-    const { review, setSnackbarState } = props;
+    const { review } = props;
     const [ reviewIsExpanded, setReviewIsExpanded ] = useState(false);
     const [ openEditReviewForm, setOpenEditReviewForm ] = useState(false);
     const { product } = review;
     const reviewSummary = review.review.slice(0, 500) + "..." ;
+
+    const dispatch = useDispatch();
 
     const handleExpandMoreReview = () => {
         setReviewIsExpanded(true);
@@ -39,20 +43,18 @@ function ReviewCard(props) {
             const res = await axios.delete(DELETE_REVIEW_API);
 
             if (res.status === 204) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 
@@ -86,7 +88,6 @@ function ReviewCard(props) {
                         openEditReviewForm={openEditReviewForm}
                         setOpenEditReviewForm={setOpenEditReviewForm}
                         review={review}
-                        setSnackbarState={setSnackbarState}
                     />
 
                     <Button 

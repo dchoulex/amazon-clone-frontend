@@ -1,4 +1,5 @@
 import { useState, Fragment } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -15,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { STRING_REQUIRED_SCHEMA, NAME_SCHEMA, POST_CODE_SCHEMA, PREFECTURE_SCHEMA, PHONE_NUMBER_SCHEMA } from "../ui/forms/form-schema";
+import { snackbarActions } from "../../store/snackbar-slice";
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikTextField from "../ui/forms/formik-text-field";
 import FormikSelect from "../ui/forms/formik-select";
@@ -33,8 +35,9 @@ const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditAddressForm(props) {
-    const { address, openEditAddressForm, setOpenEditAddressForm, setSnackbarState } = props;
+    const { address, openEditAddressForm, setOpenEditAddressForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const dispatch = useDispatch();
 
     const prefectures = PREFECTURES.map(prefecture => ({
         name: prefecture,
@@ -69,20 +72,18 @@ function EditAddressForm(props) {
             const res = await axios.put(UPDATE_ADDRESS_API, values);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
-                    message: "Successfully edit address."
-                });
+                    message: "Successfully update address."
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
 
         setOpenEditAddressForm(false);

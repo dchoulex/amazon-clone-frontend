@@ -2,22 +2,22 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 function PaymentInfo(props) {
-    const { paymentMethod, creditCard, amazonPoints } = props;
+    const { paymentMethod, creditCard, pointUsed } = props;
 
-    let paymentInfo;
+    let displayedCreditCardInfo;
 
-    switch(paymentMethod) {
-        case "Credit Card":
-            let displayedCreditCardInfo;
-    
-            displayedCreditCardInfo = {
-                type: creditCard.type[0].toUpperCase() + creditCard.type.slice(1),
-                name: creditCard.user.name,
-                number: "ending in ..." + creditCard.number.slice(creditCard.number.length - 4)
-            };
+    if (paymentMethod === "credit") {
+        displayedCreditCardInfo = {
+            type: creditCard.type[0].toUpperCase() + creditCard.type.slice(1),
+            name: creditCard.user.name,
+            number: "ending in ..." + creditCard.number.slice(creditCard.number.length - 4)
+        };
+    }
 
-            paymentInfo = (
-                <Box>
+    return (
+        <Box>
+            {paymentMethod === "credit" &&
+                <Box mb={1}>
                     <Typography className="text-lg">
                         {displayedCreditCardInfo.type}
                     </Typography>
@@ -30,21 +30,13 @@ function PaymentInfo(props) {
                         {displayedCreditCardInfo.number}
                     </Typography>
                 </Box>
-            );
-            break;
-        
-        case "Amazon Points":
-            paymentInfo = (
-                <Box>
-                    <Typography>
-                        Point used: {amazonPoints}
-                    </Typography>
-                </Box>
-            );
-            break;
-    }
+            }
 
-    return paymentInfo;
+            <Typography>
+                Point used: <span className="text-orange-500">{pointUsed}</span> pt
+            </Typography>
+        </Box>
+    );
 };
 
 export default PaymentInfo;

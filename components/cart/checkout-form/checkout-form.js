@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { Formik, Form, FieldArray } from "formik";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import axios from "axios";
@@ -11,6 +12,7 @@ import { SELECT_AMOUNT_SCHEMA } from "../../ui/forms/form-schema";
 import CheckoutFormItemList from "./checkout-form-item-list";
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikSubmitButton from "../../ui/forms/formik-submit-button";
+import { snackbarActions } from "../../../store/snackbar-slice";
 
 const CHECKOUT_CART_ITEM_OBJECT_SCHEMA = Yup.object().shape({
     amount: SELECT_AMOUNT_SCHEMA,
@@ -40,13 +42,15 @@ function calculateSubTotalAndPoint(items, checkoutCartItems) {
 };
 
 function CheckoutForm(props) {
-    const { items, numOfCartItems, setSnackbarState } = props;
+    const { items, numOfCartItems } = props;
     const router = useRouter();
+
+    const dispatch = useDispatch();
 
     const CHECKOUT_INITIAL_FORM_STATE = {
         checkoutCartItems: items.map(item => (
             {
-                productId: item.product._id,
+                productId: item.product._id + "",
                 amount: item.amount
             }
         ))
@@ -55,9 +59,17 @@ function CheckoutForm(props) {
     const handleSubmitCheckoutForm = async(values, actions) => {
         actions.setSubmitting(false);
         
-        await axios.put(process.env.NEXT_PUBLIC_CHECKOUT_CART_ITEMS_API, values);
+        try {
+            await axios.put(process.env.NEXT_PUBLIC_CHECKOUT_CART_ITEMS_API, values);
 
-        router.push("/cart/checkout");
+            router.push("/cart/checkout");
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
     };
 
     return (
@@ -66,17 +78,19 @@ function CheckoutForm(props) {
             validationSchema={CHECKOUT_FORM_VALIDATION}
             onSubmit={handleSubmitCheckoutForm}
             className="mt-auto"
+            enableReinitialize
         >
             {({ touched, errors, values }) => {
                 const [ subTotal, points ] = calculateSubTotalAndPoint(items, values.checkoutCartItems);
-            
+
                 return (
                     <Form>
                         <FieldArray name="checkoutCartItems">
                             {({ remove, insert }) => (  
+                            <Fragment>
                                 <Box>
                                     {items.map((item, index) => {
-                                        const amount = `checkoutCartItems[${index}].amount`;
+                                        const amount = `checkoutCartItems.${index}.amount`;
 
                                         let errorMessage;
 
@@ -97,52 +111,52 @@ function CheckoutForm(props) {
                                                 insert={insert}
                                                 touched={touched}
                                                 errorMessage={errorMessage}
-                                                setSnackbarState={setSnackbarState}
                                             />
                                         )
                                     })}
                                 </Box>
-                            )}
-                        </FieldArray>
+     
                         
-                        <Fragment>
-                            <Box 
-                                py={2} 
-                                px={4}
-                                className="flex"
-                                sx={{ 
-                                    borderTop: 1,
-                                    borderColor: "divider"
-                                }}
-                            >
-                                <div className="ml-auto">
-                                    <Typography 
-                                        variant="body1" 
-                                        className="text-xl"
-                                    >
-                                        Subtotal ({numOfCartItems} items) : &nbsp;
-                                        <span className="text-red-500">¥{numberWithCommas(subTotal)}</span>
-                                    </Typography>
 
-                                    <Typography className="text-right my-1">
-                                        Points to be earned : &nbsp;
-                                        <span className="text-orange-400">{numberWithCommas(points)} pt</span>
-                                    </Typography>
-                                </div>
-                            </Box>
-
-                            <div className="flex justify-center">
-                                <FormikSubmitButton 
-                                    variant="outlined"
-                                    className="normal-case my-3"
-                                    disabled={(touched.amount && errors.amount) ? true : false}
+                                <Box 
+                                    py={2} 
+                                    px={4}
+                                    className="flex"
+                                    sx={{ 
+                                        borderTop: 1,
+                                        borderColor: "divider"
+                                    }}
                                 >
-                                    Proceed to checkout
-                                </FormikSubmitButton>
-                            </div>
-                        </Fragment>
+                                    <div className="ml-auto">
+                                        <Typography 
+                                            variant="body1" 
+                                            className="text-xl"
+                                        >
+                                            Subtotal ({numOfCartItems} items) : &nbsp;
+                                            <span className="text-red-500">¥{numberWithCommas(subTotal)}</span>
+                                        </Typography>
+
+                                        <Typography className="text-right my-1">
+                                            Points to be earned : &nbsp;
+                                            <span className="text-orange-400">{numberWithCommas(points)} pt</span>
+                                        </Typography>
+                                    </div>
+                                </Box>
+
+                                <div className="flex justify-center">
+                                    <FormikSubmitButton 
+                                        variant="outlined"
+                                        className="normal-case my-3"
+                                        disabled={(touched.amount && errors.amount) ? true : false}
+                                    >
+                                        Proceed to checkout
+                                    </FormikSubmitButton>
+                                </div>
+                                </Fragment>
+                                                       )}
+                        </FieldArray>
                     </Form>
-                )
+                    )
             }}
         </Formik>
     )

@@ -9,7 +9,7 @@ function AddressSelectionButton(props) {
 
     return (
         <Link href="/account/address">
-            <Button className="normal-case text-white mx-1 h-56px min-w-[120px] max-w-[150px]">
+            <Button className="normal-case text-white mx-1 h-56px min-w-[150px] max-w-[200px]">
                 <LocationOnOutlinedIcon />
 
                 <Box className="text-left flex-col ml-2">

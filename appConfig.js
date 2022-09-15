@@ -11,7 +11,7 @@ export const CURRENT_TIME = Date.now() - timezoneOffset;
 
 export const DELIVERY_STATUS = ["Ordered", "Shipped",  "Out for Delivery", "Delivered", "Canceled"];
 
-export const PAYMENT_METHODS = ["Credit Card", "Convenience Store", "ATM", "Amazon Points"];
+export const PAYMENT_METHODS = ["Credit Card", "Convenience Store", "ATM"];
 
 export const RATING_LABELS = {
     0: 'No review',
@@ -80,3 +80,5 @@ export const PRODUCTS_NAME = [
 ];
 
 export const TAX = 0.1;
+
+export const CHECKOUT_STEPS = ["Shipping address", "Shipping method", "Payment method", "Review items" ];

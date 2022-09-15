@@ -20,6 +20,7 @@ import { NAME_SCHEMA, PHONE_NUMBER_SCHEMA, EMAIL_SCHEMA } from "../ui/forms/form
 import ConfirmCloseDialog from "../ui/dialog/confirm-close-dialog";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import { userActions } from "../../store/user-slice";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
     name: NAME_SCHEMA,
@@ -28,9 +29,10 @@ const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditProfileForm(props) {
-    const { user, openEditProfileForm, setOpenEditProfileForm, setSnackbarState } = props;
+    const { user, openEditProfileForm, setOpenEditProfileForm } = props;
     const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
-    const dispatch = useDispatch()
+
+    const dispatch = useDispatch();
 
     const EDIT_PROFILE_INITIAL_FORM_STATE = {
         name: user.name,
@@ -52,22 +54,20 @@ function EditProfileForm(props) {
             const res = await axios.put(process.env.NEXT_PUBLIC_UPDATE_MY_PROFILE_API, values);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully update profile."
-                });
+                }))
             };
 
             dispatch(userActions.changeUserName({ name: res.data.data.name }))
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }            
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))       
         }
 
         setOpenEditProfileForm(false);

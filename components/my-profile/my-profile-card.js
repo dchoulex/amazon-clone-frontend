@@ -16,12 +16,13 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { authActions } from "../../store/auth-slice";
 import EditProfileForm from "./edit-profile-form";
-import ConfirmDeleteDialog from "../ui/dialog/confirm-delete-dialog";
+import ConfirmDeleteDialog from "./confirm-delete-dialog";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function MyProfileCard(props) {
-    const { user, setSnackbarState } = props;
-    const dispatch = useDispatch();
+    const { user } = props;
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const [ openEditProfileForm, setOpenEditProfileForm ] = useState(false);
     const [ openConfirmDeleteDialog, setOpenConfirmDeleteDialog ] = useState(false);
@@ -39,20 +40,18 @@ function MyProfileCard(props) {
             const res = await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
 
             if (res.status === 204) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }  
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         };
 
         setOpenConfirmDeleteDialog(false);
@@ -170,7 +169,6 @@ function MyProfileCard(props) {
                 user={user}
                 openEditProfileForm={openEditProfileForm}
                 setOpenEditProfileForm={setOpenEditProfileForm}
-                setSnackbarState={setSnackbarState}
             />
         </Box>
     )

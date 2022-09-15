@@ -17,19 +17,12 @@ import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
-import CustomizedSnackbar from "../ui/customized-snackbar";
 import ErrorInfo from "../ui/dogs-info/error-info";
 import PageSpinner from "../ui/pageSpinner";
 
 function ReviewInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
-
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
 
     const currentTab = useSelector(state => state.review.currentTab);
     const currentReviewTabPage = useSelector(state => state.review.reviewPage);
@@ -114,7 +107,6 @@ function ReviewInfo(props) {
                                 <ReviewPanelList 
                                     items={tabItems[0].paginatedItems} 
                                     currentTab={currentTab} 
-                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
 
@@ -125,7 +117,6 @@ function ReviewInfo(props) {
                                 <ReviewablePanelList 
                                     items={tabItems[1].paginatedItems} 
                                     currentTab={currentTab} 
-                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
                         </Fragment>
@@ -141,11 +132,6 @@ function ReviewInfo(props) {
                     />
                 }
             </Paper>
-
-            <CustomizedSnackbar
-                snackbarState={snackbarState}
-                setSnackbarState={setSnackbarState}
-            />
         </Box>
     )
 };

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Link from "next/link";
 import axios from "axios";
 
@@ -14,10 +15,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import getAPI from "../../utils/getAPI";
 import OrderHistorySummary from "./order-history-summary";
 import OrderItemList from "../order/order-item-list";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function OrderPanelList(props) {
-    const { items, setSnackbarState } = props;
+    const { items } = props;
     const [ expanded, setExpanded ] = useState(0);
+
+    const dispatch = useDispatch();
 
     const handleChange = (panel) => (_, isExpanded) => {
         setExpanded(isExpanded ? panel : false)
@@ -36,20 +40,18 @@ function OrderPanelList(props) {
                         const res = await axios.delete(CANCEL_ORDER_API);
             
                         if (res.status === 204) {
-                            setSnackbarState({ 
+                            dispatch(snackbarActions.setSnackbarState({
                                 open: true, 
                                 type: "success", 
                                 message: "Successfully cancel order."
-                            });
+                            }))
                         }
                     } catch(err) {
-                        if (err) {
-                            setSnackbarState({ 
-                                open: true , 
-                                type: "error", 
-                                message: "Oops... Something went wrong."
-                            });
-                        }
+                        dispatch(snackbarActions.setSnackbarState({
+                            open: true , 
+                            type: "error", 
+                            message: "Oops... Something went wrong."
+                        }))
                     }
                 };
 
@@ -70,8 +72,8 @@ function OrderPanelList(props) {
                                 total={order.grandTotal}
                                 address={`${order.shippingAddress.city}, ${order.shippingAddress.rest}`}
                                 id={orderId}
-                                orderStatus={order.status}
                                 isCanceled={order.isCanceled}
+                                orderStatus={order.status}
                             />
                         </AccordionSummary>
 
@@ -101,7 +103,6 @@ function OrderPanelList(props) {
                                 orderItems={orderItems}
                                 orderId={orderId}
                                 isCanceled={order.isCanceled}
-                                setSnackbarState={setSnackbarState}
                             />
                         </AccordionDetails>
                     </Accordion>

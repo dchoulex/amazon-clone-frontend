@@ -9,9 +9,10 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 import getAPI from "../../../../utils/getAPI";
 import { cartActions } from "../../../../store/cart-slice";
+import { snackbarActions } from "../../../../store/snackbar-slice";
 
 function SavedItemsButtonStack(props) {
-    const { cartId, isSaved, setSnackbarState } = props;
+    const { cartId, isSaved } = props;
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
@@ -20,21 +21,18 @@ function SavedItemsButtonStack(props) {
         try {
             const res = await axios.delete(DELETE_CART_ITEM_API)
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             };
         } catch(err) {
-            console.log(err)
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 
@@ -45,23 +43,20 @@ function SavedItemsButtonStack(props) {
             const res = await axios.patch(TOGGLE_SAVE_CART_ITEM_API);
             
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully move item back to cart."
-                });
+                }))
             } 
 
             dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
         } catch(err) {
-            console.log(err)
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }   
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 

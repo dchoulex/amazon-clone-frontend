@@ -5,7 +5,8 @@ const INITIAL_CHECKOUT_SLICE_STATE = {
     shippingMethod: "standard",
     shippingCost: null,
     paymentMethod: "credit",
-    creditCard: {}
+    creditCard: {},
+    pointUsed: 0
 };
 
 const checkoutSlice = createSlice({
@@ -30,6 +31,10 @@ const checkoutSlice = createSlice({
 
         setCreditCard(state, action) {
             state.creditCard = action.payload.creditCard
+        },
+
+        setPointUsed(state, action) {
+            state.pointUsed = action.payload.pointUsed
         }
     }
 });

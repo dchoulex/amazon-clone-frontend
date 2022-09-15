@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import ReviewProductForm from "./review-product-form";
 
 function ReviewableProductCard(props) {
-    const { product, setSnackbarState } = props;
+    const { product } = props;
     const [ openReviewProductForm, setOpenReviewProductForm ] = useState(false);
 
     const handleOpenReviewProductForm = () => {
@@ -49,7 +49,6 @@ function ReviewableProductCard(props) {
                 openReviewProductForm={openReviewProductForm}
                 setOpenReviewProductForm={setOpenReviewProductForm}
                 product={product}
-                setSnackbarState={setSnackbarState}
             />
         </Card>
     )

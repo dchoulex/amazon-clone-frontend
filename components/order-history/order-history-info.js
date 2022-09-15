@@ -16,19 +16,12 @@ import OrderPanelList from "./order-panel-list";
 import PageTitle from "../ui/page-title/page-title";
 import PaginationButtons from "../ui/pagination-buttons";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
-import CustomizedSnackbar from "../ui/customized-snackbar";
 import ErrorInfo from "../ui/dogs-info/error-info";
 import PageSpinner from "../ui/pageSpinner";
 
 function OrderHistoryInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
-
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
 
     const currentTab = useSelector(state => state.orderHistory.currentTab)
     const currentOrderHistoryTabPage = useSelector(state => state.orderHistory.orderHistoryTabPage);
@@ -106,7 +99,6 @@ function OrderHistoryInfo(props) {
                                 <OrderPanelList 
                                     items={tabItems[0].paginatedItems} 
                                     currentTab={currentTab} 
-                                    setSnackbarState={setSnackbarState}
                                 />
                             </TabPanel>
 
@@ -116,8 +108,7 @@ function OrderHistoryInfo(props) {
                             >
                                 <OrderPanelList 
                                     items={tabItems[1].paginatedItems} 
-                                    currentTab={currentTab}
-                                    setSnackbarState={setSnackbarState} 
+                                    currentTab={currentTab} 
                                 />
                             </TabPanel>
                         </Fragment>
@@ -133,11 +124,6 @@ function OrderHistoryInfo(props) {
                     />
                 }
             </Paper>
-
-            <CustomizedSnackbar
-                snackbarState={snackbarState}
-                setSnackbarState={setSnackbarState}
-            />
         </Box>
     )
 };

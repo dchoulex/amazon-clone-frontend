@@ -21,7 +21,8 @@ function FormikNumber(props) {
         margin: "none",
         size: "small",
         type: "number",
-        onChange: handleChange
+        onChange: handleChange,
+        onWheel: event => event.target.blur()
     };
 
     if (meta && meta.touched && meta.error) {

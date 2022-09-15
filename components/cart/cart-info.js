@@ -17,19 +17,12 @@ import PageTitle from "../ui/page-title/page-title";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
 import PaginationButtons from "../ui/pagination-buttons";
 import CheckoutForm from "./checkout-form/checkout-form";
-import CustomizedSnackbar from "../ui/customized-snackbar";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
 
 function CartInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
-
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
 
     const currentTab = useSelector(state => state.cart.currentTab);
     const currentCartTabPage = useSelector(state => state.cart.cartTabPage);
@@ -111,7 +104,6 @@ function CartInfo(props) {
                                 subTotal={(tabItems[0].subTotal)}
                                 point={tabItems[0].point}
                                 isEmpty={tabItems[currentTab].isEmpty}
-                                setSnackbarState={setSnackbarState}
                             />
                         }
                     </TabPanel>
@@ -123,7 +115,6 @@ function CartInfo(props) {
                         <CartPanelList 
                             items={getPaginatedItems(saveTabItems, tabItems[1].page)} 
                             currentTab={currentTab} 
-                            setSnackbarState={setSnackbarState}
                         />
                     </TabPanel>
                 </TabContext>
@@ -136,11 +127,6 @@ function CartInfo(props) {
                         onChange={tabItems[currentTab].handleChange}
                     />
                 }   
-
-                <CustomizedSnackbar
-                    snackbarState={snackbarState}
-                    setSnackbarState={setSnackbarState}
-                />
             </Paper>
         </Box>
     )

@@ -6,7 +6,7 @@ const INITIAL_USER_SLICE_STATE = {
     phoneNumber: "",
     amazonPoints: 0,
     defaultAddress: {},
-    defaultCreditCard: {},
+    defaultCreditCard: {}
 };
 
 const userSlice = createSlice({
@@ -26,8 +26,16 @@ const userSlice = createSlice({
             state.defaultAddress = action.payload.defaultAddress
         },
 
+        changeUserDefaultCreditCard(state, action) {
+            state.defaultCreditCard = action.payload.defaultCreditCard
+        },
+
         changeUserName(state, action) {
             state.name = action.payload.name
+        },
+
+        changeAmazonPoints(state, action) {
+            state.amazonPoints = action.payload.amazonPoints
         }
     }
 });

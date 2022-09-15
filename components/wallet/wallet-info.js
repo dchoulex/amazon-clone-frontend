@@ -16,18 +16,12 @@ import PaginationButtons from "../ui/pagination-buttons";
 import getPaginatedItems from "../../utils/getPaginatedItems";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
 import AddCreditCardForm from "./add-credit-card-form";
-import CustomizedSnackbar from "../ui/customized-snackbar";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
 
 function WalletInfo(props) {
     const { title } = props;
     const [ openAddCreditCardForm , setOpenAddCreditCardForm ] = useState(false);
-    const [ snackbarState, setSnackbarState ] = useState({
-        open: false,
-        type: null,
-        message: null
-    });
 
     const dispatch = useDispatch();
     const currentPage = useSelector(state => state.wallet.walletPage);
@@ -83,10 +77,7 @@ function WalletInfo(props) {
                                 xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <WalletCard 
-                                    card={card} 
-                                    setSnackbarState={setSnackbarState}
-                                />
+                                <WalletCard card={card} />
                             </Grid>
                         ))}   
                     </Grid>
@@ -105,12 +96,6 @@ function WalletInfo(props) {
             <AddCreditCardForm 
                 openAddCreditCardForm={openAddCreditCardForm}
                 setOpenAddCreditCardForm={setOpenAddCreditCardForm}
-                setSnackbarState={setSnackbarState}
-            />
-
-            <CustomizedSnackbar
-                snackbarState={snackbarState}
-                setSnackbarState={setSnackbarState}
             />
         </Box>
     )

@@ -3,8 +3,8 @@ import SubBottomNav from './sub-bottom-nav/sub-bottom-nav';
 
 function Footer() {
     return (
-        <footer className="bg-amazon_blue-light">
-            <MainBottomNav />
+        <footer className="bg-amazon_blue-dark flex flex-1 justify-center items-center">
+            {/* <MainBottomNav /> */}
 
             <SubBottomNav />
         </footer>

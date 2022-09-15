@@ -65,10 +65,10 @@ function Header() {
         totalAmount = 0
     };
 
-    let defaultAddressPostCode = "No default address found";
-    let defaultAddressLine = "Please select a default address";
+    let defaultAddressPostCode = "No default address";
+    let defaultAddressLine = "Select a default address";
 
-    if (user.defaultAddress) {
+    if (user.defaultAddress && Object.keys(user.defaultAddress).length !== 0) {
         defaultAddressPostCode = user.defaultAddress.postCode;
 
         if (user.defaultAddress.city) {

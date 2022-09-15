@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 import Box from "@mui/material/Box";
@@ -13,57 +14,57 @@ import Divider from "@mui/material/Divider";
 import Chip from "@mui/material/Chip";
 
 import getAPI from "../../utils/getAPI";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function WalletCard(props) {
-    const { card, setSnackbarState } = props;
+    const { card } = props;
     const displayedCardNumber = "ending in ..." + card.number.slice(card.number.length - 4);
     const displayedExpirationDate = card.expirationDate.split("-").slice(0, 2).join(" / ");
     const displayedCreditCardType = card.type[0].toUpperCase() + card.type.slice(1);
 
-    const DELETE_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CREDIT_CARD_API, { id: card._id });
-    const SET_CREDIT_CARD_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_CREDIT_CARD_AS_DEFAULT_API, { id: card._id });
+    const dispatch = useDispatch();
 
     const handleRemoveCreditCard = async () => {
+        const DELETE_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CREDIT_CARD_API, { id: card._id });
+
         try {
             const res = await axios.delete(DELETE_CREDIT_CARD_API);
 
             if (res.status === 204) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 
     const handleSetAsDefault = async () => {
+        const SET_CREDIT_CARD_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_CREDIT_CARD_AS_DEFAULT_API, { id: card._id });
+
         try {
             const res = await axios.patch(SET_CREDIT_CARD_AS_DEFAULT_API);
 
             if (res.status === 200) {
-                setSnackbarState({ 
+                dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully set credit card as default."
-                });
+                }))
             } 
         } catch(err) {
-            if (err) {
-                setSnackbarState({ 
-                    open: true , 
-                    type: "error", 
-                    message: "Oops... Something went wrong."
-                });
-            }
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
         }
     };
 

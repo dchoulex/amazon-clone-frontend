@@ -1,17 +1,21 @@
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
+import { useRouter } from "next/router";
 import * as Yup from "yup";
 import Link from 'next/link';
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-import { authActions } from "../../store/auth-slice";
 import { EMAIL_SCHEMA } from "../../components/ui/forms/form-schema";
 import FormikSubmitButton from "../../components/ui/forms/formik-submit-button";
 import FormikEmail from "../../components/ui/forms/formik-email";
 import LogoButtonWhite from "../../components/ui/logo-button-white";
+import { snackbarActions } from "../../store/snackbar-slice";
+import { authActions } from "../../store/auth-slice";
 
 const FORGOT_PASSWORD_FORM_INITIAL_STATE = {
     email: ""
@@ -23,17 +27,24 @@ const FORGOT_PASSWORD_FORM_VALIDATION = Yup.object().shape({
 
 function ForgotPasswordPage() {
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const handleSubmitForgotPasswordForm = async (values) => {
-        const FORGOT_PASSWORD_API = getAPI(process.env.NEXT_PUBLIC_FORGOT_PASSWORD_API);
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_FORGOT_PASSWORD_API, values);
 
-        const data = await axios.post(FORGOT_PASSWORD_API, values);
-
-        dispatch(authActions.login());
-
-        router.push('/auth/verify-user')
-
-        return data;
+            if (res.status === 200) {
+                dispatch(authActions.setUserEmail({ email: values.email }));
+                
+                router.push('/auth/verify-user');
+            };
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "No user found."
+            }))
+        }
     };
 
     return (
@@ -81,7 +92,7 @@ function ForgotPasswordPage() {
                                     <Button 
                                         variant="text" className="normal-case block mt-2"
                                     >
-                                            Back to login page
+                                        Back to login page
                                     </Button>
                                 </Link>
                             </Paper>

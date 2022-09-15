@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import CartPanelDescription from "./cart-panel-description/cart-panel-description";
 
 function CartPanelList(props) {
-    const { items, currentTab, setSnackbarState } = props;
+    const { items, currentTab } = props;
 
     return (
         <Box>
@@ -39,7 +39,6 @@ function CartPanelList(props) {
                                     point={item.product.point}
                                     currentTab={currentTab}
                                     amount={item.amount}
-                                    setSnackbarState={setSnackbarState}
                                 /> 
                             </Grid>
                         </Grid>
