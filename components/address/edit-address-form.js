@@ -23,6 +23,7 @@ import FormikSelect from "../ui/forms/formik-select";
 import { PREFECTURES } from "../../appConfig";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import getAPI from "../../utils/getAPI";
+import { userActions } from "../../store/user-slice";
 
 const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
     name: NAME_SCHEMA,
@@ -71,12 +72,20 @@ function EditAddressForm(props) {
         try {
             const res = await axios.put(UPDATE_ADDRESS_API, values);
 
+            const address = res.data.data;
+
             if (res.status === 200) {
                 dispatch(snackbarActions.setSnackbarState({
                     open: true, 
                     type: "success", 
                     message: "Successfully update address."
                 }))
+
+                if (address.isDefault) {
+                    dispatch(userActions.changeUserDefaultAddress({
+                        defaultAddress: address
+                    }))
+                }
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({

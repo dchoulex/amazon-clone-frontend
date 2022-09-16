@@ -11,7 +11,10 @@ function CartButton(props) {
         <Link href="/cart">
             <Button className="h-56px flex-none pr-2 ml-1">
                 <Box className="h-56px">
-                    <ShoppingCartOutlinedIcon fontSize="large" className="text-white relative top-4"/>
+                    <ShoppingCartOutlinedIcon 
+                        fontSize="large" 
+                        className="text-white relative top-4"/
+                    >
 
                     <Typography className="relative bottom-11 text-lg text-orange-400 p-0">
                         {cartNumber}

@@ -85,7 +85,7 @@ function CreditCardPaymentInfo() {
 
             <Box className="flex">
                 <NoItemInfo 
-                    errorMessage="No default address found. Please input your address" 
+                    errorMessage="No default credit card found. Please input your credit card" 
                     className="flex-1"
                 /> 
 

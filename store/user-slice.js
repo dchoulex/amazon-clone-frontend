@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const INITIAL_USER_SLICE_STATE = {
     name: "Hello, Sign in",
     email: "",
-    phoneNumber: "",
     amazonPoints: 0,
     defaultAddress: {},
     defaultCreditCard: {}
@@ -16,7 +15,6 @@ const userSlice = createSlice({
         setUser(state, action) {
             state.name = action.payload.name;
             state.email = action.payload.email;
-            state.phoneNumber = action.payload.phoneNumber;
             state.amazonPoints = action.payload.amazonPoints,
             state.defaultAddress = action.payload.defaultAddress,
             state.defaultCreditCard = action.payload.defaultCreditCard
@@ -41,10 +39,20 @@ const userSlice = createSlice({
         reinitialize(state) {
             state.name = "Hello, Sign in",
             state.email = "",
-            phoneNumber = "",
-            amazonPoints = 0,
-            defaultAddress = {},
-            defaultCreditCard = {}
+            state.amazonPoints = 0,
+            state.defaultAddress = {},
+            state.defaultCreditCard = {}
+        },
+
+        reinitializeDefaultAddress(state) {
+            state.defaultAddress= {
+                postCode : "No default address",
+                rest : "Select a default address"
+            }
+        },
+
+        reinitializeDefaultCreditCard(state) {
+            state.defaultCreditCard = {}
         }
     }
 });

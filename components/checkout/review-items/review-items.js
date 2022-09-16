@@ -25,6 +25,7 @@ import { snackbarActions } from "../../../store/snackbar-slice";
 import PageSpinner from "../../ui/pageSpinner";
 import ErrorInfo from "../../ui/dogs-info/error-info";
 import numberWithCommas from "../../../utils/numberWithCommas";
+import { checkoutActions } from "../../../store/checkout-slice";
 
 function ReviewItems(props) {
     const { handleBack, handleNext } = props;
@@ -45,7 +46,8 @@ function ReviewItems(props) {
     if (!data) return <PageSpinner />
     if (error) return <ErrorInfo />
 
-    const cartItems = data.data;
+    const resData = data.data;
+    const cartItems = resData.filter(item => !item.isSaved);
 
     const cartItemsIsEmpty = cartItems.length === 0;
 
@@ -72,15 +74,17 @@ function ReviewItems(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully order items."
-                }))
+                }));
+   
+                handleNext();
+
+                dispatch(userActions.changeAmazonPoints({ amazonPoints: res.data.currentPoint }));
+                dispatch(cartActions.setTotalAmount({ totalAmount: 0 }));
+                dispatch(checkoutActions.reinitialize());
+    
+                router.push("/account/order-history");
+
             };
-
-            dispatch(userActions.changeAmazonPoints({ amazonPoints: res.data.currentPoint }));
-            dispatch(cartActions.setTotalAmount({ totalAmount: 0 }));
-
-            router.push("/account/order-history");
-
-            handleNext();
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 

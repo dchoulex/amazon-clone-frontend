@@ -147,7 +147,7 @@ function CheckoutForm(props) {
                                     <FormikSubmitButton 
                                         variant="outlined"
                                         className="normal-case my-3"
-                                        disabled={(touched.amount && errors.amount) ? true : false}
+                                        disabled={(touched.checkoutCartItems && errors.checkoutCartItems) ? true : false}
                                     >
                                         Proceed to checkout
                                     </FormikSubmitButton>

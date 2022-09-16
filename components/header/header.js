@@ -1,4 +1,4 @@
-import { useEffect, Fragment } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import axios from 'axios';
@@ -17,27 +17,31 @@ function Header() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const res = await axios.get(process.env.NEXT_PUBLIC_AUTHENTICATE_API);
+            try {
+                const res = await axios.get(process.env.NEXT_PUBLIC_AUTHENTICATE_API);
+    
+                const data = res.data.data;
+                
+                if (data.isAuthenticated) {
+                    const { user, defaultAddress, defaultCreditCard, totalAmount } = data;
+    
+                    dispatch(authActions.login());
+    
+                    dispatch(userActions.setUser({
+                        name: user.name,
+                        email: user.email,
+                        phoneNumber: user.phoneNumber,
+                        amazonPoints: user.amazonPoints,
+                        defaultAddress,
+                        defaultCreditCard
+                    }));
+    
+                    dispatch(cartActions.setTotalAmount({
+                        totalAmount
+                    }));
+                }
+            } catch(err) {
 
-            const data = res.data.data;
-            
-            if (data.isAuthenticated) {
-                const { user, defaultAddress, defaultCreditCard, totalAmount } = data;
-
-                dispatch(authActions.login());
-
-                dispatch(userActions.setUser({
-                    name: user.name,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber,
-                    amazonPoints: user.amazonPoints,
-                    defaultAddress,
-                    defaultCreditCard
-                }));
-
-                dispatch(cartActions.setTotalAmount({
-                    totalAmount
-                }));
             };
         };
 
@@ -79,25 +83,23 @@ function Header() {
     };
 
     return(
-        <Fragment>
-            <AppBar 
-                className="bg-amazon_blue-dark"
-                position="static"
-            >
-                <MainNavbar 
-                    name={user.name}
-                    defaultAddressPostCode={defaultAddressPostCode}
-                    defaultAddressLine={defaultAddressLine}
-                    cartNumber={totalAmount}
-                    isAuthenticated={isAuthenticated}
-                />
+        <AppBar 
+            className="bg-amazon_blue-dark"
+            position="static"
+        >
+            <MainNavbar 
+                name={user.name}
+                defaultAddressPostCode={defaultAddressPostCode}
+                defaultAddressLine={defaultAddressLine}
+                cartNumber={totalAmount}
+                isAuthenticated={isAuthenticated}
+            />
 
-                <SubNavbar 
-                    name={user.name}
-                    amazonPoints={user.amazonPoints} 
-                />
-            </AppBar>
-        </Fragment>
+            <SubNavbar 
+                name={user.name}
+                amazonPoints={user.amazonPoints} 
+            />
+        </AppBar>
     )
 };
 

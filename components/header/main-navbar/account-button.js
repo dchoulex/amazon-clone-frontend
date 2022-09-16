@@ -14,6 +14,8 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import { snackbarActions } from "../../../store/snackbar-slice";
 import { authActions } from "../../../store/auth-slice";
+import { userActions } from "../../../store/user-slice";
+import { checkoutActions } from "../../../store/checkout-slice";
 
 function AccountButton(props) {
     const { name, isAuthenticated } = props;
@@ -46,7 +48,9 @@ function AccountButton(props) {
     
                 dispatch(authActions.logout());
 
-                dispatch(authActions.reinitialize());
+                dispatch(userActions.reinitialize());
+
+                dispatch(checkoutActions.reinitialize());
     
                 router.replace("/");
             }

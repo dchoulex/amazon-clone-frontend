@@ -156,7 +156,7 @@ function CheckoutFormItemList(props) {
                                     <FormikNumber 
                                         name={`checkoutCartItems.${index}.amount`}
                                         className="min-w-[60px] max-w-[80px]"
-                                        value={Number(item.amount)}
+                                        defaultValue={Number(item.amount)}
                                         onClick={handleChangeAmount}
                                     />
 

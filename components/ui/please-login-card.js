@@ -36,7 +36,7 @@ function PleaseLoginCard(props) {
                     </Button>
                 </Link>
 
-                <Link href="/auth/sign">
+                <Link href="/auth/sign-up">
                     <Button 
                         variant="contained"
                     >

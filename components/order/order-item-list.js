@@ -13,12 +13,11 @@ import LoopIcon from '@mui/icons-material/Loop';
 import RateReviewIcon from '@mui/icons-material/RateReview';
 
 import numberWithCommas from "../../utils/numberWithCommas";
-import getAPI from "../../utils/getAPI";
 import { snackbarActions } from "../../store/snackbar-slice";
 import { cartActions } from "../../store/cart-slice";
 
 function OrderItemList(props) {
-    const { orderItems, orderId, status, isCanceled } = props;
+    const { orderItems, status } = props;
 
     const dispatch = useDispatch();
 
@@ -43,28 +42,6 @@ function OrderItemList(props) {
                             }));
 
                             dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }))
-                        } 
-                    } catch(err) {
-                        dispatch(snackbarActions.setSnackbarState({
-                            open: true , 
-                            type: "error", 
-                            message: "Oops... Something went wrong."
-                        }))
-                    }
-                };
-
-                const handleOrderBack = async() => {
-                    const ORDER_BACK_API = getAPI(process.env.NEXT_PUBLIC_ORDER_BACK_API, { id: orderId });
-
-                    try {
-                        const res = await axios.patch(ORDER_BACK_API);
-
-                        if (res.status === 200) {
-                            dispatch(snackbarActions.setSnackbarState({
-                                open: true, 
-                                type: "success", 
-                                message: "Successfully order back item."
-                            }))
                         } 
                     } catch(err) {
                         dispatch(snackbarActions.setSnackbarState({
@@ -131,16 +108,6 @@ function OrderItemList(props) {
                                                 Review
                                             </Button>
                                         </Link>
-                                    }
-
-                                    {isCanceled &&
-                                        <Button
-                                            variant="outlined"
-                                            color="secondary"
-                                            onClick={handleOrderBack}
-                                        >
-                                            Order back
-                                        </Button>
                                     }
                                 </Stack>
                             </div>

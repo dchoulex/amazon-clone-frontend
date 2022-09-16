@@ -33,6 +33,28 @@ function OrderPanelList(props) {
                 const { order, orderItems } = item;
                 const orderId = order._id;
 
+                const handleOrderBack = async() => {
+                    const ORDER_BACK_API = getAPI(process.env.NEXT_PUBLIC_ORDER_BACK_API, { id: orderId });
+            
+                    try {
+                        const res = await axios.patch(ORDER_BACK_API);
+            
+                        if (res.status === 200) {
+                            dispatch(snackbarActions.setSnackbarState({
+                                open: true, 
+                                type: "success", 
+                                message: "Successfully order back item."
+                            }))
+                        } 
+                    } catch(err) {
+                        dispatch(snackbarActions.setSnackbarState({
+                            open: true , 
+                            type: "error", 
+                            message: "Oops... Something went wrong."
+                        }))
+                    }
+                };
+
                 const handleCancelOrder = async() => {
                     const CANCEL_ORDER_API = getAPI(process.env.NEXT_PUBLIC_CANCEL_ORDER_API, { id: orderId });
             
@@ -74,6 +96,7 @@ function OrderPanelList(props) {
                                 id={orderId}
                                 isCanceled={order.isCanceled}
                                 orderStatus={order.status}
+                                isExpedited={order.isExpedited}
                             />
                         </AccordionSummary>
 
@@ -84,6 +107,17 @@ function OrderPanelList(props) {
                                         View order details
                                     </Button>
                                 </Link>
+
+                                {order.isCanceled &&
+                                    <Button
+                                        variant="text"
+                                        color="secondary"
+                                        onClick={handleOrderBack}
+                                        className="ml-auto"
+                                    >
+                                        Order back
+                                    </Button>
+                                }
 
                                 {(order.status === "Ordered" && !order.isCanceled) &&
                                     <Button
@@ -103,6 +137,7 @@ function OrderPanelList(props) {
                                 orderItems={orderItems}
                                 orderId={orderId}
                                 isCanceled={order.isCanceled}
+                                status={order.status}
                             />
                         </AccordionDetails>
                     </Accordion>

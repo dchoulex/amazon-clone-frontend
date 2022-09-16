@@ -16,34 +16,42 @@ function AllTabCollapseListItem() {
 
     return (
         <Fragment>
-            {seeAllIsOpen || 
-            <ListItemButton 
-                onClick={handleOpenSeeAll}
-                sx={{ pl: "2rem" }}
-            >
-                <StyledListItemText primary="See More" />
-                
-                <ExpandMore />
-            </ListItemButton>}
+            {!seeAllIsOpen &&
+                <ListItemButton 
+                    onClick={handleOpenSeeAll}
+                    sx={{ pl: "2rem" }}
+                >
+                    <StyledListItemText primary="See More" />
+
+                    <ExpandMore />
+                </ListItemButton>
+            }
 
             <Collapse in={seeAllIsOpen}>
                 <List component="div" disablePadding>
-                {collapseListItems.map(item => (
-                    <ListItemButton key={item} sx={{ pl: "2rem" }} disabled>
+                {collapseListItems.map((item, index) => (
+                    <ListItemButton 
+                        key={`collapse-list-item-${index}`} 
+                        sx={{ pl: "2rem" }} 
+                        disabled
+                    >
+
                         <StyledListItemText primary={item.title} />
                     </ListItemButton>
                 ))}
                 </List>
             </Collapse>
 
-            {!seeAllIsOpen ||
-            <ListItemButton 
-                onClick={handleCloseSeeAll} 
-                sx={{ pl: "2rem" }}
-            >
-                <StyledListItemText primary="See Less" />
-                <ExpandLess />
-            </ListItemButton>}
+            {seeAllIsOpen &&
+                <ListItemButton 
+                    onClick={handleCloseSeeAll} 
+                    sx={{ pl: "2rem" }}
+                >
+                    <StyledListItemText primary="See Less" />
+                    
+                    <ExpandLess />
+                </ListItemButton>
+            }
         </Fragment>
     )
 };

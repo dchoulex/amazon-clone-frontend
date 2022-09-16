@@ -33,9 +33,14 @@ function PaymentMethod(props) {
 
     const handlePointOnChange = event => {
         let pointUsed = event.target.value;
+
         if (pointUsed === "") pointUsed = 0;
 
         setErrorMessage(null);
+
+        if (pointUsed % 1 !== 0) setErrorMessage("Please input integer number only.")
+
+        if (pointUsed < 1) setErrorMessage("Please input number above or equal to 1");
 
         if (pointUsed > amazonPoints) setErrorMessage("Please input number smaller or equal than available points.");
 

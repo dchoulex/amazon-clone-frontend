@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 
 import PaymentInfo from "./payment-info";
+import numberWithCommas from "../../utils/numberWithCommas";
 
 function OrderDetailsSummary(props) {
     const { name, postCode, city, rest, subTotal, tax, grandTotal, paymentMethod, creditCard, shippingCost, pointUsed } = props;
@@ -65,7 +66,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
-                                            {subTotal}
+                                            {numberWithCommas(subTotal)}
                                         </TableCell>
                                     </TableRow>
 
@@ -75,7 +76,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{borderBottom: "0px", paddingY: "5px" }}>
-                                            {shippingCost}
+                                            {numberWithCommas(shippingCost)}
                                         </TableCell>
                                     </TableRow>
 
@@ -85,7 +86,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
-                                            {tax}
+                                            {numberWithCommas(tax)}
                                         </TableCell>
                                     </TableRow>
 
@@ -95,7 +96,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px" }}>
-                                            {pointUsed}
+                                            {numberWithCommas(pointUsed)}
                                         </TableCell>
                                     </TableRow>
 
@@ -105,7 +106,7 @@ function OrderDetailsSummary(props) {
                                         </TableCell>
 
                                         <TableCell sx={{ borderBottom: "0px", paddingY: "5px"}}>
-                                            {grandTotal}
+                                            {numberWithCommas(grandTotal)}
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>

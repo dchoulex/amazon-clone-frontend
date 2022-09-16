@@ -1,10 +1,12 @@
+import { useState } from "react";
 import Link from "next/link";
+
 import Toolbar from "@mui/material/Toolbar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Tooltip from "@mui/material/Tooltip";
+import MenuIcon from '@mui/icons-material/Menu';
 
-import AllTab from "./all-tab/all-tab";
+import AllTabDrawer from "./all-tab/all-tab-drawer";
 
 const subNavbarTabs = [
     {
@@ -31,35 +33,14 @@ const subNavbarTabs = [
         title: "Clothing, Shoes & Jewelry",
         disabled: false,
         href: "/products/clothing/shoes/jewelry"
-    },
-    // {
-    //     title: "Amazon Basics",
-    //     disabled: true
-    // },
-    // {
-    //     title: "Prime",
-    //     disabled: true
-    // },
-    // {
-    //     title: "Music",
-    //     disabled: true
-    // },
-    // {
-    //     title: "Coupons",
-    //     disabled: true
-    // },
-    // {
-    //     title: "Gift Cards",
-    //     disabled: true
-    // },
-    // {
-    //     title: "Customer Service",
-    //     disabled: true
-    // }
+    }
 ];
 
 function subNavbar(props) {
     const { amazonPoints, name } = props;
+    const [ openDrawer, setOpenDrawer ] = useState(false);
+
+    const handleOpenDrawer = () => setOpenDrawer(true);
 
     return (
         <Toolbar 
@@ -70,9 +51,22 @@ function subNavbar(props) {
             <Tabs 
                 indicatorColor="none"  
                 variant="scrollable"          
-                className="justify-evenly"
+                className="justify-evenly bg-amazon_blue-light"
             >
-                <AllTab name={name} />
+                <Tab 
+                    className="text-gray-200 normal-case min-w-0 min-h-0 text-base font-light opacity-100"
+                    label={"All"}
+                    icon={<MenuIcon />}
+                    iconPosition="start"
+                    onClick={handleOpenDrawer}
+                    value="1"
+                />
+
+                <AllTabDrawer 
+                    name={name} 
+                    setOpenDrawer={setOpenDrawer}
+                    openDrawer={openDrawer}
+                />
 
                 <Tab 
                     sx={{
@@ -84,6 +78,7 @@ function subNavbar(props) {
                     className="text-gray-300 normal-case min-h-0 text-base font-light"
                     label={`Amazon Points: ${amazonPoints}`}
                     disableRipple
+                    value="2"
                 />
 
                 {subNavbarTabs.map((tab, index) => {
@@ -97,8 +92,9 @@ function subNavbar(props) {
                                 className="text-gray-300 normal-case min-h-0 text-base font-light"
                                 label={tab.title}
                                 disabled={false}
-                            />                     
-                        </Link>                  
+                                value={index + 3 + ""}
+                            />         
+                        </Link>   
                     )
                 })}
             </Tabs>

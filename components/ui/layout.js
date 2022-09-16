@@ -11,6 +11,8 @@ import theme from "./theme";
 function Layout(props) {
     const router = useRouter();
 
+    const mainPageClasses = router.pathname.includes("/account") || router.pathname.includes("/cart") ? "flex flex-col flex-1 bg-gray-200" : "flex flex-col flex-1";
+
     return (
         <Box className="flex flex-col h-screen">
             <ThemeProvider theme={theme}>
@@ -20,10 +22,10 @@ function Layout(props) {
                     <Fragment>
                         <Box className="flex flex-col flex-1">
                             <Header />
-    
-                            <main>{props.children}</main>
 
-                            <Box className="bg-gray-200 flex flex-col flex-1"></Box>
+                            <Box className={mainPageClasses}>
+                                <main>{props.children}</main>
+                            </Box>
                         </Box>
     
                         <Footer />

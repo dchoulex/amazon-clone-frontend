@@ -8,7 +8,7 @@ import { DELIVERY_STATUS } from "../../appConfig";
 import numberWithCommas from "../../utils/numberWithCommas";
 
 function OrderHistorySummary(props) {
-    const { orderDate, total, address, id, isCanceled, orderStatus } = props;
+    const { orderDate, total, address, id, isCanceled, orderStatus, isExpedited } = props;
 
     const displayedOrderDate = orderDate.split("T")[0];
 
@@ -51,6 +51,7 @@ function OrderHistorySummary(props) {
                         className="max-w-[100px]"
                     />
                 </Box> :
+                
                 <Box mb={2}>
                     <Breadcrumbs   
                         aria-label="breadcrumb"
@@ -96,6 +97,16 @@ function OrderHistorySummary(props) {
 
                     <Typography variant="body1">
                         {address}
+                    </Typography>
+                </div>
+
+                <div className="min-w-[50px] ml-5">
+                    <Typography variant="overline">
+                        Shipping method
+                    </Typography>
+
+                    <Typography variant="body1">
+                        {isExpedited ? "Expedited" : "Standard"}
                     </Typography>
                 </div>
 

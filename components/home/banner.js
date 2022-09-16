@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-const bannerImages = ["bannerOne.jpg", "bannerTwo.jpg", "bannerThree.jpg"];
+const bannerImages = ["banner-1.jpeg", "banner-2.jpeg", "banner-3.jpg"];
 
 function Banner() {
     return (
@@ -25,13 +25,13 @@ function Banner() {
                     PrevIcon={<ArrowBackIosIcon />}
                     NextIcon={<ArrowForwardIosIcon />}
                 >
-                    {bannerImages.map(image => (
-                        <div key={`img-${image}`} >
+                    {bannerImages.map((image, index) => (
+                        <div key={`img-${index}`} >
                             <Box 
                                 sx={{ height: "300px"}}
                             >
                                 <Image
-                                    src="/images/banners/bannerOne.jpg"
+                                    src={`/images/banners/${image}`}
                                     alt="Banner1"
                                     layout="fill"      
                                 />

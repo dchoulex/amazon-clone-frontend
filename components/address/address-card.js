@@ -40,7 +40,7 @@ function AddressCard(props) {
                 }))
             };
 
-            dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }))
+            dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }));
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
@@ -65,12 +65,7 @@ function AddressCard(props) {
             };
 
             if (address.isDefault) {
-                dispatch(userActions.changeUserDefaultAddress({
-                    defaultAddress: {
-                        postCode : "Your address",
-                        rest : "Select your address"
-                    }
-                }))
+                dispatch(userActions.reinitializeDefaultAddress())
             }
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({

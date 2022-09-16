@@ -18,6 +18,7 @@ import { authActions } from "../../store/auth-slice";
 import EditProfileForm from "./edit-profile-form";
 import ConfirmDeleteDialog from "./confirm-delete-dialog";
 import { snackbarActions } from "../../store/snackbar-slice";
+import ChangePasswordForm from "./change-password-form";
 
 function getImagePath(name) {
     let imagePath;
@@ -49,6 +50,7 @@ function MyProfileCard(props) {
 
     const [ openEditProfileForm, setOpenEditProfileForm ] = useState(false);
     const [ openConfirmDeleteDialog, setOpenConfirmDeleteDialog ] = useState(false);
+    const [ openChangePasswordForm, setOpenChangePasswordForm ] = useState(false);
 
     const handleOpenEditProfileForm = () => {
         setOpenEditProfileForm(true);
@@ -56,6 +58,10 @@ function MyProfileCard(props) {
 
     const handleOpenConfirmDeleteDialog = async() => {
         setOpenConfirmDeleteDialog(true);
+    };
+
+    const handleOpenChangePasswordForm = () => {
+        setOpenChangePasswordForm(true)
     };
 
     const handleDelete = async() => {
@@ -109,13 +115,17 @@ function MyProfileCard(props) {
                         </Typography>
 
                         <Stack direction="row" spacing={3} mt="auto" pb={1}>
-                            {/* <Link href="/auth/reset-password">
-                                <Button  
-                                    variant="contained"
-                                >
-                                    Change password
-                                </Button>
-                            </Link> */}
+                            <Button  
+                                variant="contained"
+                                onClick={handleOpenChangePasswordForm}
+                            >
+                                Change password
+                            </Button>
+
+                            <ChangePasswordForm 
+                                openChangePasswordForm={openChangePasswordForm}
+                                setOpenChangePasswordForm={setOpenChangePasswordForm}
+                            />
 
                             {/* <Link href="/auth/login">
                                 <Button size="small" variant="outlined">

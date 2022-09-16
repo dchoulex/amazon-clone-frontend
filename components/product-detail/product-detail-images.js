@@ -7,8 +7,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 function ProductDetailImages(props) {
     const { productImages, slug } = props;
 
-    console.log(slug)
-
     return (
         <Box 
             sx={{ borderRight: 1 }}

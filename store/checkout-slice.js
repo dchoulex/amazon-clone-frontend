@@ -35,6 +35,15 @@ const checkoutSlice = createSlice({
 
         setPointUsed(state, action) {
             state.pointUsed = action.payload.pointUsed
+        },
+
+        reinitialize(state) {
+            state.shippingAddress = {},
+            state.shippingMethod = "standard",
+            state.shippingCost = null,
+            state.paymentMethod = "credit",
+            state.creditCard = {},
+            state.pointUsed = 0
         }
     }
 });

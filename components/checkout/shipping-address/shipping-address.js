@@ -18,17 +18,9 @@ import ErrorInfo from '../../ui/dogs-info/error-info';
 function ShippingAddress(props) {
     const { handleNext } = props;
     const dispatch = useDispatch();
+    const [ openSelectAddressDialog, setOpenSelectAddressDialog ] = useState(false);
 
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
-    const [ openSelectAddressDialog, setOpenSelectAddressDialog ] = useState(false);
-    
-    useEffect(() => {
-        if (Object.keys(shippingAddress).length === 0) {
-            const defaultAddress = addresses?.filter(address => address.isDefault)[0];
-    
-            if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
-        };
-    }, [ shippingAddress, dispatch, addresses])
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
@@ -38,6 +30,12 @@ function ShippingAddress(props) {
     if (error) return <ErrorInfo />
 
     const addresses = data.data;
+
+    if (Object.keys(shippingAddress).length === 0) {
+        const defaultAddress = addresses?.filter(address => address.isDefault)[0];
+
+        if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
+    };
 
     const handleOpenSelectAddressDialog = () => {
         setOpenSelectAddressDialog(true)

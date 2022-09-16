@@ -15,6 +15,7 @@ import Chip from "@mui/material/Chip";
 
 import getAPI from "../../utils/getAPI";
 import { snackbarActions } from "../../store/snackbar-slice";
+import { userActions } from "../../store/user-slice";
 
 function WalletCard(props) {
     const { card } = props;
@@ -35,8 +36,12 @@ function WalletCard(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                }))
-            } 
+                }));
+            };
+
+            if (card.isDefault) {
+                dispatch(userActions.reinitializeDefaultCreditCard())
+            }
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 

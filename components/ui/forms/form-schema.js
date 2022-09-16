@@ -21,6 +21,11 @@ export const CONFIRM_PASSWORD_SCHEMA = Yup
     .required(REQUIRED_ERROR_MESSAGE)
     .oneOf([Yup.ref("password"), null], "Password must match.");
 
+export const CONFIRM_NEW_PASSWORD_SCHEMA = Yup
+    .string()
+    .required(REQUIRED_ERROR_MESSAGE)
+    .oneOf([Yup.ref("newPassword"), null], "Password must match.");
+
 export const NAME_SCHEMA = Yup
     .string()
     .required(REQUIRED_ERROR_MESSAGE)

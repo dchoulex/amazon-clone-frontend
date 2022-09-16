@@ -82,7 +82,7 @@ function AddCreditCardForm(props) {
                     message: "Successfully delete item."
                 }));
 
-                if (creditCard.isDefault) dispatch(userActions.changeUserDefaultAddress({ defaultCreditCard: creditCard}))
+                if (creditCard.isDefault) dispatch(userActions.changeUserDefaultCreditCard({ defaultCreditCard: creditCard}))
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({

@@ -29,6 +29,8 @@ import JapanIcon from "../../../public/images/jp-flag-icon.svg";
 import StyledListItemText from "../styled-list-item-text";
 import { authActions } from "../../../store/auth-slice";
 import { snackbarActions } from "../../../store/snackbar-slice";
+import { userActions } from "../../../store/user-slice";
+import { checkoutActions } from "../../../store/checkout-slice";
 
 const buttons = [
     {
@@ -87,8 +89,6 @@ function HamburgerMenu(props) {
         try {
             const res = await axios.get(process.env.NEXT_PUBLIC_SIGNOUT_API);
 
-            console.log(res)
-
             if (res.status === 200) {
                 dispatch(snackbarActions.setSnackbarState({
                     open: true,
@@ -98,7 +98,9 @@ function HamburgerMenu(props) {
     
                 dispatch(authActions.logout());
 
-                dispatch(authActions.reinitialize());
+                dispatch(userActions.reinitialize());
+
+                dispatch(checkoutActions.reinitialize());
     
                 setOpenDrawer(false);
     
@@ -209,7 +211,7 @@ function HamburgerMenu(props) {
                                 </Button>
                             </ListItemButton> :
                             
-                            <Link href="/account/login">
+                            <Link href="/auth/login">
                                 <ListItemButton 
                                     disableRipple 
                                     sx={{
