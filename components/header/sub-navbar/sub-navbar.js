@@ -36,7 +36,7 @@ const subNavbarTabs = [
     }
 ];
 
-function subNavbar(props) {
+function SubNavbar(props) {
     const { amazonPoints, name } = props;
     const [ openDrawer, setOpenDrawer ] = useState(false);
 
@@ -102,4 +102,4 @@ function subNavbar(props) {
     )
 };
 
-export default subNavbar;
+export default SubNavbar;
