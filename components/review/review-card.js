@@ -42,7 +42,7 @@ function ReviewCard(props) {
         try {
             const res = await axios.delete(DELETE_REVIEW_API);
 
-            if (res.status === 204) {
+            if (res.status === 200) {
                 dispatch(snackbarActions.setSnackbarState({
                     open: true , 
                     type: "success", 
