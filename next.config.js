@@ -15,7 +15,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'https://amazon-clone-backend-two.vercel.app/api/:path*'
+        destination: 'https://amazon-clone-backend-dac.herokuapp.com/api/:path*'
       }
     ]
   }
