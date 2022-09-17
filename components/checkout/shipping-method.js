@@ -12,6 +12,8 @@ import Button from '@mui/material/Button';
 
 import { checkoutActions } from '../../store/checkout-slice';
 import getAPI from '../../utils/getAPI';
+import PageSpinner from '../ui/pageSpinner';
+import ErrorInfo from '../ui/dogs-info/error-info';
 
 function ShippingMethod(props) {
     const { handleBack, handleNext } = props;
@@ -27,8 +29,8 @@ function ShippingMethod(props) {
 
     const { data, error } = useSWR(GET_SHIPPING_COST_API, fetcher);
 
-    if (!data) return <p>Loading</p>
-    if (error) return <p>error</p>
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
 
     const shippingCost = data.data;
 

@@ -62,7 +62,7 @@ function ProductCard(props) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
-                message: "Oops... Something went wrong."
+                message: err?.response?.data?.message ? err.response?.data.message : "Oops... Something went wrong."
             }))
         }
     };

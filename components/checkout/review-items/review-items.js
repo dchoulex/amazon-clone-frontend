@@ -206,6 +206,7 @@ function ReviewItems(props) {
                     sx={{ height: "40px" }}
                     onClick={handlePlaceOrder}
                     disabled={cartItemsIsEmpty}
+                    type="submit"
                 >
                     Place order
                 </Button> 

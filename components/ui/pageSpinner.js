@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 
 function PageSpinner() {
     return (
-        <Box className="flex justify-center">
+        <Box className="flex justify-center py-4">
             <CircularProgress />
         </Box>
     );
