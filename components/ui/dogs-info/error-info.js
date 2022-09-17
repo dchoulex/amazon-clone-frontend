@@ -2,7 +2,9 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 
-function ErrorInfo() {
+function ErrorInfo(props) {
+    const { errorMessage } = props;
+
     return (
         <Box className="flex justify-center p-4" >
             <Avatar 
@@ -12,7 +14,7 @@ function ErrorInfo() {
             />
 
             <Typography className="ml-10 flex flex-col justify-center">
-                Oh no! Something went wrong. Please try again later.
+                {errorMessage ? errorMessage : "Oh no! Something went wrong. Please try again later."}
             </Typography>
         </Box>
     )

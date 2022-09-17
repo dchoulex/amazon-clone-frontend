@@ -23,6 +23,7 @@ import { productActions } from '../../store/product-slice';
 import PageSpinner from '../../components/ui/pageSpinner';
 import ErrorInfo from '../../components/ui/dogs-info/error-info';
 import NoItemInfo from '../../components/ui/dogs-info/no-item-info';
+import { snackbarActions } from '../../store/snackbar-slice';
 
 function getPageTitle(slug) {
     let pageTitle;
@@ -163,10 +164,16 @@ function ProductCategoryPage(props) {
 
     const { data, error } = useSWR(API, fetcher);
 
+    if (error) { 
+        return <ErrorInfo errorMessage={error?.response?.data?.message ? error.response.data.message : "Oops... Something went wrong."} />
+    }
     if (!data) return <PageSpinner />
-    if (error) return <ErrorInfo />
     
-    const products = data.data;
+    let products = data.data;
+
+    if (slug.includes("review")) {
+        products = products.sort((a, b) => b.ratingsAverage - a.ratingsAverage)
+    };
 
     const sortedProducts = getSortedItems(products, sortBy);
     const numOfResults = sortedProducts.length;
