@@ -1,34 +1,90 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## Getting Started
+<h1 align="center"> Amazon Clone Frontend </h1>
 
-First, run the development server:
+This repository represents front end application for my amazon clone project. You can check it out on https://amazon-clone-frontend-alpha.vercel.app/.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Technology used: Next.JS, Material UI, Tailwind CSS
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### 1. Authentication
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Sign Up
+- Login
+- Sign Out
+- Reset password when forgot password
+- Verify user by using OTP when reset password
+- Send OTP to user email address
+- Use JWT(JSON Web Token) to verify user
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### 2. Account
 
-## Learn More
+- Show profile
+- Update profile info
+- Change password
+- Delete account (deactivate user)
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Security
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Use HTTP only cookie to prevent XSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 4. Products
 
-## Deploy on Vercel
+- Search products based on categories and keyword
+- Autocomplete search bar
+- Show product based on categories
+- Show all products
+- Show best seller products
+- Show best review products
+- Show customized recommended products
+- Show buy again products
+- Show product detail and reviews
+- Show product rating
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5. Carts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Show cart items
+- Add item to cart
+- Delete cart item
+- Change cart item amount
+- Save cart item
+- Checkout cart item
+
+### 6. Orders
+
+- Show order histories and summary
+- Update order status every 1 min for expedited shipping and 5 mins for standard shipping
+- Show order details
+- Cancel order
+- Order back canceled order
+- Place order
+
+### 7. Reviews
+
+- Show reviewable products (order status is "Delivered")
+- Create review
+- Show user reviews
+- Delete review
+- Update review
+
+### 8. Addresses
+
+- Show all addresses
+- Add new address
+- Set address as default
+- Update address
+- Delete address
+
+### 9. Credit Cards
+
+- Show all credit cards
+- Add credit card
+- Delete credit card
+- Set credit card as default
+
+### 10. Others
+
+- Responsive design
