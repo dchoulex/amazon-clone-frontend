@@ -25,14 +25,24 @@ function SearchBar() {
             keyword: slugKeyword
         };
 
-        const res = await axios.post(process.env.NEXT_PUBLIC_SEARCH_PRODUCTS_API, data);
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_SEARCH_PRODUCTS_API, data);
+            
+            if (res.status === 200) {
+                const products = res.data.data;
 
-        const products = res.data.data;
+                dispatch(productActions.setProducts({ products }));
+                dispatch(productActions.setSearchProductPage({ page: 1 }))
 
-        dispatch(productActions.setProducts({ products }));
-        dispatch(productActions.setSearchProductPage({ page: 1 }))
-
-        router.push("/products");
+                router.push("/products");
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
     };
 
     return (

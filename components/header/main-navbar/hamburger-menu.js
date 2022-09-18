@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Formik, Form } from "formik";
+import slugify from "slugify";
 
 import { useTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from '@mui/icons-material/Menu';
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
@@ -13,8 +16,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import Button from "@mui/material/Button";
-import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import PersonIcon from '@mui/icons-material/Person';
@@ -31,6 +32,10 @@ import { authActions } from "../../../store/auth-slice";
 import { snackbarActions } from "../../../store/snackbar-slice";
 import { userActions } from "../../../store/user-slice";
 import { checkoutActions } from "../../../store/checkout-slice";
+import { productActions } from "../../../store/product-slice";
+import FormikSubmitButton from "../../ui/forms/formik-submit-button";
+import FormikSearchInput from "./search-bar/formik-search-input";
+import FormikSearchCategory from "./search-bar/formik-search-category";
 
 const buttons = [
     {
@@ -84,6 +89,38 @@ function HamburgerMenu(props) {
     const handleOpenDrawer = () => setOpenDrawer(true);
 
     const handleCloseDrawer = () => setOpenDrawer(false);
+
+    const handleSubmitSearchForm = async(values) => {
+        const { category, keyword } = values;
+        
+        const slugKeyword = keyword === "" ? "" : slugify(keyword, { lower: true });
+
+        const data = {
+            category,
+            keyword: slugKeyword
+        };
+
+        try {
+            const res = await axios.post(process.env.NEXT_PUBLIC_SEARCH_PRODUCTS_API, data);
+            
+            if (res.status === 200) {
+                const products = res.data.data;
+
+                dispatch(productActions.setProducts({ products }));
+                dispatch(productActions.setSearchProductPage({ page: 1 }))
+        
+                setOpenDrawer(false);
+
+                router.push("/products");
+            }
+        } catch(err) {
+            dispatch(snackbarActions.setSnackbarState({
+                open: true , 
+                type: "error", 
+                message: "Oops... Something went wrong."
+            }))
+        }
+    };
 
     const handleSignOut = async() => {
         try {
@@ -144,29 +181,42 @@ function HamburgerMenu(props) {
                             sx={{ backgroundColor: theme.palette.amazon_blue.light }}
                             p={2}
                         >
-                            <Box sx={{ display: "flex" }}>
-                                <InputBase 
-                                    sx={{
-                                        display: "flex", 
-                                        flex: "1 1 0%",
-                                    }}
-                                />
+                            <Formik
+                                initialValues={{ 
+                                    category: "", 
+                                    keyword: "" 
+                                }}
+                                onSubmit={handleSubmitSearchForm}
+                            >
+                                <Form>
+                                    <FormikSearchCategory  name="category" />
+                                            
+                                    <Box 
+                                        sx={{ 
+                                            backgroundColor: "white", 
+                                            display: "flex"
+                                        }}
+                                    >
+                                        <FormikSearchInput name="keyword" />
 
-                                <Button 
-                                    sx={{ 
-                                        backgroundColor: "rgb(253 186 116)",
-                                        borderTopLeftRadius: "0px",
-                                        borderBottomLeftRadius: "0px",
-                                        borderColor: "rgb(251 146 60)",
-                                        "&:hover": {
-                                            backgroundColor: "rgb(251 146 60)",
-                                            borderColor: "rgb(251 146 60)"
-                                        }
-                                    }} 
-                                    onClick={handleCloseDrawer} 
-                                    startIcon ={<SearchIcon sx={{color: "black"}} />} 
-                                />
-                            </Box>
+                                        <FormikSubmitButton 
+                                            sx={{ 
+                                                backgroundColor: "rgb(253 186 116)",
+                                                borderTopLeftRadius: "0px",
+                                                borderBottomLeftRadius: "0px",
+                                                borderColor: "rgb(251 146 60)",
+                                                "&:hover": {
+                                                    backgroundColor: "rgb(251 146 60)",
+                                                    borderColor: "rgb(251 146 60)"
+                                                }
+                                            }} 
+                                            onClick={handleSubmitSearchForm} 
+                                            startIcon ={<SearchIcon sx={{color: "black"}} />} 
+                                        />
+                                    </Box>
+                                </Form>
+                            </Formik>
+                            {/* </Box> */}
                         </Box>
                     } 
         

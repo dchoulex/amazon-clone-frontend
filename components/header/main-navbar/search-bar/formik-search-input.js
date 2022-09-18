@@ -1,5 +1,6 @@
 import { useField, useFormikContext } from "formik";
 
+import Box from "@mui/material/Box";
 import InputBase from "@mui/material/InputBase";
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -17,9 +18,7 @@ function FormikSearchInput(props) {
     const configSearchInput = {
       ...field,
       ...otherProps,
-      className: "bg-white flex flex-1 px-3",
       onInputChange: handleChangeInput,
-      sx: { height: "36px" },
       freeSolo: true,
       options: PRODUCTS_NAME,
       defaultValue: "",
@@ -32,7 +31,16 @@ function FormikSearchInput(props) {
     };
 
     return (
-      <Autocomplete {...configSearchInput} />
+        <Autocomplete 
+          sx={{ 
+            height: "36px",
+            backgroundColor: "white",
+            display: "flex",
+            flex: "1 1 0%",
+            px: 1
+          }}
+          {...configSearchInput}         
+        />
     )
 };
 

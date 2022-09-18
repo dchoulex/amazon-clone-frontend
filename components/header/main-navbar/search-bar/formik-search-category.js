@@ -24,7 +24,7 @@ const StyledCheckIcon = styled(CheckIcon)(() =>({
     width: "30px"
 }));
 
-function CategoryButton(props) {
+function FormikSearchCategory(props) {
     const { name, ...otherProps } = props;
     const { setFieldValue } = useFormikContext();
     const [ field, _ ] = useField(name);
@@ -62,7 +62,7 @@ function CategoryButton(props) {
     const configCategory = {
         ...field,
         ...otherProps
-    }
+    };
 
     return (
         <div>
@@ -90,7 +90,10 @@ function CategoryButton(props) {
                 role={undefined}
                 transition
                 disablePortal
-                className="z-20 opacity-95"
+                sx={{
+                    zIndex: 20,
+                    opacity: "95%"
+                }}
             >
             {({ TransitionProps, placement }) => (
                 <Grow
@@ -128,4 +131,4 @@ function CategoryButton(props) {
     )
 };
 
-export default CategoryButton;
+export default FormikSearchCategory;
