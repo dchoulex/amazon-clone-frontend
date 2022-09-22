@@ -23,7 +23,7 @@ import { cartActions } from "../../../store/cart-slice";
 import { snackbarActions } from "../../../store/snackbar-slice";
 
 function CheckoutFormItemList(props) {
-    const { item, index, numOfCartItems, remove, insert, errorMessage } = props;
+    const { item, index, numOfCartItems, remove, insert, errorMessage, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const productId = item.product._id;
     
     const dispatch = useDispatch();
@@ -38,6 +38,8 @@ function CheckoutFormItemList(props) {
     };
 
     const handleDeleteItem = async () => {
+        setIsRequesting(true);
+
         const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: item._id });
 
         remove(index);
@@ -50,20 +52,26 @@ function CheckoutFormItemList(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                }))
-            };
+                }));
 
-            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+                dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+
+                setDataIsChanging(true);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
     const handleToggleSave = async () => {
+        setIsRequesting(true);
+
         const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: item._id, query: `isSaved=${!item.isSaved}` });
 
         try {
@@ -74,25 +82,29 @@ function CheckoutFormItemList(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully save item."
-                }))
-            };
+                }));
 
-            if (!item.isSaved) {
-                remove(index)
-            } else {
-                insert(index, { 
-                    productId: productId, 
-                    amount: Number(item.amount)
-                });
-            };
+                if (!item.isSaved) {
+                    remove(index)
+                } else {
+                    insert(index, { 
+                        productId: productId, 
+                        amount: Number(item.amount)
+                    });
+                };
 
-            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+                dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+
+                setDataIsChanging(true);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))          
+            }));
+
+            setIsRequesting(false);
         }
     };
 
@@ -158,6 +170,7 @@ function CheckoutFormItemList(props) {
                                         className="min-w-[60px] max-w-[80px]"
                                         defaultValue={Number(item.amount)}
                                         onClick={handleChangeAmount}
+                                        disabled={isRequesting}
                                     />
 
                                     <Button 
@@ -166,6 +179,7 @@ function CheckoutFormItemList(props) {
                                         color="error"
                                         startIcon={<DeleteIcon />}
                                         onClick={handleDeleteItem}
+                                        disabled={isRequesting}
                                     >
                                         Delete
                                     </Button>
@@ -175,6 +189,7 @@ function CheckoutFormItemList(props) {
                                         startIcon={<SaveIcon />}
                                         color="success"
                                         onClick={handleToggleSave}
+                                        disabled={isRequesting}
                                     >
                                         Save for later
                                     </Button>

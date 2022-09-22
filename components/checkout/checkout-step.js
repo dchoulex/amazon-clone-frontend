@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -14,14 +15,19 @@ import PaymentMethod from './payment-method/payment-method';
 import ReviewItems from './review-items/review-items';
 
 function getDisplayedShippingAddress(shippingAddress) {
-    return `〒 ${shippingAddress.postCode}  ${shippingAddress.city}, ${shippingAddress.rest}`;
+    const shippingAddressIsEmptyObject = Object.keys(shippingAddress).length === 0;
+
+    return shippingAddressIsEmptyObject ? "" :`〒 ${shippingAddress.postCode}  ${shippingAddress.city}, ${shippingAddress.rest}`;
 };
 
-function getDisplayedShippingMethod(shippingMethod) {
-    return shippingMethod === "standard" ? "Standard Shipping" : "Expedited Shipping";
+function getDisplayedShippingMethod(shippingMethod, shippingMethodIsSelected) {
+    const selectedShippingMethod = shippingMethod === "standard" ? "Standard Shipping" : "Expedited Shipping";
+    
+    return shippingMethodIsSelected ? selectedShippingMethod : "";
 };
 
 function getDisplayedPaymentMethod(paymentMethod, creditCard) {
+    const creditCardIsEmptyObject = Object.keys(creditCard).length === 0;
     let displayedPaymentMethod;
 
     switch (paymentMethod) {
@@ -41,19 +47,23 @@ function getDisplayedPaymentMethod(paymentMethod, creditCard) {
             break;
     };
 
-    if (paymentMethod === "credit" && Object.keys(creditCard).length !== 0) displayedPaymentMethod += " ending in ..." + creditCard.number.slice(creditCard.number.length - 4);
+    if (paymentMethod === "credit" && !creditCardIsEmptyObject) displayedPaymentMethod += " ending in ..." + creditCard.number.slice(creditCard.number.length - 4);
 
-    return displayedPaymentMethod ;
+    return creditCardIsEmptyObject ? "" : displayedPaymentMethod ;
 };
 
-function getStepDescription(shippingAddress, shippingMethod, paymentMethod, creditCard, index) {
+function getStepDescription(shippingAddress, shippingMethod, shippingMethodIsSelected, paymentMethod, creditCard, index) {
     if (index === 0) return getDisplayedShippingAddress(shippingAddress);
-    if (index === 1) return getDisplayedShippingMethod(shippingMethod);
+
+    if (index === 1) return getDisplayedShippingMethod(shippingMethod, shippingMethodIsSelected);
+
     if (index === 2) return getDisplayedPaymentMethod(paymentMethod, creditCard);
 }
 
 function CheckoutStep(props) {
     const { activeStep, handleBack, handleNext } = props;
+
+    const [ shippingMethodIsSelected, setShippingMethodIsSelected ] = useState(false);
 
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
@@ -69,7 +79,7 @@ function CheckoutStep(props) {
                 orientation="vertical"
             >
                 {CHECKOUT_STEPS.map((step, index) => {
-                    const stepDesc = getStepDescription(shippingAddress, shippingMethod, paymentMethod, creditCard, index);
+                    const stepDesc = getStepDescription(shippingAddress, shippingMethod, shippingMethodIsSelected, paymentMethod, creditCard, index);
 
                     return (
                         <Step key={step}>
@@ -96,6 +106,7 @@ function CheckoutStep(props) {
                                     <ShippingMethod 
                                         handleBack={handleBack}
                                         handleNext={handleNext}
+                                        setShippingMethodIsSelected={setShippingMethodIsSelected}
                                     />
                                 }
 

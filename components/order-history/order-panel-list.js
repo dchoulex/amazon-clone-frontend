@@ -18,10 +18,10 @@ import OrderItemList from "../order/order-item-list";
 import { snackbarActions } from "../../store/snackbar-slice";
 
 function OrderPanelList(props) {
-    const { items } = props;
-    const [ expanded, setExpanded ] = useState(0);
-
+    const { items, setDataIsChanging } = props;
     const dispatch = useDispatch();
+
+    const [ expanded, setExpanded ] = useState(0);
 
     const handleChange = (panel) => (_, isExpanded) => {
         setExpanded(isExpanded ? panel : false)
@@ -66,7 +66,7 @@ function OrderPanelList(props) {
                                 open: true, 
                                 type: "success", 
                                 message: "Successfully cancel order."
-                            }))
+                            }));
                         }
                     } catch(err) {
                         dispatch(snackbarActions.setSnackbarState({

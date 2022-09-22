@@ -18,15 +18,18 @@ import { userActions } from "../../store/user-slice";
 import { snackbarActions } from "../../store/snackbar-slice";
 
 function AddressCard(props) {
-    const { address, setSnackbarState } = props;
-    const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
+    const { address, setSnackbarState, setDataIsChanging, isRequesting, setIsRequesting } = props;
     const dispatch = useDispatch();
+
+    const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
 
     const handleOpenEditAddressForm = () => {
         setOpenEditAddressForm(true);
     };
 
     const handleSetAsDefault = async () => {
+        setIsRequesting(true);
+
         const SET_ADDRESS_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_ADDRESS_AS_DEFAULT_API, { id: address._id });
 
         try {
@@ -37,20 +40,26 @@ function AddressCard(props) {
                     open: true , 
                     type: "success", 
                     message: "Successfully set as default."
-                }))
-            };
+                }));
 
-            dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }));
+                dispatch(userActions.changeUserDefaultAddress({ defaultAddress: res.data.data }));
+
+                setDataIsChanging(true);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
     const handleRemoveAddress = async () => {
+        setIsRequesting(true);
+
         const DELETE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_DELETE_ADDRESS_API, { id: address._id });
 
         try {
@@ -61,18 +70,22 @@ function AddressCard(props) {
                     open: true , 
                     type: "success", 
                     message: "Successfully delete item."
-                }))
-            };
+                }));
 
-            if (address.isDefault) {
-                dispatch(userActions.reinitializeDefaultAddress())
-            }
+                if (address.isDefault) {
+                    dispatch(userActions.reinitializeDefaultAddress())
+                };
+
+                setDataIsChanging(true);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
             }))
+
+            setIsRequesting(false);
         };
     };
 
@@ -121,13 +134,20 @@ function AddressCard(props) {
             </CardContent>
 
             <CardActions className="mt-auto">
-                <Button disableRipple onClick={handleOpenEditAddressForm}>Edit</Button>
+                <Button 
+                    disableRipple 
+                    onClick={handleOpenEditAddressForm}
+                    disabled={isRequesting}
+                >
+                        Edit
+                </Button>
 
                 <EditAddressForm 
                     openEditAddressForm={openEditAddressForm}
                     setOpenEditAddressForm={setOpenEditAddressForm}
                     address={address}
-                    setSnackbarState={setSnackbarState}                    
+                    setSnackbarState={setSnackbarState}
+                    setDataIsChanging={setDataIsChanging}                
                 />
 
                 <Divider 
@@ -136,7 +156,13 @@ function AddressCard(props) {
                     flexItem 
                 />
 
-                <Button disableRipple onClick={handleRemoveAddress}>Remove</Button>
+                <Button 
+                    disableRipple 
+                    onClick={handleRemoveAddress}
+                    disabled={isRequesting}
+                >
+                    Remove
+                </Button>
 
                 {!address.isDefault && (
                     <Fragment>
@@ -146,7 +172,13 @@ function AddressCard(props) {
                             flexItem 
                         />
 
-                        <Button disableRipple onClick={handleSetAsDefault}>Set as default</Button>
+                        <Button 
+                            disableRipple 
+                            onClick={handleSetAsDefault}
+                            disabled={isRequesting}
+                        >
+                            Set as default
+                        </Button>
                     </Fragment>
                 )}
             </CardActions>

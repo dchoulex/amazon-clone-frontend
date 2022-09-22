@@ -16,7 +16,7 @@ import PageSpinner from '../ui/pageSpinner';
 import ErrorInfo from '../ui/dogs-info/error-info';
 
 function ShippingMethod(props) {
-    const { handleBack, handleNext } = props;
+    const { handleBack, handleNext, setShippingMethodIsSelected } = props;
     const dispatch = useDispatch();
 
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
@@ -50,14 +50,22 @@ function ShippingMethod(props) {
             dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.standardShippingCost }))
         } else {
             dispatch(checkoutActions.setShippingCost({ shippingCost: shippingCost.expeditedShippingCost }))
-        }
+        };
+
+        setShippingMethodIsSelected(true);
+    };
+
+    const handleClickNext = () => {
+        handleNext();
+
+        setShippingMethodIsSelected(true);
     };
 
     return (
         <Fragment>
             <FormControl className="pl-1 my-4">
                 <RadioGroup
-                    defaultValue="standard"
+                    value={shippingMethod}
                     name="radio-buttons-group"
                     onChange={handleOnChange}
                 >
@@ -78,7 +86,7 @@ function ShippingMethod(props) {
             <Stack direction="row" spacing={2} >            
                 <Button
                     variant="contained"
-                    onClick={handleNext}
+                    onClick={handleClickNext}
                     sx={{ height: "40px" }}
                 >
                     Next

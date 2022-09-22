@@ -15,7 +15,7 @@ import { checkoutActions } from "../../../store/checkout-slice";
 import EditAddressForm from "../../address/edit-address-form";
 
 function SelectAddressCard(props) {
-    const { address, shippingAddress, setOpenSelectAddressDialog } = props;
+    const { address, shippingAddress, setOpenSelectAddressDialog, setDataIsChanging } = props;
     const [ openEditAddressForm, setOpenEditAddressForm ] = useState(false);
     const dispatch = useDispatch();
 
@@ -109,6 +109,7 @@ function SelectAddressCard(props) {
                     openEditAddressForm={openEditAddressForm}
                     setOpenEditAddressForm={setOpenEditAddressForm}
                     address={address}
+                    setDataIsChanging={setDataIsChanging}
                 />
             </CardActions>
         </Card>

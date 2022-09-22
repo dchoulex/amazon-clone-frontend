@@ -64,6 +64,7 @@ function LoginPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
@@ -83,6 +84,7 @@ function LoginPage() {
 
     const handleSubmitLoginForm = async (values, actions) => {
         actions.setSubmitting(false);
+        setIsSubmitting(true);
 
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_LOGIN_API, values);
@@ -115,8 +117,10 @@ function LoginPage() {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
-                message: "Email or password is invalid."
-            }))
+                message: err?.response?.data?.message ? err.response.data.message : "Oops... Something went wrong"
+            }));
+
+            setIsSubmitting(false);
         }
     };
  
@@ -157,9 +161,15 @@ function LoginPage() {
                                     fullWidth
                                     variant="contained"
                                     className="mt-3 mb-5"
-                                    disabled={(touched.email && errors.email) || (touched.password && errors.password) ? true : false}
+                                    disabled={
+                                        (touched.email && errors.email) || 
+                                        (touched.password && errors.password) ||
+                                        isSubmitting ? 
+                                            true : 
+                                            false
+                                    }
                                 >
-                                    Login
+                                    {isSubmitting ? "Submitting..." : "Login"}
                                 </FormikSubmitButton>
 
                                 <Typography variant="caption">

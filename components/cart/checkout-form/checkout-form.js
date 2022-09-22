@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -42,10 +42,12 @@ function calculateSubTotalAndPoint(items, checkoutCartItems) {
 };
 
 function CheckoutForm(props) {
-    const { items, numOfCartItems } = props;
+    const { items, numOfCartItems, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const router = useRouter();
 
     const dispatch = useDispatch();
+
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const CHECKOUT_INITIAL_FORM_STATE = {
         checkoutCartItems: items.map(item => (
@@ -58,6 +60,8 @@ function CheckoutForm(props) {
 
     const handleSubmitCheckoutForm = async(values, actions) => {
         actions.setSubmitting(false);
+
+        setIsSubmitting(true);
         
         try {
             await axios.put(process.env.NEXT_PUBLIC_CHECKOUT_CART_ITEMS_API, values);
@@ -67,8 +71,10 @@ function CheckoutForm(props) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
-                message: "Oops... Something went wrong."
-            }))
+                message: err?.response?.data?.message ? err.response.data.message : "Oops... Something went wrong"
+            }));
+
+            setIsSubmitting(false)
         }
     };
 
@@ -111,12 +117,13 @@ function CheckoutForm(props) {
                                                 insert={insert}
                                                 touched={touched}
                                                 errorMessage={errorMessage}
+                                                setDataIsChanging={setDataIsChanging}
+                                                setIsRequesting={setIsRequesting}
+                                                isRequesting={isRequesting}
                                             />
                                         )
                                     })}
                                 </Box>
-     
-                        
 
                                 <Box 
                                     py={2} 
@@ -147,13 +154,18 @@ function CheckoutForm(props) {
                                     <FormikSubmitButton 
                                         variant="outlined"
                                         className="normal-case my-3"
-                                        disabled={(touched.checkoutCartItems && errors.checkoutCartItems) ? true : false}
+                                        disabled={
+                                            (touched.checkoutCartItems && errors.checkoutCartItems && errors.checkoutCartItems[0] !== null) ||
+                                            isSubmitting ? 
+                                                true : 
+                                                false
+                                        }
                                     >
-                                        Proceed to checkout
+                                        {isSubmitting ? "Submitting..." : "Proceed to checkout"}
                                     </FormikSubmitButton>
                                 </div>
                                 </Fragment>
-                                                       )}
+                            )}
                         </FieldArray>
                     </Form>
                     )

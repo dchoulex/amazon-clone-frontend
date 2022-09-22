@@ -1,7 +1,5 @@
-import { useState, Fragment, useEffect } from 'react';
+import { useState, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import useSWR from 'swr';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,8 +10,6 @@ import Stack from '@mui/material/Stack';
 import { checkoutActions } from '../../../store/checkout-slice';
 import SelectAddressDialog from './select-address-dialog';
 import NoItemInfo from '../../ui/dogs-info/no-item-info';
-import PageSpinner from '../../ui/pageSpinner';
-import ErrorInfo from '../../ui/dogs-info/error-info';
 
 function ShippingAddress(props) {
     const { handleNext } = props;
@@ -21,21 +17,11 @@ function ShippingAddress(props) {
     const [ openSelectAddressDialog, setOpenSelectAddressDialog ] = useState(false);
 
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
+    const defaultAddress = useSelector(state => state.user.defaultAddress);
+    const shippingAddressIsEmptyObject = Object.keys(shippingAddress).length === 0;
+    const defaultAddressIsEmptyObject = Object.keys(defaultAddress).length === 0
 
-    const fetcher = url => axios.get(url).then(res => res.data);
-
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
-
-    if (!data) return <PageSpinner />
-    if (error) return <ErrorInfo />
-
-    const addresses = data.data;
-
-    if (Object.keys(shippingAddress).length === 0) {
-        const defaultAddress = addresses?.filter(address => address.isDefault)[0];
-
-        if (defaultAddress) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress}));
-    };
+    if (shippingAddressIsEmptyObject && !defaultAddressIsEmptyObject) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress }));
 
     const handleOpenSelectAddressDialog = () => {
         setOpenSelectAddressDialog(true)
@@ -44,7 +30,7 @@ function ShippingAddress(props) {
     return (
         <Fragment>
             <Paper className="flex p-4 border-2 border-gray-200 border-solid my-5">
-                {Object.keys(shippingAddress).length !== 0 ?
+                {!shippingAddressIsEmptyObject ?
                     <Fragment>
                         <div>
                             <Typography variant="h6" className="pb-2">{shippingAddress.name}</Typography>
@@ -78,7 +64,6 @@ function ShippingAddress(props) {
                         <SelectAddressDialog 
                             openSelectAddressDialog={openSelectAddressDialog}
                             setOpenSelectAddressDialog={setOpenSelectAddressDialog}
-                            addresses={addresses}
                             shippingAddress={shippingAddress}
                         />
                     </Fragment> :
@@ -100,7 +85,6 @@ function ShippingAddress(props) {
                         <SelectAddressDialog 
                             openSelectAddressDialog={openSelectAddressDialog}
                             setOpenSelectAddressDialog={setOpenSelectAddressDialog}
-                            addresses={addresses}
                             shippingAddress={shippingAddress}
                         />
                     </Box>
@@ -112,7 +96,7 @@ function ShippingAddress(props) {
                     variant="contained"
                     onClick={handleNext}
                     sx={{ height: "40px" }}
-                    disabled={Object.keys(shippingAddress).length === 0}
+                    disabled={shippingAddressIsEmptyObject}
                 >
                     Next
                 </Button>

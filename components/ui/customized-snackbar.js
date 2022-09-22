@@ -22,13 +22,32 @@ function SlideTransition(props) {
 }
 
 function CustomizedSnackbar() {
+    const dispatch = useDispatch();
+
     const open = useSelector(state => state.snackbar.open);
     const type = useSelector(state => state.snackbar.type);
     const message = useSelector(state => state.snackbar.message);
 
-    const dispatch = useDispatch();
+    let snackbarTimeout;
 
-    const handleCloseSnackbar = (_, reason) =>  {
+    switch(type) {
+        case "info":
+            snackbarTimeout = null;
+            break;
+
+        case "success":
+            snackbarTimeout = 1000;
+            break;
+
+        case "error":
+            snackbarTimeout = 3000;
+            break;
+
+        default:
+            break;
+    }
+
+    const handleCloseSnackbar = () =>  {
         dispatch(snackbarActions.closeSnackbar())
     };
 
@@ -36,7 +55,7 @@ function CustomizedSnackbar() {
         <Snackbar
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
             open={open}
-            autoHideDuration={type === "error" ? 3000 : 1000}
+            autoHideDuration={snackbarTimeout}
             onClose={handleCloseSnackbar}
             sx={{ width: '100%' }}
             TransitionComponent={SlideTransition}

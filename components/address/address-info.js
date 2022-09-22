@@ -19,17 +19,22 @@ import AddAddressForm from "./add-address-form";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function AddressInfo(props) {
     const { title } = props;
-    const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
     const dispatch = useDispatch();
-    
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open)
     const currentPage = useSelector(state => state.address.addressPage);
+    
+    const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isRequesting, setIsRequesting ] = useState(false);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
 
     if (!data) return <PageSpinner />
     if (error) return <ErrorInfo />
@@ -37,6 +42,22 @@ function AddressInfo(props) {
     const addresses = data.data;
     const numOfResults = data.numOfResults;
     const paginatedAddresses = getPaginatedItems(addresses, currentPage);
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+
+        dispatch(snackbarActions.closeSnackbar());
+
+        setIsRequesting(false);
+    };
 
     const handleChangePage = (_, value) => {
         dispatch(addressActions.changeAddressPage({ page: value }));
@@ -69,6 +90,7 @@ function AddressInfo(props) {
                 <AddAddressForm 
                     openAddAddressForm={openAddAddressForm}
                     setOpenAddAddressForm={setOpenAddAddressForm}
+                    setDataIsChanging={setDataIsChanging}
                 />
 
                 <Box px={5} my={2}>
@@ -83,7 +105,12 @@ function AddressInfo(props) {
                                 xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <AddressCard address={address} />
+                                <AddressCard 
+                                    address={address} 
+                                    setDataIsChanging={setDataIsChanging}
+                                    setIsRequesting={setIsRequesting}
+                                    isRequesting={isRequesting}
+                                />
                             </Grid>
                         ))}   
                     </Grid>

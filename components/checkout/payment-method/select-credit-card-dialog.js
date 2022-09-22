@@ -1,4 +1,7 @@
+import { useSelector } from "react-redux";
 import { useState, Fragment } from "react";
+import useSWR from "swr";
+import axios from "axios";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -15,11 +18,42 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
 import AddCreditCardForm from "../../wallet/add-credit-card-form";
 import SelectCreditCard from "./select-credit-card";
+import PageSpinner from "../../ui/pageSpinner";
+import ErrorInfo from "../../ui/dogs-info/error-info";
+import { snackbarActions } from "../../../store/snackbar-slice";
 
 function SelectAddressDialog(props) {
-    const { openSelectCreditCardDialog, setOpenSelectCreditCardDialog, creditCards, creditCardUsed } = props;
+    const { openSelectCreditCardDialog, setOpenSelectCreditCardDialog, creditCardUsed } = props;
 
     const [ openAddCreditCardForm, setOpenAddCreditCardForm ] = useState(false);
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
+
+    const creditCards = data.data;
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+    
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    
+        setIsRequesting(false);
+    };
 
     const handleCloseDialog = () => {
         setOpenSelectCreditCardDialog(false);
@@ -71,6 +105,7 @@ function SelectAddressDialog(props) {
                     <AddCreditCardForm 
                         openAddCreditCardForm={openAddCreditCardForm}
                         setOpenAddCreditCardForm={setOpenAddCreditCardForm}
+                        setDataIsChanging={setDataIsChanging}
                     />
 
                     <DialogContentText sx={{ mt: 3 }}>

@@ -23,20 +23,25 @@ function PaymentMethod(props) {
 
     const creditCardUsed = useSelector(state => state.checkout.creditCard);
     const paymentMethod = useSelector(state => state.checkout.paymentMethod);
+    const pointUsed = useSelector(state => state.checkout.pointUsed);
     const amazonPoints = useSelector(state => state.user.amazonPoints);
 
     const handleOnChange = event => {
         dispatch(checkoutActions.setPaymentMethod({ paymentMethod: event.target.value }));
-
-        if (event.target.value !== "credit") dispatch(checkoutActions.setCreditCard({ creditCard: {} }))
     };
 
     const handlePointOnChange = event => {
-        let pointUsed = event.target.value;
-
-        if (pointUsed === "") pointUsed = 0;
+        let pointUsed = Number(event.target.value);
 
         setErrorMessage(null);
+
+        if (pointUsed === 0) {
+            dispatch(checkoutActions.setPointUsed({ pointUsed: 0 }));
+            
+            return;
+        };
+
+        if (amazonPoints === 0 && pointUsed === 0) return;
 
         if (pointUsed % 1 !== 0) setErrorMessage("Please input integer number only.")
 
@@ -52,7 +57,7 @@ function PaymentMethod(props) {
             <FormControl className="my-5 flex">
                 <RadioGroup
                     row
-                    defaultValue={"credit"}
+                    defaultValue={paymentMethod}
                     name="row-radio-buttons-group"
                     onChange={handleOnChange}
                 >
@@ -85,6 +90,7 @@ function PaymentMethod(props) {
                             className="border-gray-300 border-solid border-2 w-[100px] p-1"
                             type="number"
                             onChange={handlePointOnChange}
+                            value={pointUsed}
                         />
 
                         <Typography variant="text-sm">
@@ -126,12 +132,17 @@ function PaymentMethod(props) {
                 }
             </FormControl>
 
-            <Stack direction="row" spacing={2} >            
+            <Stack direction="row" spacing={2}  >            
                 <Button
                     variant="contained"
                     onClick={handleNext}
                     sx={{ height: "40px" }}
-                    disabled={(paymentMethod === "credit" && Object.keys(creditCardUsed).length === 0) || errorMessage ? true : false}
+                    disabled={
+                        (paymentMethod === "credit" && Object.keys(creditCardUsed).length === 0) || 
+                        errorMessage ? 
+                            true : 
+                            false
+                    }
                 >
                     Next
                 </Button>

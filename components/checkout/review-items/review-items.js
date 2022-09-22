@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -32,6 +32,8 @@ function ReviewItems(props) {
     const dispatch = useDispatch();
     const router = useRouter();
 
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+
     const shippingMethod = useSelector(state => state.checkout.shippingMethod);
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
     const paymentMethod = useSelector(state => state.checkout.paymentMethod);
@@ -58,7 +60,11 @@ function ReviewItems(props) {
     };
 
     const handlePlaceOrder = async() => {
+        setIsSubmitting(true);
+
         try {
+            if (paymentMethod !== "credit") dispatch(checkoutActions.setCreditCard({ creditCard: {} }))
+
             const data = {
                 isExpedited: shippingMethod === "standard" ? false : true,
                 shippingAddress: shippingAddress._id,
@@ -83,14 +89,16 @@ function ReviewItems(props) {
                 dispatch(checkoutActions.reinitialize());
     
                 router.push("/account/order-history");
-
             };
         } catch(err) {
+            console.log(err)
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsSubmitting(false);
         }
     };
 
@@ -205,10 +213,10 @@ function ReviewItems(props) {
                     variant="contained"
                     sx={{ height: "40px" }}
                     onClick={handlePlaceOrder}
-                    disabled={cartItemsIsEmpty}
+                    disabled={cartItemsIsEmpty || isSubmitting ? true : false}
                     type="submit"
                 >
-                    Place order
+                    {isSubmitting ? "Submitting..." : "Place Order"}
                 </Button> 
 
                 <Button

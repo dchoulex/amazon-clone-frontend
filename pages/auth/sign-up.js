@@ -68,6 +68,7 @@ function SignUpPage() {
 
     const [ conditionsIsOpen, setConditionsIsOpen ] = useState(false);
     const [ privacyIsOpen, setPrivacyIsOpen ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const handleOpenConditions = () => {
         setConditionsIsOpen(true);
@@ -86,6 +87,8 @@ function SignUpPage() {
     };
 
     const handleSubmitSignUpForm = async (values) => {
+        setIsSubmitting(true);
+
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_SIGN_UP_API, values);
 
@@ -96,7 +99,10 @@ function SignUpPage() {
 
                 dispatch(userActions.setUser({
                     name: user.name,
-                    email: user.email
+                    email: user.email,
+                    amazonPoints: 0,
+                    defaultAddress: {},
+                    defaultCreditCard: {}
                 }));
 
                 dispatch(snackbarActions.setSnackbarState({
@@ -108,12 +114,13 @@ function SignUpPage() {
                 router.push('/');
             }
         } catch(err) {
-            console.log(err)
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
-                message: "Oops... Something went wrong."
-            }))
+                message: err?.response?.data?.message ? err.response.data.message : "Oops... Something went wrong."
+            }));
+
+            setIsSubmitting(false)
         }
     };
 
@@ -133,7 +140,7 @@ function SignUpPage() {
                     validationSchema={SIGN_UP_FORM_VALIDATION}
                     onSubmit={handleSubmitSignUpForm}
                 >
-                    {({errors, touched}) => (
+                    {({errors, touched }) => (
                         <Form>
                             <Paper
                                 className="border-gray-300 border-solid border-2 rounded-lg p-8 w-[400px]"
@@ -170,9 +177,17 @@ function SignUpPage() {
                                     fullWidth
                                     variant="contained"
                                     className="mt-3 mb-5"
-                                    disabled={(touched.email && errors.email) || (touched.password && errors.password) || (touched.name && errors.name) || (touched.reEnterPassword && errors.reEnterPassword) ? true : false}
+                                    disabled={
+                                        (touched.email && errors.email) || 
+                                        (touched.password && errors.password) || 
+                                        (touched.name && errors.name) || 
+                                        (touched.confirmPassword && errors.confirmPassword) ||
+                                        isSubmitting ? 
+                                            true : 
+                                            false
+                                    }
                                 >
-                                    Sign up
+                                    {isSubmitting ? "Submitting..." : "Sign up"}
                                 </FormikSubmitButton>
 
                                 <Typography variant="caption">

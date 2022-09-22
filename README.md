@@ -1,12 +1,13 @@
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
+Technology used: Next.js, Material UI, Tailwind CSS, Vercel.
 
 <h1 align="center"> Amazon Clone Frontend </h1>
 
 This repository represents front end application for my amazon clone project. You can check it out on https://amazon-clone-frontend-alpha.vercel.app/.
-
-Technology used: Next.JS, Material UI, Tailwind CSS
 
 ## Features
 
@@ -17,7 +18,7 @@ Technology used: Next.JS, Material UI, Tailwind CSS
 - Sign Out
 - Reset password when forgot password
 - Verify user by using OTP when reset password
-- Send OTP to user email address
+- Send OTP to email address
 - Use JWT(JSON Web Token) to verify user
 
 ### 2. Account
@@ -35,6 +36,7 @@ Technology used: Next.JS, Material UI, Tailwind CSS
 
 - Search products based on categories and keyword
 - Autocomplete search bar
+- Sort products based on price (descending or ascending), best reviews and best seller.
 - Show product based on categories
 - Show all products
 - Show best seller products
@@ -88,3 +90,5 @@ Technology used: Next.JS, Material UI, Tailwind CSS
 ### 10. Others
 
 - Responsive design
+- Pagination
+- Snackbar to give user feedback on each action

@@ -18,10 +18,13 @@ import PaginationButtons from "../ui/pagination-buttons";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
 import ErrorInfo from "../ui/dogs-info/error-info";
 import PageSpinner from "../ui/pageSpinner";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function OrderHistoryInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
+
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
 
     const currentTab = useSelector(state => state.orderHistory.currentTab)
     const currentOrderHistoryTabPage = useSelector(state => state.orderHistory.orderHistoryTabPage);
@@ -29,12 +32,26 @@ function OrderHistoryInfo(props) {
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ORDERS_API, fetcher, { refreshInterval: 1000 });
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ORDERS_API, fetcher, { refreshInterval: 1000 });
 
     if (!data) return <PageSpinner />
     if (error) return <ErrorInfo />
     
     const orders = data.data;
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+    
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    };
 
     const orderHistoryTabItems = orders.filter(data => !data.order.isCanceled);
     const cancelTabItems = orders.filter(data => data.order.isCanceled);
@@ -99,6 +116,7 @@ function OrderHistoryInfo(props) {
                                 <OrderPanelList 
                                     items={tabItems[0].paginatedItems} 
                                     currentTab={currentTab} 
+                                    setDataIsChanging={setDataIsChanging}
                                 />
                             </TabPanel>
 
@@ -108,7 +126,8 @@ function OrderHistoryInfo(props) {
                             >
                                 <OrderPanelList 
                                     items={tabItems[1].paginatedItems} 
-                                    currentTab={currentTab} 
+                                    currentTab={currentTab}
+                                    setDataIsChanging={setDataIsChanging}
                                 />
                             </TabPanel>
                         </Fragment>

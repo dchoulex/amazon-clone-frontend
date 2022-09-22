@@ -60,9 +60,11 @@ const defaultOptions = [
 ];
 
 function AddAddressForm(props) {
-    const { openAddAddressForm, setOpenAddAddressForm } = props;
-    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const { openAddAddressForm, setOpenAddAddressForm, setDataIsChanging } = props;
     const dispatch = useDispatch();
+
+    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({
         name: prefecture,
@@ -81,6 +83,8 @@ function AddAddressForm(props) {
     const handleSubmitAddAddressForm = async(values, actions) => {
         actions.setSubmitting(false);
 
+        setIsSubmitting(true);
+
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_ADDRESS_API, values);
             const address = res.data.data;
@@ -92,17 +96,23 @@ function AddAddressForm(props) {
                     message: "Successfully add address."
                 }));
 
-                if (address.isDefault) dispatch(userActions.changeUserDefaultAddress({ defaultAddress: address}))
+                if (address.isDefault) dispatch(userActions.changeUserDefaultAddress({ defaultAddress: address}));
+
+                setOpenAddAddressForm(false);
+
+                setIsSubmitting(false);
+
+                setDataIsChanging(true);
             };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
-        }
+            }));
 
-        setOpenAddAddressForm(false);
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -239,15 +249,15 @@ function AddAddressForm(props) {
                                         (touched.postCode && errors.postCode) ||
                                         (touched.prefecture && errors.prefecture) ||
                                         (touched.city && errors.city) ||
-                                        (touched.rest && errors.rest) ||                                        
-                                        (touched.phoneNumber && errors.phoneNumber) ||                                     
-                                        (touched.isDefault && errors.isDefault)              
-                                        ? 
+                                        (touched.rest && errors.rest) ||
+                                        (touched.phoneNumber && errors.phoneNumber) ||
+                                        (touched.isDefault && errors.isDefault) ||
+                                        isSubmitting ? 
                                             true : 
                                             false
                                     }
                                 >
-                                    Add address
+                                    {isSubmitting ? "Submitting..." : "Add address"}
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>

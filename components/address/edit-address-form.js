@@ -36,9 +36,11 @@ const EDIT_ADDRESS_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditAddressForm(props) {
-    const { address, openEditAddressForm, setOpenEditAddressForm } = props;
-    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const { address, openEditAddressForm, setOpenEditAddressForm, setDataIsChanging } = props;
     const dispatch = useDispatch();
+
+    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const prefectures = PREFECTURES.map(prefecture => ({
         name: prefecture,
@@ -66,6 +68,8 @@ function EditAddressForm(props) {
 
     const handleSubmitEditAddressForm = async (values, actions) => {
         actions.setSubmitting(false);
+        
+        setIsSubmitting(true);
 
         const UPDATE_ADDRESS_API = getAPI(process.env.NEXT_PUBLIC_UPDATE_ADDRESS_API, { id: address._id });
 
@@ -86,16 +90,22 @@ function EditAddressForm(props) {
                         defaultAddress: address
                     }))
                 }
-            } 
+
+                setOpenEditAddressForm(false);
+
+                setIsSubmitting(false);
+
+                setDataIsChanging(true);
+            }
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
             }))
-        }
 
-        setOpenEditAddressForm(false);
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -222,15 +232,16 @@ function EditAddressForm(props) {
                                         (touched.postCode && errors.postCode) ||
                                         (touched.prefecture && errors.prefecture) ||
                                         (touched.city && errors.city) ||
-                                        (touched.rest && errors.rest) ||                                        
-                                        (touched.phoneNumber && errors.phoneNumber) ||                                     
-                                        (touched.isDefault && errors.isDefault)              
+                                        (touched.rest && errors.rest) || 
+                                        (touched.phoneNumber && errors.phoneNumber) ||
+                                        (touched.isDefault && errors.isDefault) ||
+                                        isSubmitting
                                         ? 
                                             true : 
                                             false
                                     }
                                 >
-                                    Update
+                                    {isSubmitting ? "Submitting..." : "Update"}
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>

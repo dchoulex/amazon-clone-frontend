@@ -1,4 +1,7 @@
 import { useState, Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
+import useSWR from 'swr';
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -13,12 +16,43 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import ControlPointIcon from '@mui/icons-material/ControlPoint';
 
+import PageSpinner from '../../ui/pageSpinner';
+import ErrorInfo from '../../ui/dogs-info/error-info';
 import AddAddressForm from "../../address/add-address-form";
 import SelectAddressCard from "./select-address-card";
+import { snackbarActions } from "../../../store/snackbar-slice";
 
 function SelectAddressDialog(props) {
-    const { openSelectAddressDialog, setOpenSelectAddressDialog, addresses, shippingAddress } = props;
+    const { openSelectAddressDialog, setOpenSelectAddressDialog, shippingAddress } = props;
+    const dispatch = useDispatch();
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
+
     const [ openAddAddressForm, setOpenAddAddressForm ] = useState(false);
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
+
+    const addresses = data.data;
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+    
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    };
 
     const handleCloseDialog = () => {
         setOpenSelectAddressDialog(false);
@@ -70,12 +104,13 @@ function SelectAddressDialog(props) {
                     <AddAddressForm 
                         openAddAddressForm={openAddAddressForm}
                         setOpenAddAddressForm={setOpenAddAddressForm}
+                        setDataIsChanging={setDataIsChanging}
                     />
 
                     <DialogContentText sx={{ mt: 3 }}>
                         Please select an address.
                     </DialogContentText>
-
+                        
                     <Grid container>
                         {addresses.map((address, index) => (
                             <Grid 
@@ -88,10 +123,11 @@ function SelectAddressDialog(props) {
                                     address={address} 
                                     shippingAddress={shippingAddress}
                                     setOpenSelectAddressDialog={setOpenSelectAddressDialog}
+                                    setDataIsChanging={setDataIsChanging}
                                 />
                             </Grid>
                         ))}
-                    </Grid>                    
+                    </Grid> 
                 </DialogContent>
 
                 <DialogActions>

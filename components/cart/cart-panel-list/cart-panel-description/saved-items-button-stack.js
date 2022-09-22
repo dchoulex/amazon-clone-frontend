@@ -12,10 +12,12 @@ import { cartActions } from "../../../../store/cart-slice";
 import { snackbarActions } from "../../../../store/snackbar-slice";
 
 function SavedItemsButtonStack(props) {
-    const { cartId, isSaved } = props;
+    const { cartId, isSaved, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
+        setIsRequesting(true);
+
         const DELETE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CART_ITEM_API, { id: cartId });
 
         try {
@@ -25,18 +27,24 @@ function SavedItemsButtonStack(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully delete item."
-                }))
+                }));
+
+                setDataIsChanging(true);
             };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
     const handleToggleSave = async () => {
+        setIsRequesting(true);
+
         const TOGGLE_SAVE_CART_ITEM_API = getAPI(process.env.NEXT_PUBLIC_TOGGLE_SAVE_CART_ITEM_API, { id: cartId, query: `isSaved=${!isSaved}` });
 
         try {
@@ -47,16 +55,20 @@ function SavedItemsButtonStack(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully move item back to cart."
-                }))
-            } 
+                }));
 
-            dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+                dispatch(cartActions.setTotalAmount({ totalAmount: res.data.totalAmount }));
+
+                setDataIsChanging(true);
+            } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
@@ -75,6 +87,7 @@ function SavedItemsButtonStack(props) {
                 color="error"
                 startIcon={<DeleteIcon />}
                 onClick={handleDelete}
+                disabled={isRequesting}
             >
                 Delete
             </Button>
@@ -83,6 +96,7 @@ function SavedItemsButtonStack(props) {
                 variant="contained"
                 startIcon={<AddShoppingCartIcon />}
                 onClick={handleToggleSave}
+                disabled={isRequesting}
             >
                 Move to cart
             </Button>

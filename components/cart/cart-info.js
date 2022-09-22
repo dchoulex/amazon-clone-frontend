@@ -19,6 +19,7 @@ import PaginationButtons from "../ui/pagination-buttons";
 import CheckoutForm from "./checkout-form/checkout-form";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function CartInfo(props) {
     const { title } = props;
@@ -27,10 +28,14 @@ function CartInfo(props) {
     const currentTab = useSelector(state => state.cart.currentTab);
     const currentCartTabPage = useSelector(state => state.cart.cartTabPage);
     const currentSaveTabPage = useSelector(state => state.cart.saveTabPage);
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
+
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isRequesting, setIsRequesting ] = useState(false);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher, { refreshInterval: 1000 });
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CART_ITEMS_API, fetcher, { refreshInterval: 1000 });
 
     if (!data) return <PageSpinner />
     if (error) return <ErrorInfo />
@@ -62,6 +67,22 @@ function CartInfo(props) {
             paginatedItems: getPaginatedItems(saveTabItems, currentSaveTabPage)
         }
     ];
+    
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+
+        dispatch(snackbarActions.closeSnackbar());
+
+        setIsRequesting(false);
+    };
 
     const handleChangeTab = (_, value) => {
         dispatch(cartActions.changeCurrentTab({ currentTab: value }));
@@ -104,6 +125,9 @@ function CartInfo(props) {
                                 subTotal={(tabItems[0].subTotal)}
                                 point={tabItems[0].point}
                                 isEmpty={tabItems[currentTab].isEmpty}
+                                setDataIsChanging={setDataIsChanging}
+                                setIsRequesting={setIsRequesting}
+                                isRequesting={isRequesting}
                             />
                         }
                     </TabPanel>
@@ -114,7 +138,10 @@ function CartInfo(props) {
                     >
                         <CartPanelList 
                             items={getPaginatedItems(saveTabItems, tabItems[1].page)} 
-                            currentTab={currentTab} 
+                            currentTab={currentTab}
+                            isRequesting={isRequesting}
+                            setDataIsChanging={setDataIsChanging}
+                            setIsRequesting={setIsRequesting}
                         />
                     </TabPanel>
                 </TabContext>

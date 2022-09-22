@@ -54,10 +54,11 @@ const defaultOptions = [
 ];
 
 function AddCreditCardForm(props) {
-    const { openAddCreditCardForm, setOpenAddCreditCardForm } = props;
-    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
-
+    const { openAddCreditCardForm, setOpenAddCreditCardForm, setDataIsChanging } = props;
     const dispatch = useDispatch();
+
+    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
@@ -71,6 +72,8 @@ function AddCreditCardForm(props) {
     const handleAddCreditCardForm = async(values, actions) => {
         actions.setSubmitting(false);
 
+        setIsSubmitting(true);
+
         try {
             const res = await axios.post(process.env.NEXT_PUBLIC_ADD_CREDIT_CARD_API, values);
             const creditCard = res.data.data;
@@ -82,17 +85,23 @@ function AddCreditCardForm(props) {
                     message: "Successfully delete item."
                 }));
 
-                if (creditCard.isDefault) dispatch(userActions.changeUserDefaultCreditCard({ defaultCreditCard: creditCard}))
+                if (creditCard.isDefault) dispatch(userActions.changeUserDefaultCreditCard({ defaultCreditCard: creditCard}));
+
+                setIsSubmitting(false);
+
+                setDataIsChanging(true);
+
+                setOpenAddCreditCardForm(false);
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
-                message: "Oops... Something went wrong."
-            }))
-        }
+                message: err?.response?.data?.message ? err.response.data.message : "Oops... Something went wrong"
+            }));
 
-        setOpenAddCreditCardForm(false);
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -200,12 +209,13 @@ function AddCreditCardForm(props) {
                                         (touched.type && errors.type) ||
                                         (touched.expirationDate && errors.expirationDate) ||
                                         (touched.number && errors.number) ||
-                                        (touched.isDefault && errors.isDefault) ? 
+                                        (touched.isDefault && errors.isDefault) ||
+                                        isSubmitting ? 
                                             true : 
                                             false
                                     }
                                 >
-                                    Add credit card
+                                    {isSubmitting ? "Submitting..." : "Add credit card"}
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>

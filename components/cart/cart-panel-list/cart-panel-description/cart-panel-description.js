@@ -6,12 +6,12 @@ import StockLabel from "../../../ui/stock-label";
 import SavedItemsButtonStack from "./saved-items-button-stack";
 
 function CartPanelDescription(props) {
-    const { productName, stock, price, point, currentTab, cartId, isSaved } = props;
+    const { productName, stock, price, point, currentTab, cartId, isSaved, setDataIsChanging, setIsRequesting, isRequesting } = props;
 
     let buttonStack;
 
     if (currentTab === 1) {
-        buttonStack = <SavedItemsButtonStack cartId={cartId} isSaved={isSaved} />
+        buttonStack = <SavedItemsButtonStack cartId={cartId} isSaved={isSaved} setDataIsChanging={setDataIsChanging} setIsRequesting={setIsRequesting} isRequesting={isRequesting} />
     }
     // if (currentTab === 2) {
     //     buttonStack = <BuyAgainItemsButtonStack cartId={cartId} isSaved={isSaved} />
