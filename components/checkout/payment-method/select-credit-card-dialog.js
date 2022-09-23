@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState, Fragment } from "react";
 import useSWR from "swr";
 import axios from "axios";
@@ -24,6 +24,7 @@ import { snackbarActions } from "../../../store/snackbar-slice";
 
 function SelectAddressDialog(props) {
     const { openSelectCreditCardDialog, setOpenSelectCreditCardDialog, creditCardUsed } = props;
+    const dispatch = useDispatch();
 
     const [ openAddCreditCardForm, setOpenAddCreditCardForm ] = useState(false);
     const [ dataIsChanging, setDataIsChanging ] = useState(false);
@@ -34,7 +35,8 @@ function SelectAddressDialog(props) {
 
     const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <PageSpinner />
+    if (!data && openSelectCreditCardDialog) return <PageSpinner />
+    if (!data) return;
     if (error) return <ErrorInfo />
 
     const creditCards = data.data;
@@ -51,8 +53,6 @@ function SelectAddressDialog(props) {
         setDataIsChanging(false);
     
         dispatch(snackbarActions.closeSnackbar());
-    
-        setIsRequesting(false);
     };
 
     const handleCloseDialog = () => {
@@ -66,7 +66,7 @@ function SelectAddressDialog(props) {
     return (
         <Fragment>
             <Dialog 
-                open={openSelectCreditCardDialog} 
+                open={openSelectCreditCardDialog}
                 maxWidth="xl" 
                 fullWidth
             >

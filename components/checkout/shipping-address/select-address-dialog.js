@@ -35,7 +35,8 @@ function SelectAddressDialog(props) {
 
     const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_ADDRESSES_API, fetcher, { refreshInterval: 1000 });
 
-    if (!data) return <PageSpinner />
+    if (!data && openSelectAddressDialog) return <PageSpinner />
+    if (!data) return;
     if (error) return <ErrorInfo />
 
     const addresses = data.data;

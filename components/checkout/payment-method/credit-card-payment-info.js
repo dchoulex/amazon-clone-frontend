@@ -21,7 +21,7 @@ function CreditCardPaymentInfo() {
     const creditCardUsedIsEmptyObject = !creditCardUsed || Object.keys(creditCardUsed).length === 0;
     const defaultCreditCardIsEmptyObject = !defaultCreditCard || Object.keys(defaultCreditCard).length === 0
 
-    if (creditCardUsedIsEmptyObject && !defaultCreditCardIsEmptyObject) dispatch(checkoutActions.setCreditCard({ creditCard: creditCardUsed }));
+    if (creditCardUsedIsEmptyObject && !defaultCreditCardIsEmptyObject) dispatch(checkoutActions.setCreditCard({ creditCard: defaultCreditCard }));
 
     const displayedCreditCardType = !creditCardUsedIsEmptyObject && creditCardUsed.type[0].toUpperCase() + creditCardUsed.type.slice(1);
     const displayedCreditCardNumber = !creditCardUsedIsEmptyObject && "ending in ..." + creditCardUsed.number.slice(creditCardUsed.number.length - 4);
@@ -33,7 +33,7 @@ function CreditCardPaymentInfo() {
 
     return (
         <Paper className="flex p-4 border-2 border-gray-200 border-solid my-5">
-            {!defaultCreditCardIsEmptyObject ?
+            {!creditCardUsedIsEmptyObject ?
                 <Fragment>
                     <div>
                         <Typography variant="h6" className="pb-2">
