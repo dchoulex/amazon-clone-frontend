@@ -41,7 +41,6 @@ function ConfirmDeleteDialog(props) {
                 router.push("/");
             };
         } catch(err) {
-            console.log(err)
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 

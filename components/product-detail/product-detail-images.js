@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import Image from "next/image";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';

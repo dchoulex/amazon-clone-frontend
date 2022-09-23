@@ -12,18 +12,18 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   async rewrites() {
-    // return [
-    //   {
-    //     source: '/api/:path*',
-    //     destination: 'https://amazon-clone-backend-dac.herokuapp.com/api/:path*'
-    //   }
-    // ]
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3000/api/:path*'
+        destination: 'https://amazon-clone-backend-dac.herokuapp.com/api/:path*'
       }
     ]
+    // return [
+    //   {
+    //     source: '/api/:path*',
+    //     destination: 'http://localhost:3000/api/:path*'
+    //   }
+    // ]
   }
 };
 

@@ -91,7 +91,6 @@ function ReviewItems(props) {
                 router.push("/account/order-history");
             };
         } catch(err) {
-            console.log(err)
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
