@@ -18,20 +18,41 @@ import NoItemInfo from "../ui/dogs-info/no-item-info";
 import AddCreditCardForm from "./add-credit-card-form";
 import PageSpinner from "../ui/pageSpinner";
 import ErrorInfo from "../ui/dogs-info/error-info";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function WalletInfo(props) {
     const { title } = props;
-    const [ openAddCreditCardForm , setOpenAddCreditCardForm ] = useState(false);
-
     const dispatch = useDispatch();
+
+    const [ openAddCreditCardForm , setOpenAddCreditCardForm ] = useState(false);
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isRequesting, setIsRequesting ] = useState(false);
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
     const currentPage = useSelector(state => state.wallet.walletPage);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data, error } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
 
     if (!data) return <PageSpinner />
     if (error) return <ErrorInfo />
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+    
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    
+        setIsRequesting(false);
+    };
 
     const creditCards = data.data;
     const numOfResults = data.numOfResults;
@@ -65,6 +86,12 @@ function WalletInfo(props) {
                     Add new credit card
                 </Button>
 
+                <AddCreditCardForm 
+                    openAddCreditCardForm={openAddCreditCardForm}
+                    setOpenAddCreditCardForm={setOpenAddCreditCardForm}
+                    setDataIsChanging={setDataIsChanging}
+                />
+
                 <Box px={5} my={2}>
                     <Grid container spacing={3}>
                         {paginatedCreditCards.map((card, index) => (
@@ -77,7 +104,12 @@ function WalletInfo(props) {
                                 xl={3}
                                 className="flex justify-center items-center"
                             >
-                                <WalletCard card={card} />
+                                <WalletCard 
+                                    card={card} 
+                                    setDataIsChanging={setDataIsChanging}
+                                    setIsRequesting={setIsRequesting}
+                                    isRequesting={isRequesting}
+                                />
                             </Grid>
                         ))}   
                     </Grid>
@@ -92,11 +124,6 @@ function WalletInfo(props) {
                     />
                 }
             </Paper>
-
-            <AddCreditCardForm 
-                openAddCreditCardForm={openAddCreditCardForm}
-                setOpenAddCreditCardForm={setOpenAddCreditCardForm}
-            />
         </Box>
     )
 };

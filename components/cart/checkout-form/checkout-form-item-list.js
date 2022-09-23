@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import { Field } from "formik";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from '@mui/material/Grid';
 import StockLabel from "../../ui/stock-label";
-// import Checkbox from '@mui/material/Checkbox';
 
 import numberWithCommas from "../../../utils/numberWithCommas";
 import FormikNumber from "../../ui/forms/formik-number";
@@ -23,8 +22,22 @@ import { cartActions } from "../../../store/cart-slice";
 import { snackbarActions } from "../../../store/snackbar-slice";
 
 function CheckoutFormItemList(props) {
-    const { item, index, numOfCartItems, remove, insert, errorMessage, setDataIsChanging, setIsRequesting, isRequesting } = props;
+    const { item, index, numOfCartItems, remove, insert, errors, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const productId = item.product._id;
+
+    const [ errorMessage, setErrorMessage ] = useState(null);
+
+    useEffect(() => {
+        if (!errors.checkoutCartItems) {
+            setErrorMessage(null);
+        };
+
+        if (errors.checkoutCartItems && errors.checkoutCartItems[0] !== null) {
+            const amountError = errors.checkoutCartItems?.at(index)?.amount;
+    
+            if (amountError) setErrorMessage(amountError);
+        };
+    }, [errors.checkoutCartItems, index])
     
     const dispatch = useDispatch();
 

@@ -18,45 +18,14 @@ function CreditCardPaymentInfo() {
     const creditCardUsed = useSelector(state => state.checkout.creditCard);
     const defaultCreditCard = useSelector(state => state.user.defaultCreditCard);
 
-    const creditCardUsedIsEmptyObject = Object.keys(creditCardUsed).length === 0;
-    const defaultCreditCardIsEmptyObject = Object.keys(defaultCreditCard).length === 0
+    const creditCardUsedIsEmptyObject = !creditCardUsed || Object.keys(creditCardUsed).length === 0;
+    const defaultCreditCardIsEmptyObject = !defaultCreditCard || Object.keys(defaultCreditCard).length === 0
 
     if (creditCardUsedIsEmptyObject && !defaultCreditCardIsEmptyObject) dispatch(checkoutActions.setCreditCard({ creditCard: creditCardUsed }));
 
     const displayedCreditCardType = !creditCardUsedIsEmptyObject && creditCardUsed.type[0].toUpperCase() + creditCardUsed.type.slice(1);
     const displayedCreditCardNumber = !creditCardUsedIsEmptyObject && "ending in ..." + creditCardUsed.number.slice(creditCardUsed.number.length - 4);
     const displayedCreditCardExpiratiionDate = !creditCardUsedIsEmptyObject && creditCardUsed.expirationDate.split("T")[0];
-
-    // const fetcher = url => axios.get(url).then(res => res.data);
-
-    // const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_CREDIT_CARDS_API, fetcher, { refreshInterval: 1000 });
-
-    // if (!data) return <PageSpinner />
-    // if (error) return <ErrorInfo />
-
-    // const creditCards = data.data;
-
-    // if (!isValidating && dataIsChanging && !snackbarIsOpen) {
-    //     dispatch(snackbarActions.setSnackbarState({
-    //         open: true,
-    //         type: "info",
-    //         message: "Revalidating..."
-    //     }));
-    // };
-    
-    // if (isValidating && dataIsChanging) {
-    //     setDataIsChanging(false);
-    
-    //     dispatch(snackbarActions.closeSnackbar());
-    
-    //     setIsRequesting(false);
-    // };
-
-    // if (creditCardUsedIsEmptyObject) {
-    //     const defaultCreditCard = creditCards.filter(card => card.isDefault)[0];
-
-    //     if (defaultCreditCard) dispatch(checkoutActions.setCreditCard({ creditCard: defaultCreditCard }));
-    // };
 
     const handleOpenSelectCreditCardDialog = () => {
         setOpenSelectCreditCardDialog(true)

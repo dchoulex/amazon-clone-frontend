@@ -20,7 +20,7 @@ import ReviewRatingStar from "./review-rating-star";
 import { snackbarActions } from "../../store/snackbar-slice";
 
 function ReviewCard(props) {
-    const { review } = props;
+    const { review, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const [ reviewIsExpanded, setReviewIsExpanded ] = useState(false);
     const [ openEditReviewForm, setOpenEditReviewForm ] = useState(false);
     const { product } = review;
@@ -37,6 +37,8 @@ function ReviewCard(props) {
     };
 
     const handleDeleteReview = async() => {
+        setIsRequesting(true);
+
         const DELETE_REVIEW_API = getAPI(process.env.NEXT_PUBLIC_DELETE_REVIEW_API, { id: product._id, id2: review._id });
 
         try {
@@ -47,14 +49,18 @@ function ReviewCard(props) {
                     open: true , 
                     type: "success", 
                     message: "Successfully delete item."
-                }))
+                }));
+
+                setDataIsChanging(true);
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
@@ -80,6 +86,7 @@ function ReviewCard(props) {
                         fullWidth
                         className="m-1"
                         onClick={handleOpenEditReviewForm}
+                        disabled={isRequesting}
                     >
                         Edit
                     </Button>
@@ -88,6 +95,7 @@ function ReviewCard(props) {
                         openEditReviewForm={openEditReviewForm}
                         setOpenEditReviewForm={setOpenEditReviewForm}
                         review={review}
+                        setDataIsChanging={setDataIsChanging}
                     />
 
                     <Button 
@@ -96,6 +104,7 @@ function ReviewCard(props) {
                         className="m-1"
                         color="error"
                         onClick={handleDeleteReview}
+                        disabled={isRequesting}
                     >
                         Delete
                     </Button>

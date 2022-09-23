@@ -29,9 +29,7 @@ const EDIT_PROFILE_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditProfileForm(props) {
-    const { user, openEditProfileForm, setOpenEditProfileForm } = props;
-    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
-
+    const { user, openEditProfileForm, setOpenEditProfileForm, setDataIsChanging } = props;
     const dispatch = useDispatch();
 
     const EDIT_PROFILE_INITIAL_FORM_STATE = {
@@ -39,6 +37,9 @@ function EditProfileForm(props) {
         email: user.email,
         phoneNumber: user.phoneNumber
     };
+
+    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const handleOpenConfirmCloseDialog = () => {
         setOpenConfirmCloseDialog(true);
@@ -50,6 +51,8 @@ function EditProfileForm(props) {
     };
 
     const handleSubmitEditProfileForm = async(values) => {
+        setIsSubmitting(true);
+
         try {
             const res = await axios.put(process.env.NEXT_PUBLIC_UPDATE_MY_PROFILE_API, values);
 
@@ -58,19 +61,23 @@ function EditProfileForm(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully update profile."
-                }))
-            };
+                }));
 
-            dispatch(userActions.changeUserName({ name: res.data.data.name }))
+                dispatch(userActions.changeUserName({ name: res.data.data.name }));
+
+                setDataIsChanging(true);
+
+                setOpenEditProfileForm(false);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))       
-        }
+            }));
 
-        setOpenEditProfileForm(false);
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -80,7 +87,7 @@ function EditProfileForm(props) {
                     sx={{ 
                         display: "flex", 
                         borderBottom: 1,
-                        borderColor: "divider" 
+                        borderColor: "divider",
                     }}
                 >
                     <Box sx={{ display: "flex", flex: "1 1 0%" }}>
@@ -110,29 +117,28 @@ function EditProfileForm(props) {
                                             label="Name" 
                                             variant="standard"
                                             required
+                                            fullWidth
                                         />
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <Box sx={{ display: "flex" }}>
-                                            <FormikTextField 
-                                                name="email"
-                                                label="Email"
-                                                variant="standard"
-                                                required
-                                            />
-                                        </Box>
+                                        <FormikTextField 
+                                            name="email"
+                                            label="Email"
+                                            variant="standard"
+                                            required
+                                            fullWidth
+                                        />
                                     </Grid>
 
                                     <Grid item xs={12}>
-                                        <Box sx={{ display: "flex" }}>
-                                            <FormikTextField 
-                                                name="phoneNumber"
-                                                label="Phone Number"
-                                                variant="standard"
-                                                required
-                                            />
-                                        </Box>
+                                        <FormikTextField 
+                                            name="phoneNumber"
+                                            label="Phone Number"
+                                            variant="standard"
+                                            required
+                                            fullWidth
+                                        />
                                     </Grid>
                                 </Grid>                    
                             </DialogContent>
@@ -149,12 +155,13 @@ function EditProfileForm(props) {
                                     disabled={
                                         (errors.name && touched.name) ||
                                         (errors.email && touched.email) ||
-                                        (errors.phoneNumber && touched.phoneNumber) ?
+                                        (errors.phoneNumber && touched.phoneNumber) ||
+                                        isSubmitting ?
                                             true :
                                             false
                                     }
                                 >
-                                    Update
+                                    {isSubmitting ? "Submitting..." : "Update"}
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>

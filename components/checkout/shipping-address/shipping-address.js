@@ -18,8 +18,8 @@ function ShippingAddress(props) {
 
     const shippingAddress = useSelector(state => state.checkout.shippingAddress);
     const defaultAddress = useSelector(state => state.user.defaultAddress);
-    const shippingAddressIsEmptyObject = Object.keys(shippingAddress).length === 0;
-    const defaultAddressIsEmptyObject = Object.keys(defaultAddress).length === 0
+    const shippingAddressIsEmptyObject = !shippingAddress || Object.keys(shippingAddress).length === 0;
+    const defaultAddressIsEmptyObject = !defaultAddress || Object.keys(defaultAddress).length === 0
 
     if (shippingAddressIsEmptyObject && !defaultAddressIsEmptyObject) dispatch(checkoutActions.setShippingAddress({ shippingAddress: defaultAddress }));
 

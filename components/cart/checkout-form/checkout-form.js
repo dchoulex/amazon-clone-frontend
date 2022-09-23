@@ -98,14 +98,6 @@ function CheckoutForm(props) {
                                     {items.map((item, index) => {
                                         const amount = `checkoutCartItems.${index}.amount`;
 
-                                        let errorMessage;
-
-                                        if (errors.checkoutCartItems && errors.checkoutCartItems.length >= 1) {
-                                            const amountError = errors.checkoutCartItems?.at(index)?.amount;
-
-                                            if (amountError) errorMessage = amountError;
-                                        };
-
                                         return (
                                             <CheckoutFormItemList 
                                                 key={`cart-item-${index}`}
@@ -116,7 +108,7 @@ function CheckoutForm(props) {
                                                 remove={remove}
                                                 insert={insert}
                                                 touched={touched}
-                                                errorMessage={errorMessage}
+                                                errors={errors}
                                                 setDataIsChanging={setDataIsChanging}
                                                 setIsRequesting={setIsRequesting}
                                                 isRequesting={isRequesting}

@@ -18,7 +18,7 @@ import OrderItemList from "../order/order-item-list";
 import { snackbarActions } from "../../store/snackbar-slice";
 
 function OrderPanelList(props) {
-    const { items, setDataIsChanging } = props;
+    const { items, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const dispatch = useDispatch();
 
     const [ expanded, setExpanded ] = useState(0);
@@ -34,6 +34,8 @@ function OrderPanelList(props) {
                 const orderId = order._id;
 
                 const handleOrderBack = async() => {
+                    setIsRequesting(true);
+
                     const ORDER_BACK_API = getAPI(process.env.NEXT_PUBLIC_ORDER_BACK_API, { id: orderId });
             
                     try {
@@ -44,18 +46,24 @@ function OrderPanelList(props) {
                                 open: true, 
                                 type: "success", 
                                 message: "Successfully order back item."
-                            }))
+                            }));
+
+                            setDataIsChanging(true);
                         } 
                     } catch(err) {
                         dispatch(snackbarActions.setSnackbarState({
                             open: true , 
                             type: "error", 
                             message: "Oops... Something went wrong."
-                        }))
+                        }));
+
+                        setIsRequesting(false);
                     }
                 };
 
                 const handleCancelOrder = async() => {
+                    setIsRequesting(true);
+
                     const CANCEL_ORDER_API = getAPI(process.env.NEXT_PUBLIC_CANCEL_ORDER_API, { id: orderId });
             
                     try {
@@ -67,13 +75,17 @@ function OrderPanelList(props) {
                                 type: "success", 
                                 message: "Successfully cancel order."
                             }));
+
+                            setDataIsChanging(true);
                         }
                     } catch(err) {
                         dispatch(snackbarActions.setSnackbarState({
                             open: true , 
                             type: "error", 
                             message: "Oops... Something went wrong."
-                        }))
+                        }));
+
+                        setIsRequesting(false);
                     }
                 };
 
@@ -114,6 +126,7 @@ function OrderPanelList(props) {
                                         color="secondary"
                                         onClick={handleOrderBack}
                                         className="ml-auto"
+                                        disabled={isRequesting}
                                     >
                                         Order back
                                     </Button>
@@ -125,6 +138,7 @@ function OrderPanelList(props) {
                                         color="error"
                                         onClick={handleCancelOrder}
                                         className="ml-auto"
+                                        disabled={isRequesting}
                                     >
                                         Cancel
                                     </Button>

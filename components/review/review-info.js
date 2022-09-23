@@ -19,25 +19,50 @@ import getPaginatedItems from "../../utils/getPaginatedItems";
 import NoItemInfo from "../ui/dogs-info/no-item-info";
 import ErrorInfo from "../ui/dogs-info/error-info";
 import PageSpinner from "../ui/pageSpinner";
+import { snackbarActions } from "../../store/snackbar-slice";
 
 function ReviewInfo(props) {
     const { title } = props;
     const dispatch = useDispatch();
 
+    let reviewTabItems = [];
+    let reviewableProductTabItems = [];
+
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isRequesting, setIsRequesting ] = useState(false);
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
     const currentTab = useSelector(state => state.review.currentTab);
     const currentReviewTabPage = useSelector(state => state.review.reviewPage);
     const currentReviewableProductTabPage = useSelector(state => state.review.reviewableProductPage);
 
     const fetcher = url => axios.get(url).then(res => res.data);
 
-    const { data: reviewRes, error: reviewError } = useSWR(process.env.NEXT_PUBLIC_GET_ALL_MY_REVIEWS, fetcher, { refreshInterval: 1000 });
-    const { data: reviewableRes, error: reviewableError } = useSWR(process.env.NEXT_PUBLIC_GET_REVIEWABLE_PRODUCTS, fetcher, { refreshInterval: 1000 });
+    const API = currentTab === 0 ? process.env.NEXT_PUBLIC_GET_ALL_MY_REVIEWS : process.env.NEXT_PUBLIC_GET_REVIEWABLE_PRODUCTS;
 
-    if (!reviewRes || !reviewableRes) return <PageSpinner />
-    if (reviewError || reviewableError) return <ErrorInfo />
+    const { data, error, isValidating } = useSWR(API, fetcher, { refreshInterval: 1000 });
+
+    if (error) return <ErrorInfo />
+    if (!data) return <PageSpinner />
+
+    if (dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
     
-    const reviewTabItems = reviewRes.data;
-    const reviewableProductTabItems = reviewableRes.data;
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    
+        setIsRequesting(false);
+    };
+    
+    if (currentTab === 0) reviewTabItems = data.data;
+    if (currentTab === 1) reviewableProductTabItems = data.data;
 
     const tabItems = [
         {
@@ -106,7 +131,10 @@ function ReviewInfo(props) {
                             >
                                 <ReviewPanelList 
                                     items={tabItems[0].paginatedItems} 
-                                    currentTab={currentTab} 
+                                    currentTab={currentTab}
+                                    setDataIsChanging={setDataIsChanging}
+                                    setIsRequesting={setIsRequesting}
+                                    isRequesting={isRequesting}    
                                 />
                             </TabPanel>
 
@@ -117,6 +145,7 @@ function ReviewInfo(props) {
                                 <ReviewablePanelList 
                                     items={tabItems[1].paginatedItems} 
                                     currentTab={currentTab} 
+                                    setDataIsChanging={setDataIsChanging}
                                 />
                             </TabPanel>
                         </Fragment>

@@ -18,7 +18,7 @@ import { snackbarActions } from "../../store/snackbar-slice";
 import { userActions } from "../../store/user-slice";
 
 function WalletCard(props) {
-    const { card } = props;
+    const { card, setDataIsChanging, setIsRequesting, isRequesting } = props;
     const displayedCardNumber = "ending in ..." + card.number.slice(card.number.length - 4);
     const displayedExpirationDate = card.expirationDate.split("-").slice(0, 2).join(" / ");
     const displayedCreditCardType = card.type[0].toUpperCase() + card.type.slice(1);
@@ -26,6 +26,8 @@ function WalletCard(props) {
     const dispatch = useDispatch();
 
     const handleRemoveCreditCard = async () => {
+        setIsRequesting(true);
+
         const DELETE_CREDIT_CARD_API = getAPI(process.env.NEXT_PUBLIC_DELETE_CREDIT_CARD_API, { id: card._id });
 
         try {
@@ -37,21 +39,27 @@ function WalletCard(props) {
                     type: "success", 
                     message: "Successfully delete item."
                 }));
-            };
 
-            if (card.isDefault) {
-                dispatch(userActions.reinitializeDefaultCreditCard())
-            }
+                if (card.isDefault) {
+                    dispatch(userActions.reinitializeDefaultCreditCard())
+                };
+
+                setDataIsChanging(true);
+            };
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
     const handleSetAsDefault = async () => {
+        setIsRequesting(true);
+
         const SET_CREDIT_CARD_AS_DEFAULT_API = getAPI(process.env.NEXT_PUBLIC_SET_CREDIT_CARD_AS_DEFAULT_API, { id: card._id });
 
         try {
@@ -62,14 +70,18 @@ function WalletCard(props) {
                     open: true, 
                     type: "success", 
                     message: "Successfully set credit card as default."
-                }))
+                }));
+
+                setDataIsChanging(true);
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsRequesting(false);
         }
     };
 
@@ -132,7 +144,12 @@ function WalletCard(props) {
             </CardContent>
 
             <CardActions className="mt-auto">
-                <Button onClick={handleRemoveCreditCard}>Remove</Button>
+                <Button 
+                    onClick={handleRemoveCreditCard}
+                    disabled={isRequesting}
+                >
+                    Remove
+                </Button>
 
                 {!card.isDefault && (
                     <Fragment>
@@ -142,7 +159,12 @@ function WalletCard(props) {
                             flexItem 
                         />
 
-                        <Button onClick={handleSetAsDefault}>Set as default</Button>
+                        <Button 
+                            onClick={handleSetAsDefault}
+                            disabled={isRequesting}
+                        >
+                            Set as default
+                        </Button>
                     </Fragment>
                 )}
             </CardActions>

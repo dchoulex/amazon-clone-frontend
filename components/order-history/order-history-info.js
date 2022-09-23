@@ -25,7 +25,9 @@ function OrderHistoryInfo(props) {
     const dispatch = useDispatch();
 
     const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isRequesting, setIsRequesting ] = useState(false);
 
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
     const currentTab = useSelector(state => state.orderHistory.currentTab)
     const currentOrderHistoryTabPage = useSelector(state => state.orderHistory.orderHistoryTabPage);
     const currentCancelTabPage = useSelector(state => state.orderHistory.cancelTabPage);
@@ -51,6 +53,8 @@ function OrderHistoryInfo(props) {
         setDataIsChanging(false);
     
         dispatch(snackbarActions.closeSnackbar());
+
+        setIsRequesting(false);
     };
 
     const orderHistoryTabItems = orders.filter(data => !data.order.isCanceled);
@@ -117,6 +121,8 @@ function OrderHistoryInfo(props) {
                                     items={tabItems[0].paginatedItems} 
                                     currentTab={currentTab} 
                                     setDataIsChanging={setDataIsChanging}
+                                    setIsRequesting={setIsRequesting}
+                                    isRequesting={isRequesting}
                                 />
                             </TabPanel>
 
@@ -128,6 +134,8 @@ function OrderHistoryInfo(props) {
                                     items={tabItems[1].paginatedItems} 
                                     currentTab={currentTab}
                                     setDataIsChanging={setDataIsChanging}
+                                    setIsRequesting={setIsRequesting}
+                                    isRequesting={isRequesting}
                                 />
                             </TabPanel>
                         </Fragment>

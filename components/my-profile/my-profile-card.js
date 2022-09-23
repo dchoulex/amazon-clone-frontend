@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import axios from "axios";
+import useSWR from "swr";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -14,43 +14,54 @@ import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import EditIcon from '@mui/icons-material/Edit';
 
-import { authActions } from "../../store/auth-slice";
 import EditProfileForm from "./edit-profile-form";
 import ConfirmDeleteDialog from "./confirm-delete-dialog";
 import { snackbarActions } from "../../store/snackbar-slice";
 import ChangePasswordForm from "./change-password-form";
-
-function getImagePath(name) {
-    let imagePath;
-
-    switch(name) {
-        case "User One":
-            imagePath = "/images/users/dummy-user-1.jpg";
-            break;
-
-        case "User Two":
-            imagePath = "/images/users/dummy-user-2.jpg";
-            break; 
-
-        case "User Three":
-            imagePath = "/images/users/dummy-user-3.jpg";
-            break;     
-
-        default:
-            break;
-    }
-
-    return imagePath
-};
+import PageSpinner from "../ui/pageSpinner";
+import ErrorInfo from "../ui/dogs-info/error-info";
+import getImagePath from "../../utils/getImagePath";
 
 function MyProfileCard(props) {
-    const { user } = props;
     const router = useRouter();
     const dispatch = useDispatch();
 
     const [ openEditProfileForm, setOpenEditProfileForm ] = useState(false);
     const [ openConfirmDeleteDialog, setOpenConfirmDeleteDialog ] = useState(false);
     const [ openChangePasswordForm, setOpenChangePasswordForm ] = useState(false);
+    const [ dataIsChanging, setDataIsChanging ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
+
+    const snackbarIsOpen = useSelector(state => state.snackbar.open);
+
+    const fetcher = url => axios.get(url).then(res => res.data);
+
+    const { data, error, isValidating } = useSWR(process.env.NEXT_PUBLIC_GET_MY_PROFILE_API, fetcher, { refreshInterval: 1000 });
+
+    if (!data) return <PageSpinner />
+    if (error) return <ErrorInfo />
+
+    if (!isValidating && dataIsChanging && !snackbarIsOpen) {
+        dispatch(snackbarActions.setSnackbarState({
+            open: true,
+            type: "info",
+            message: "Revalidating..."
+        }));
+    };
+    
+    if (isValidating && dataIsChanging) {
+        setDataIsChanging(false);
+    
+        dispatch(snackbarActions.closeSnackbar());
+    };
+
+    const resData = data.data;
+
+    const user = {
+        name: resData.name,
+        email: resData.email,
+        phoneNumber: resData.phoneNumber
+    };
 
     const handleOpenEditProfileForm = () => {
         setOpenEditProfileForm(true);
@@ -62,32 +73,6 @@ function MyProfileCard(props) {
 
     const handleOpenChangePasswordForm = () => {
         setOpenChangePasswordForm(true)
-    };
-
-    const handleDelete = async() => {
-        try {
-            const res = await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
-
-            if (res.status === 204) {
-                dispatch(snackbarActions.setSnackbarState({
-                    open: true, 
-                    type: "success", 
-                    message: "Successfully delete item."
-                }))
-            } 
-        } catch(err) {
-            dispatch(snackbarActions.setSnackbarState({
-                open: true , 
-                type: "error", 
-                message: "Oops... Something went wrong."
-            }))
-        };
-
-        setOpenConfirmDeleteDialog(false);
-
-        dispatch(authActions.logout());
-
-        router.push("/");
     };
 
     return (
@@ -104,7 +89,7 @@ function MyProfileCard(props) {
                     <IconButton>
                         <Avatar
                             alt={user.name}
-                            src={getImagePath(user.name)}
+                            src={getImagePath(user.email)}
                             sx={{ width: 120, height: 120 }}
                         />
                     </IconButton>
@@ -126,25 +111,21 @@ function MyProfileCard(props) {
                                 openChangePasswordForm={openChangePasswordForm}
                                 setOpenChangePasswordForm={setOpenChangePasswordForm}
                             />
-
-                            {/* <Link href="/auth/login">
-                                <Button size="small" variant="outlined">
-                                    Change account
-                                </Button>
-                            </Link> */}
         
                             <Button 
                                 variant="outlined" 
                                 color="error"
                                 onClick={handleOpenConfirmDeleteDialog}
+                                disabled={isSubmitting}
                             >
-                                Delete account
+                                {isSubmitting ? "Submitting..." : "Delete account"}
                             </Button>
 
                             <ConfirmDeleteDialog
                                 openConfirmDeleteDialog={openConfirmDeleteDialog}
                                 setOpenConfirmDeleteDialog={setOpenConfirmDeleteDialog}
-                                handleDelete={handleDelete}
+                                setIsSubmitting={setIsSubmitting}
+                                isSubmitting={isSubmitting}
                             />
                         </Stack>
                     </Box>
@@ -157,7 +138,19 @@ function MyProfileCard(props) {
                             <EditIcon />
                         </IconButton>
                         
-                        <Typography variant="caption" className="pl-2">Edit</Typography>
+                        <Typography 
+                            variant="caption" 
+                            className="pl-2"
+                        >
+                            Edit
+                        </Typography>
+
+                        <EditProfileForm 
+                            user={user}
+                            openEditProfileForm={openEditProfileForm}
+                            setOpenEditProfileForm={setOpenEditProfileForm}
+                            setDataIsChanging={setDataIsChanging}
+                        />
                     </Box>
                 </Box>
 
@@ -197,12 +190,6 @@ function MyProfileCard(props) {
                     </Grid>
                 </Box>
             </Paper>
-
-            <EditProfileForm 
-                user={user}
-                openEditProfileForm={openEditProfileForm}
-                setOpenEditProfileForm={setOpenEditProfileForm}
-            />
         </Box>
     )
 };

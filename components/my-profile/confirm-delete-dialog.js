@@ -1,20 +1,28 @@
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
 import Button from "@mui/material/Button";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import axios from "axios";
-import { useDispatch } from "react-redux";
+
 import { authActions } from "../../store/auth-slice";
 import { snackbarActions } from "../../store/snackbar-slice";
 
 function ConfirmDeleteDialog(props) {
-    const { openConfirmDeleteDialog, handleDelete, setOpenConfirmDeleteDialog } = props;
+    const { openConfirmDeleteDialog, setOpenConfirmDeleteDialog, setIsSubmitting, isSubmitting } = props;
     const dispatch = useDispatch();
+    const router = useRouter();
 
-    const handleCloseConfirmDeleteDialog = async() => {
+    const handleCloseConfirmDeleteDialog = () => {
         setOpenConfirmDeleteDialog(false);
+    };
+
+    const handleDeleteAccount = async() => {
+        setIsSubmitting(true);
 
         try {
             const res = await axios.delete(process.env.NEXT_PUBLIC_DELETE_ACCOUNT_API);
@@ -26,16 +34,23 @@ function ConfirmDeleteDialog(props) {
                     message: "Successfully delete your account."
                 }))
 
-                dispatch(authActions.logout())
+                dispatch(authActions.logout());
+
+                setOpenConfirmDeleteDialog(false);
+
+                router.push("/");
             };
         } catch(err) {
+            console.log(err)
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
+            }));
+
+            setIsSubmitting(false);
         }
-    };
+    }
 
     return (
         <Dialog open={openConfirmDeleteDialog}>
@@ -52,7 +67,10 @@ function ConfirmDeleteDialog(props) {
             <DialogActions>
                 <Button onClick={handleCloseConfirmDeleteDialog}>No</Button>
 
-                <Button onClick={handleDelete}>
+                <Button 
+                    onClick={handleDeleteAccount}
+                    disabled={isSubmitting}
+                >
                     Yes
                 </Button>
             </DialogActions>

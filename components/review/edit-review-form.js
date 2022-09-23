@@ -29,10 +29,11 @@ const EDIT_REVIEW_FORM_VALIDATION = Yup.object().shape({
 });
 
 function EditReviewForm(props) {
-    const { openEditReviewForm, setOpenEditReviewForm, review } = props;
-    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
-
+    const { openEditReviewForm, setOpenEditReviewForm, review, setDataIsChanging } = props;
     const dispatch = useDispatch();
+
+    const [ openConfirmCloseDialog, setOpenConfirmCloseDialog ] = useState(false);
+    const [ isSubmitting, setIsSubmitting ] = useState(false);
 
     const EDIT_REVIEW_INITIAL_FORM_STATE = {
         rating: review.rating,
@@ -49,6 +50,8 @@ function EditReviewForm(props) {
     };
 
     const handleSubmitEditReviewForm = async (values) => {
+        setIsSubmitting(true);
+
         const UPDATE_REVIEW_API = getAPI(process.env.NEXT_PUBLIC_UPDATE_REVIEW_API, { id: review.product._id, id2: review._id });
 
         try {
@@ -59,17 +62,23 @@ function EditReviewForm(props) {
                     open: true , 
                     type: "success", 
                     message: "Successfully update review."
-                }))
+                }));
+
+                setOpenEditReviewForm(false);
+
+                setDataIsChanging(true);
+
+                setIsSubmitting(false);
             } 
         } catch(err) {
             dispatch(snackbarActions.setSnackbarState({
                 open: true , 
                 type: "error", 
                 message: "Oops... Something went wrong."
-            }))
-        }            
+            }));
 
-        setOpenEditReviewForm(false);
+            setIsSubmitting(false);
+        }            
     };
 
     return (
@@ -141,12 +150,13 @@ function EditReviewForm(props) {
                                 <FormikSubmitButton 
                                     disabled={
                                         (touched.rating && errors.rating) || 
-                                        (touched.review && errors.review) ? 
+                                        (touched.review && errors.review) ||
+                                        isSubmitting ? 
                                             true : 
                                             false
                                     }
                                 >
-                                    Update
+                                    {isSubmitting ? "Submitting..." : "Update"}
                                 </FormikSubmitButton>
                             </DialogActions>
                         </Form>

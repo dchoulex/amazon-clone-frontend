@@ -33,10 +33,10 @@ const ADD_CART_ITEM_FORM_VALIDATION = Yup.object().shape({
 
 function ProductCard(props) {
     const { product } = props;
+    const dispatch = useDispatch();
+    
     const slug = product.slug;
     const image = product.images[0];
-
-    const dispatch = useDispatch();
 
     const handleSubmitAddCartItemForm = async(values, actions) => {
         actions.setSubmitting(false);

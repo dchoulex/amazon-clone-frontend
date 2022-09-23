@@ -32,12 +32,12 @@ function ProductPage() {
     const sortedProducts = getSortedItems(products, sortBy);
     const numOfPages =  Math.ceil(sortedProducts.length / PAGINATION_LIMIT);
 
-    const handleChangePage = (_, value) => {
-        dispatch(productActions.setSearchProductPage({ page: value }))
-    };
-
     if (searchProductPage > numOfPages) {
         dispatch(productActions.setSearchProductPage({ page: 1 }))
+    };
+
+    const handleChangePage = (_, value) => {
+        dispatch(productActions.setSearchProductPage({ page: value }))
     };
 
     const handleChangeSortBy = event => {

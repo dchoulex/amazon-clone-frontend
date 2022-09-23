@@ -18,7 +18,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { PASSWORD_SCHEMA, CONFIRM_NEW_PASSWORD_SCHEMA } from "../ui/forms/form-schema";
 import FormikSubmitButton from "../ui/forms/formik-submit-button";
 import { snackbarActions } from "../../store/snackbar-slice";
-import { userActions } from "../../store/user-slice";
 import FormikPassword from "../ui/forms/formik-password";
 
 const CHANGE_PASSWORD_INITIAL_FORM_STATE = {
