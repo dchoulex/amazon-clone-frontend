@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1"/>
+          <title>Amazon Clone</title>
         </Head>
         
         <SWRConfig value={{ dedupingInterval: 10000 }}>
