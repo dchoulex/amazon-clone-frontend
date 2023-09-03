@@ -7,7 +7,7 @@ Technology used: Next.js, Material UI, Tailwind CSS, Vercel.
 
 <h1 align="center"> Amazon Clone Frontend </h1>
 
-This repository represents front end application for my amazon clone project. You can check it out on https://amazon-clone-frontend-alpha.vercel.app/.
+This is the codebase for amazon frontend app.
 
 ## Features
 
