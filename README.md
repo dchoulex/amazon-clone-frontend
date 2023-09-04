@@ -9,6 +9,9 @@ Technology used: Next.js, Material UI, Tailwind CSS, Vercel.
 
 This is the codebase for amazon frontend app.
 
+You can access the link below
+https://amazon-clone-frontend-alpha.vercel.app/
+
 ## Features
 
 ### 1. Authentication
